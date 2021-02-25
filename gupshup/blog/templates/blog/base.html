@@ -15,11 +15,12 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 	{% if title %}
-		<title>Django Blog - {{ title }}</title>
+		<title>GupShup - {{ title }}</title>
 	{% else %}
-		<title>Django Blog</title>
+		<title>GupShup </title>
 	{% endif %}
 	
 </head>
@@ -45,8 +46,9 @@
 
 	
 	<nav class="navbar sticky-top navbar-expand-lg navbar-custom pb-2">
-	<img style="max-width:70px; margin-top: -7px;border-radius: 35%;"class="mr-2" src="{%static 'blog/LOGO_PNG.png'%}">
-  <a class="navbar-brand" href="#">Gupshup</a>
+	<a class="navbar-brand" href="/">
+	<img style="max-width:70px; margin-top: -7px;border-radius: 35%;"class="mr-2" src="{%static 'blog/LOGO_PNG.png'%}"></a>
+  <a class="navbar-brand" href="/">Gupshup</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -54,10 +56,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#" style="color: #1e212d">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/" style="color: #1e212d">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item ">
-        <a class="nav-link" href="#" style="color: #1e212d">Link</a>
+        <a class="nav-link" href="#" style="color: #1e212d">link</a>
       </li>
       
 
@@ -68,7 +70,10 @@
 	        <div class="navbar-nav">
 
 	        	<form action="{% url 'search-result' %}" method="GET">
+				<div style=" display: flex;">
 	        		<input class="form-control" style="display: inline;" type="text" name="q" placeholder="Search">
+					<button type="submit" class="btn btn-success-outline" ><i class="fa fa-search " style="font-size:24px; color:white;"></i> </i></button>
+					</div>
 	        	</form>
 	        	
 
@@ -87,26 +92,7 @@
 </nav>
 
 
-	<div class="container-fluid" style="background-color: #c7ffd8">
-		<div class="nav-scroller py-0 my-0 ">
-			<nav class="nav d-flex justify-content-between">
-			<a class="p-2 " style="color: #1e212d" href="#">World</a>
-			<a class="p-2 " style="color: #1e212d" href="#">U.S.</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Technology</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Technology</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Design</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Culture</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Business</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Politics</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Opinion</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Science</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Health</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Style</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Travel</a>
-			</nav>
-		</div>
-		<hr>
-		</div>
+	
 
 	
 

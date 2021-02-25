@@ -1,5 +1,30 @@
 {% extends "blog/base.html" %}
 {%block carousel%}
+
+{% comment %} second navbar {% endcomment %}
+<div class="container-fluid" style="background-color: #c7ffd8">
+		<div class="nav-scroller py-0 my-0 ">
+			<nav class="nav d-flex justify-content-between">
+			<a class="p-2 " style="color: #1e212d" href="#">World</a>
+			<a class="p-2 " style="color: #1e212d" href="#">U.S.</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Technology</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Technology</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Design</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Culture</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Business</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Politics</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Opinion</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Science</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Health</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Style</a>
+			<a class="p-2 " style="color: #1e212d" href="#">Travel</a>
+			</nav>
+		</div>
+		<hr>
+		</div>
+
+
+
 	<div class="container-fluid px-0 ">
    <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
   <ol class="carousel-indicators">
@@ -53,6 +78,14 @@
 	
 	{% endblock %}
 {% block content %}
+
+
+<article class="media content-section">	    
+			    <h2><a class="article-title" href="post/new/"</a>What is your question or link?</h2>
+				
+
+		</article>
+
 
 
 	{% for post in posts%}
