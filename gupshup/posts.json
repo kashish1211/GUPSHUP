@@ -1,0 +1,76 @@
+[
+
+
+	{
+		"title" : "First Blog",
+		"content" : "Hellooo Worldddd",
+		"user_id" : 1
+	},
+
+	{
+		"title" : "Second Blog",
+		"content" : "hi i am kashish\r\n\r\nThis is exciting",
+		"user_id" : 2
+	},
+
+	{
+		"title" : "Third Blog",
+		"content" : "Third bloggg",
+		"user_id" : 1
+	},
+
+	{
+		"title" : "Fourth Blog",
+		"content" : "WHatsuppp Worldddd",
+		"user_id" : 1
+	},
+
+	{
+		"title" : "Fourth Blog",
+		"content" : "This is Corey Schaefer tutorial Blog website",
+		"user_id" : 2
+	},
+
+	{
+		"title" : "5 Blog",
+		"content" : "I am tired of writing this right now",
+		"user_id" : 2
+	},
+
+	{
+		"title" : "5 Blog",
+		"content" : "The world keeps spinning\r\n\r\nbecause your hearbeats exixts",
+		"user_id" : 1
+	},
+
+	{
+		"title" : "6 Blog",
+		"content" : "whatup",
+		"user_id" : 2
+	},
+
+	{
+		"title" : "7 Blog",
+		"content" : "I HAte you i love you",
+		"user_id" : 1
+	},
+
+	{
+		"title" : "8 Blog",
+		"content" : "i have a blank space baby ",
+		"user_id" : 2
+	},
+
+	{
+		"title" : "9 Blog",
+		"content" : "But i knew you, steppling on a last train\r\n\r\nmarked me like a bloodstain",
+		"user_id" : 2
+	},
+
+	{
+		"title" : "10 Blog",
+		"content" : "Look at how my tears ricochet",
+		"user_id" : 1
+	}
+
+]
