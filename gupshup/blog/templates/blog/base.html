@@ -23,9 +23,11 @@
 		<title>GupShup </title>
 	{% endif %}
 	
+	
 </head>
 
 <style>
+	{% block style %}{% endblock style %}
 
 	 /* Modify the background color */ 
           
@@ -127,6 +129,7 @@
 	  </div>
 	</main>
 	
+	{% block script %}{% endblock script %}
 
 
 	<!-- Optional JavaScript -->

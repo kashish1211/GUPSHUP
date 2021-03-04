@@ -1,29 +1,43 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.views.generic.edit import FormView
 from .models import Post, PostComment
 from .forms import NewCommentForm
 import operator
 from django.db.models import Q
 
 
-def home(request):
-	context = {
-		'posts': Post.objects.all()
-	}
-	return render(request, 'blog/home.html', context)
 
-
-class PostListView(ListView):
+class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
-	template_name = 'blog/home.html'
-	context_object_name = 'posts' 
-	ordering = ['-date_posted']
-	paginate_by = 5
+	fields = ['title','content']
 
+	def form_valid(self,form):
+		form.instance.author = self.request.user
+		redirect()
+		return super().form_valid(form)
+
+
+def homeForm(request):
+	qs = Post.objects.all()
+	if request.method == 'POST':
+		title = request.POST.get("title")
+		content = request.POST.get("content")
+		author = request.user
+		post = Post(title=title,content=content,author=author)
+		post.save()
+		context = {'form':post,'posts':qs}
+		return render(request,'blog/home.html',context)
+	else:
+		post = Post
+		context = {'form':post,'posts':qs}
+		return render(request,'blog/home.html',context)
+		
 
 class UserPostListView(ListView):
 	model = Post
@@ -76,18 +90,6 @@ class PostDetailView(DetailView):
 		return self.get(self, request, *args, **kwargs)
 
 
-
-
-	
-class PostCreateView(LoginRequiredMixin, CreateView):
-	model = Post
-	fields = ['title','content']
-
-	def form_valid(self,form):
-		form.instance.author = self.request.user
-		return super().form_valid(form)
-
-
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
 	fields = ['title','content']
@@ -102,6 +104,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 		if self.request.user == post.author:
 			return True
 		return False
+
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	model = Post
