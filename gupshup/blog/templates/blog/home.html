@@ -12,6 +12,9 @@
 	text-align: center;    
 }
 
+.card-img-overlay {
+  background-color: rgba(#000, 0.4);
+}
 </style>
 
 
@@ -42,50 +45,73 @@
 
 
 
-	<div class="container-fluid px-0 ">
+<div class="container-fluid px-0 ">
    <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
+  	<ol class="carousel-indicators">
+    	<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    	<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    	<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  	</ol>
   <div class="carousel-inner ">
     <div class="carousel-item active ">
-		<div class="jumbotron container" style='background-image: url(https://source.unsplash.com/1600x500/?nature,water); background-size: 100%; opacity: 0.5;'>
-		<h1 class="display-4" style="color: black; opacity: 1;">{{posts.0.title}}</h1>
-		<p class="lead">{{posts.0.content}}</p>
-		<hr class="my-4">
-		<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-		<p class="lead">
-			<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-		</p>
-		</div>
-      {% comment %} <img src="https://source.unsplash.com/1600x500/?nature,water" class="d-block w-100 py-0 my-0" alt="..."> {% endcomment %}
+		<a href="{% url 'post-detail' posts.0.id %}"><div class="container align-middle" >
+			<div class="row">
+			  <div class="col-12 align-middle">
+				<div class="card" >
+				   <img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
+				  	<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
+					<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{posts.0.author}}</h4></strong>
+					<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
+						{{posts.0.title}}</h6>
+					<p class="card-text" style="color: #000;">{{posts.0.content}}</p>
+					<i style="color: #000;">~{{posts.0.date_posted|date:"F d, Y"}}</i>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</a>
+	</div>
+    <div class="carousel-item">
+		<a href="{% url 'post-detail' posts.1.id %}"><div class="container align-middle" >
+			<div class="row">
+			  <div class="col-12 align-middle">
+				<div class="card" >
+				   <img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
+				  	<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
+					<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{posts.1.author.profile.image.url}}>{{posts.1.author}}</h4></strong>
+					<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
+						{{posts.1.title}}</h6>
+					<p class="card-text" style="color: #000;">{{posts.1.content}}</p>
+					<i style="color: #000;">~{{posts.1.date_posted|date:"F d, Y"}}</i>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</a>
     </div>
     <div class="carousel-item">
-	{% comment %} <div class="jumbotron">
-		<h1 class="display-4">Hello, world!</h1>
-		<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-		<hr class="my-4">
-		<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-		<p class="lead">
-			<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-		</p>
-		</div> {% endcomment %}
-      <img src="https://source.unsplash.com/1600x500/?nature,water" class="d-block w-100 py-0 my-0" alt="...">
-    </div>
-    <div class="carousel-item">
-	<div class="jumbotron">
-		<h1 class="display-4">Hello, world!</h1>
-		<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-		<hr class="my-4">
-		<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-		<p class="lead">
-			<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-		</p>
-		</div>
+		<a href="{% url 'post-detail' posts.2.id %}"><div class="container align-middle" >
+			<div class="row">
+			  <div class="col-12 align-middle">
+				<div class="card" >
+				   <img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
+				  	<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
+					<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{posts.2.author.profile.image.url}}>{{posts.2.author}}</h4></strong>
+					<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
+						{{posts.2.title}}</h6>
+					<p class="card-text" style="color: #000;">{{posts.2.content}}</p>
+					<i style="color: #000;">~{{posts.2.date_posted|date:"F d, Y"}}</i>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</a>
     </div>
   </div>
+   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators " role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
@@ -95,7 +121,6 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-  </div>
   
 <div class="container-fluid px-0 mx-0 my-0 py-0 mb-3">
 
