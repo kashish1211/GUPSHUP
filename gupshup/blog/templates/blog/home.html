@@ -41,17 +41,91 @@
 			</nav>
 		</div>
 		<hr>
-		</div>
+	</div>
 
 
 
 <div class="container-fluid px-0 ">
-   <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
+
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+		  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+		  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner mt-0 py-0">
+		  <div class="carousel-item active">
+
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url(https://source.unsplash.com/1600x500/?nature,water); border-radius: 0; margin-bottom: 0px; ">
+
+      	<div class="container py-0 mb-0">
+			
+				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{posts.0.author}}</h4></strong>
+				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid #ffa372; width: 60%; margin-left: 0px; ;"/>
+					{{posts.0.title}}</h6>
+				<p  style="color: #FFF;">{{posts.0.content}}</p>
+				<i style="color: #FFF;">~{{posts.0.date_posted|date:"F d, Y"}}</i>
+			
+		  <p class="lead px-3">
+			  <br>
+		    <a class="btn btn-light " href="{% url 'post-detail' posts.0.id %}" role="button">View Post</a>
+		  </p>
+	  </div>
+    </div>
+    </div>
+			
+		  
+
+	 {% for post in posts|slice:"1::"%}
+
+	 
+		<div class="carousel-item ">
+
+		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url(https://source.unsplash.com/1600x500/?nature,water); border-radius: 0; margin-bottom: 0px; ">
+
+			<div class="container py-0 mb-0">
+			
+				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>{{post.author}}</h4></strong>
+				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid white; width: 60%; margin-left: 0px;"/>
+					{{post.title}}</h6>
+				<p  style="color: #FFF;">{{post.content}}</p>
+				<i style="color: #FFF;">~{{post.date_posted|date:"F d, Y"}}</i>
+			
+				<p class="lead px-3">
+					<br>
+				<a class="btn btn-light " href="{% url 'post-detail' post.id %}" role="button">View Post</a>
+				</p>
+			</div>
+  		</div>
+	</div>
+
+	{% endfor %}
+		  
+</div>
+		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	  </div>
+</div>
+
+
+
+
+
+
+   <!-- <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
   	<ol class="carousel-indicators">
     	<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
     	<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
     	<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
   	</ol>
+
+
   <div class="carousel-inner ">
     <div class="carousel-item active ">
 		<a href="{% url 'post-detail' posts.0.id %}"><div class="container align-middle" >
@@ -72,6 +146,32 @@
 		  </div>
 		</a>
 	</div>
+
+	{% for post in posts|slice:"1::"%}
+
+		<div class="carousel-item">
+			<a href="{% url 'post-detail' post.id %}"><div class="container align-middle" >
+				<div class="row">
+				<div class="col-12 align-middle">
+					<div class="card" >
+					<img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
+						<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
+						<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>{{post.author}}</h4></strong>
+						<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
+							{{post.title}}</h6>
+						<p class="card-text" style="color: #000;">{{post.content}}</p>
+						<i style="color: #000;">~{{post.date_posted|date:"F d, Y"}}</i>
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+			</a>
+		</div>
+
+
+
+	{% endfor %}
     <div class="carousel-item">
 		<a href="{% url 'post-detail' posts.1.id %}"><div class="container align-middle" >
 			<div class="row">
@@ -111,7 +211,8 @@
 		</a>
     </div>
   </div>
-   </div>
+</div>
+   
   <a class="carousel-control-prev" href="#carouselExampleIndicators " role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
@@ -120,7 +221,7 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
-</div>
+ -->
   
 <div class="container-fluid px-0 mx-0 my-0 py-0 mb-3">
 

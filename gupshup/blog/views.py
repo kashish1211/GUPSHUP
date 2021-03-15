@@ -10,6 +10,7 @@ from .models import Post, PostComment
 from .forms import NewCommentForm
 import operator
 from django.db.models import Q
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 
@@ -25,6 +26,18 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 def homeForm(request):
 	qs = Post.objects.all()
+	
+	page = request.GET.get('page', 1)
+
+	paginator = Paginator(qs, 10)
+	try:
+		qs = paginator.page(page)
+	except PageNotAnInteger:
+		qs = paginator.page(1)
+	except EmptyPage:
+		qs = paginator.page(paginator.num_pages)
+
+		
 	if request.method == 'POST':
 		title = request.POST.get("title")
 		content = request.POST.get("content")
