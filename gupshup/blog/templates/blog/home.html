@@ -15,6 +15,11 @@
 .card-img-overlay {
   background-color: rgba(#000, 0.4);
 }
+
+.home_newpost:hover{
+	background-color: #98ded9;
+	color: black;
+}
 </style>
 
 {% comment %} 
@@ -80,7 +85,7 @@
 			
 		  
 
-	 {% for post in posts|slice:"1::"%}
+	 {% for post in posts|slice:"::-1"%}
 
 	 
 		<div class="carousel-item ">
@@ -149,66 +154,11 @@
 {% block content %}
 
 
-<article class="media content-section">	    
-				<!-- Button trigger modal -->
-			<input type="text" id="ip2" data-toggle="modal" data-target="#exampleModal" placeholder="What is on your Mind? (Type Here)"/>
 
+		<div class="container-fluid my-3 ">
+			<a type="button" class="btn btn-outline-primary container-fluid home_newpost" href="{% url 'post-create' %}">Whats on your mind??</a>
 
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Post Something</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form method='POST'>
-					<div class="form-group">
-					{% csrf_token %}
-						<label for="title" class="col-form-label">Title</label>
-						<input type="text" name='title' class="form-control" id="title">
-					</div>
-					<div class="form-group">
-						<label for="content" class="col-form-label">Content</label>
-						<textarea class="form-control" name='content' id="content"></textarea>
-					</div>
-					<div class="form-group">
-						<label for="category" class="col-form-label">Category</label>
-						<select class="form-control" name='category' id="category">
-						
-						
-
-
-						 <option id="Electronic" >Electronic</option>
-						<option id=" Technology">Technology</option>
-						<option  id="Sports">Sports</option>
-						<option id="Business">Business</option>
-						<option id="Announcments">Announcments</option>
-						<option id="Cultural">Cultural</option>
-						<option id="Politics">Politics</option>
-						<option id="Fashion">Fashion</option>
-						<option id="Health">Health</option>
-						<option id="Travel">Travel</option>
-						<option id="Miscellenous">Miscellenous</option>
-						<option id="Mechanical">Mechanical</option>
-						 
-						</select>
-					</div>
-					<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Post</button>
-					</div>
-					</form>
-				</div>
-				
-				</div>
-			</div>
-			</div>
-				
-
-		</article>
+		</div>
 
 
 
@@ -252,11 +202,11 @@
 {% endblock content %}
 
 {% block script %}
-<script>
+{% comment %} <script>
     if ( window.history.replaceState ) {
         window.history.replaceState( null, null, window.location.href );
     }
-</script>
+</script> {% endcomment %}
 
 {% endblock script %}
 

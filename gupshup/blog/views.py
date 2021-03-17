@@ -1,6 +1,7 @@
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect, request
 from django.urls import reverse
@@ -20,38 +21,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 	def form_valid(self,form):
 		form.instance.author = self.request.user
-		redirect()
 		return super().form_valid(form)
 
 
-def homeForm(request):
-	qs = Post.objects.all()
+class PostListView(ListView):
+	model = Post
+	template_name = 'blog/home.html'
+	context_object_name = 'posts' 
+	ordering = ['-date_posted']
+	paginate_by = 5
+
 	
-	page = request.GET.get('page', 1)
-
-	paginator = Paginator(qs, 10)
-	try:
-		qs = paginator.page(page)
-	except PageNotAnInteger:
-		qs = paginator.page(1)
-	except EmptyPage:
-		qs = paginator.page(paginator.num_pages)
-
-		
-	if request.method == 'POST':
-		title = request.POST.get("title")
-		content = request.POST.get("content")
-		author = request.user
-		category = request.POST.get("category")
-		post = Post(title=title,content=content,author=author,category = category)
-		post.save()
-		context = {'form':post,'posts':qs}
-		return render(request,'blog/home.html',context)
-	else:
-		post = Post
-		context = {'form':post,'posts':qs}
-		return render(request,'blog/home.html',context)
-		
 
 class UserPostListView(ListView):
 	model = Post
