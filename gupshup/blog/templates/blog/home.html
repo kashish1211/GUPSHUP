@@ -17,6 +17,9 @@
 }
 </style>
 
+{% comment %} 
+
+
 
 
 
@@ -25,19 +28,20 @@
 <div class="container-fluid" style="background-color: #c7ffd8">
 		<div class="nav-scroller py-0 my-0 ">
 			<nav class="nav d-flex justify-content-between">
-			<a class="p-2 " style="color: #1e212d" href="#">World</a>
-			<a class="p-2 " style="color: #1e212d" href="#">U.S.</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Technology</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Technology</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Design</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Culture</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Business</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Politics</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Opinion</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Science</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Health</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Style</a>
-			<a class="p-2 " style="color: #1e212d" href="#">Travel</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Mechanical" %}">Mechanical</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Electronic" %}">Electronic</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Technology" %}">Technology</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Sports" %}">Sports</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Business" %}">Business</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Announcments" %}">Announcments</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Cultural" %}">Cultural</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Politics" %}">Politics</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Fashion" %}">Fashion</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Health" %}">Health</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Travel" %}">Travel</a>
+			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Miscellenous" %}">Miscellenous</a>
+
+
 			</nav>
 		</div>
 		<hr>
@@ -118,110 +122,7 @@
 
 
 
-   <!-- <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
-  	<ol class="carousel-indicators">
-    	<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    	<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    	<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  	</ol>
-
-
-  <div class="carousel-inner ">
-    <div class="carousel-item active ">
-		<a href="{% url 'post-detail' posts.0.id %}"><div class="container align-middle" >
-			<div class="row">
-			  <div class="col-12 align-middle">
-				<div class="card" >
-				   <img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
-				  	<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
-					<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{posts.0.author}}</h4></strong>
-					<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
-						{{posts.0.title}}</h6>
-					<p class="card-text" style="color: #000;">{{posts.0.content}}</p>
-					<i style="color: #000;">~{{posts.0.date_posted|date:"F d, Y"}}</i>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</a>
-	</div>
-
-	{% for post in posts|slice:"1::"%}
-
-		<div class="carousel-item">
-			<a href="{% url 'post-detail' post.id %}"><div class="container align-middle" >
-				<div class="row">
-				<div class="col-12 align-middle">
-					<div class="card" >
-					<img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
-						<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
-						<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>{{post.author}}</h4></strong>
-						<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
-							{{post.title}}</h6>
-						<p class="card-text" style="color: #000;">{{post.content}}</p>
-						<i style="color: #000;">~{{post.date_posted|date:"F d, Y"}}</i>
-					</div>
-					</div>
-				</div>
-				</div>
-			</div>
-			</a>
-		</div>
-
-
-
-	{% endfor %}
-    <div class="carousel-item">
-		<a href="{% url 'post-detail' posts.1.id %}"><div class="container align-middle" >
-			<div class="row">
-			  <div class="col-12 align-middle">
-				<div class="card" >
-				   <img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
-				  	<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
-					<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{posts.1.author.profile.image.url}}>{{posts.1.author}}</h4></strong>
-					<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
-						{{posts.1.title}}</h6>
-					<p class="card-text" style="color: #000;">{{posts.1.content}}</p>
-					<i style="color: #000;">~{{posts.1.date_posted|date:"F d, Y"}}</i>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</a>
-    </div>
-    <div class="carousel-item">
-		<a href="{% url 'post-detail' posts.2.id %}"><div class="container align-middle" >
-			<div class="row">
-			  <div class="col-12 align-middle">
-				<div class="card" >
-				   <img class="card-img" src="https://source.unsplash.com/1600x500/?nature,water" alt="Bologna" style="opacity: 0.5;">
-				  	<div class="card-img-overlay text-white d-flex flex-column justify-content-center">
-					<strong><h4 class="card-title" style="color: #000;"><img class="rounded-circle article-img "src = {{posts.2.author.profile.image.url}}>{{posts.2.author}}</h4></strong>
-					<h6 class="card-subtitle mb-2" style="color: #000;"><hr style=" border-top: 2px solid #000000; width: 60%; margin-left: 0px;"/>
-						{{posts.2.title}}</h6>
-					<p class="card-text" style="color: #000;">{{posts.2.content}}</p>
-					<i style="color: #000;">~{{posts.2.date_posted|date:"F d, Y"}}</i>
-				  </div>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</a>
-    </div>
-  </div>
-</div>
    
-  <a class="carousel-control-prev" href="#carouselExampleIndicators " role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
- -->
   
 <div class="container-fluid px-0 mx-0 my-0 py-0 mb-3">
 
@@ -230,9 +131,11 @@
   <marquee  class="my-0 py-0"><p class="my-0 py-0" style="font-family: Impact; font-size: 15pt "> 
   <div  style="white-space: nowrap">
   {% for post in posts|slice:"::-1"%}
-  <i class="fa fa-lightbulb-o" style="font-size:24px; color:red;"></i> 
+  {% if post.category == "Announcments"%}
+  	<i class="fa fa-lightbulb-o" style="font-size:24px; color:red;"></i> 
  
 			    <span ><a href="{% url 'post-detail' post.id %}" style="color: #1e212d; text-decoration: none" >{{ post.title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>  </span>
+				{% endif%}
 		    
 			
 	{%endfor%}
@@ -270,6 +173,28 @@
 					<div class="form-group">
 						<label for="content" class="col-form-label">Content</label>
 						<textarea class="form-control" name='content' id="content"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="category" class="col-form-label">Category</label>
+						<select class="form-control" name='category' id="category">
+						
+						
+
+
+						 <option id="Electronic" >Electronic</option>
+						<option id=" Technology">Technology</option>
+						<option  id="Sports">Sports</option>
+						<option id="Business">Business</option>
+						<option id="Announcments">Announcments</option>
+						<option id="Cultural">Cultural</option>
+						<option id="Politics">Politics</option>
+						<option id="Fashion">Fashion</option>
+						<option id="Health">Health</option>
+						<option id="Travel">Travel</option>
+						<option id="Miscellenous">Miscellenous</option>
+						<option id="Mechanical">Mechanical</option>
+						 
+						</select>
 					</div>
 					<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
