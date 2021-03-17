@@ -23,13 +23,28 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 		form.instance.author = self.request.user
 		return super().form_valid(form)
 
+	
+
 
 class PostListView(ListView):
 	model = Post
 	template_name = 'blog/home.html'
-	context_object_name = 'posts' 
+	# context_object_name = 'posts' 
 	ordering = ['-date_posted']
 	paginate_by = 5
+	# queryset = Post.objects.published()
+
+	def number_of_likes(self):
+		return self.likes.count()
+
+	
+	def get_context_data(self, **kwargs):
+		top3 = Post.objects.all().order_by('-likes')[:5]
+		context = super(PostListView, self).get_context_data(**kwargs)
+		context['posts']=Post.objects.all()
+		context['tops']=top3
+		print(context['tops'])
+		return context
 
 	
 

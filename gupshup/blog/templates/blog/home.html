@@ -61,6 +61,8 @@
 		  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 		  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 		  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		  <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+		  <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
 		</ol>
 		<div class="carousel-inner mt-0 py-0">
 		  <div class="carousel-item active">
@@ -69,11 +71,11 @@
 
       	<div class="container py-0 mb-0">
 			
-				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{posts.0.author}}</h4></strong>
+				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{tops.4.author}}</h4></strong>
 				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid #ffa372; width: 60%; margin-left: 0px; ;"/>
-					{{posts.0.title}}</h6>
-				<p  style="color: #FFF;">{{posts.0.content}}</p>
-				<i style="color: #FFF;">~{{posts.0.date_posted|date:"F d, Y"}}</i>
+					{{tops.4.title}}</h6>
+				<p  style="color: #FFF;">{{tops.4.content}}</p>
+				<i style="color: #FFF;">~{{tops.4.date_posted|date:"F d, Y"}}</i>
 			
 		  <p class="lead px-3">
 			  <br>
@@ -85,7 +87,7 @@
 			
 		  
 
-	 {% for post in posts|slice:"::-1"%}
+	{% for post in tops|slice:"4::-1" %}
 
 	 
 		<div class="carousel-item ">
@@ -160,7 +162,9 @@
 
 		</div>
 
-
+		{% for post in tops|slice:":4:" %}
+		<h2>{{ post.title }}</h2>
+	{% endfor %}
 
 	{% for post in posts|slice:"::-1"%}
 		<article class="media content-section">
