@@ -19,7 +19,8 @@ from django.urls import path, include
 from users import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
-
+admin.site.site_header = 'Gupshup Admin Panel'
+admin.site.site_title = 'Gupshup'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/',user_views.register, name='register'),

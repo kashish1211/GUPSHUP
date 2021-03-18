@@ -41,6 +41,10 @@
             color: #1e212d; 
         } 
 
+		.custom-toggler .navbar-toggler-icon {
+  				background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
 
 </style>
 
@@ -52,10 +56,12 @@
 	<img style="max-width:70px; margin-top: -7px;border-radius: 35%;"class="mr-2" src="{%static 'blog/LOGO_PNG.png'%}"></a>
   <a class="navbar-brand" href="/">Gupshup</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="navbar-toggler-icon ">
+		<i class="fa fa-bars" style="color: white; font-size:28px;"></i>
+	</span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse"  id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/" style="color: #1e212d">Home <span class="sr-only">(current)</span></a>
