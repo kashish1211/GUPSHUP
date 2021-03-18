@@ -36,11 +36,14 @@ class PostListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		top3 = Post.objects.annotate(q_count=Count('likes')).order_by('-q_count')[:5]
-		# top3 = Post.objects.all().order_by('-likes')[:5]
+
+		
 		context = super(PostListView, self).get_context_data(**kwargs)
 		context['posts']=Post.objects.all()
 		context['tops']=top3
-		print(context['tops'])
+		context['announcments']=Post.objects.filter(category='Announcments')
+		p = Paginator(Post.objects.select_related().all().order_by('-date_posted'), self.paginate_by)
+		context['posts'] = p.page(context['page_obj'].number)
 		return context
 
 	

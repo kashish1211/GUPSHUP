@@ -55,6 +55,7 @@
 
 
 
+
 <div class="container-fluid px-0 ">
 
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -68,7 +69,21 @@
 		<div class="carousel-inner mt-0 py-0">
 		  <div class="carousel-item active">
 			
+			{% if tops.4.category == "Business"%}
+
+		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/business_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  tops.4.category == "Electronic" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/electronic_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  tops.4.category == "Mechanical" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/machine_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  tops.4.category == "Sports" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/sports_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  tops.4.category == "Technology" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/tech_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% else %}
 			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+
+		{% endif %}
 
       	<div class="container py-0 mb-0">
 			
@@ -80,11 +95,20 @@
 			
 		  <p class="lead px-3">
 			  <br>
-		    <a class="btn btn-light " href="{% url 'post-detail' posts.0.id %}" role="button">View Post</a>
+		    <a class="btn btn-light " href="{% url 'post-detail' tops.4.id %}" role="button">View Post</a>
 		  </p>
 	  </div>
     </div>
     </div>
+			 
+			
+			 
+			
+			{% comment %} Cultural
+			Politic
+			Fashion
+			Healt
+			Travel {% endcomment %}
 			
 		  
 
@@ -93,8 +117,22 @@
 	 
 		<div class="carousel-item ">
 
-		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% if post.category == "Business"%}
 
+		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/business_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  post.category == "Electronic" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/electronic_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  post.category == "Mechanical" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/machine_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  post.category == "Sports" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/sports_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% elif  post.category == "Technology" %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/tech_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+		{% else %}
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
+
+		{% endif %}
+		
 			<div class="container py-0 mb-0">
 			
 				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>{{post.author}}</h4></strong>
@@ -138,12 +176,12 @@
 
   <marquee  class="my-0 py-0"><p class="my-0 py-0" style="font-family: Impact; font-size: 15pt "> 
   <div  style="white-space: nowrap">
-  {% for post in posts|slice:"::-1"%}
-  {% if post.category == "Announcments"%}
+  {% for post in announcments|slice:"::-1"%}
+  
   	<i class="fa fa-lightbulb-o" style="font-size:24px; color:red;"></i> 
  
 			    <span ><a href="{% url 'post-detail' post.id %}" style="color: #1e212d; text-decoration: none" >{{ post.title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>  </span>
-				{% endif%}
+				
 		    
 			
 	{%endfor%}
@@ -165,7 +203,7 @@
 
 		
 
-	{% for post in posts|slice:"::-1"%}
+	{% for post in posts|slice:"{{ page_obj.paginator.count }}-1::-1"%}
 		<article class="media content-section">
 			<img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>
 		    <div class="media-body">
