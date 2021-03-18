@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView
 from .models import Post, PostComment
 from .forms import NewCommentForm
 import operator
-from django.db.models import Q
+from django.db.models import Count, F, Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
@@ -29,17 +29,14 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostListView(ListView):
 	model = Post
 	template_name = 'blog/home.html'
-	# context_object_name = 'posts' 
+	context_object_name = 'posts' 
 	ordering = ['-date_posted']
 	paginate_by = 5
 	# queryset = Post.objects.published()
 
-	def number_of_likes(self):
-		return self.likes.count()
-
-	
 	def get_context_data(self, **kwargs):
-		top3 = Post.objects.all().order_by('-likes')[:5]
+		top3 = Post.objects.annotate(q_count=Count('likes')).order_by('-q_count')[:5]
+		# top3 = Post.objects.all().order_by('-likes')[:5]
 		context = super(PostListView, self).get_context_data(**kwargs)
 		context['posts']=Post.objects.all()
 		context['tops']=top3

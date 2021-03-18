@@ -21,6 +21,7 @@
 	color: black;
 }
 </style>
+{% load static %}
 
 {% comment %} 
 
@@ -66,8 +67,8 @@
 		</ol>
 		<div class="carousel-inner mt-0 py-0">
 		  <div class="carousel-item active">
-
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url(https://source.unsplash.com/1600x500/?nature,water); border-radius: 0; margin-bottom: 0px; ">
+			
+			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
 
       	<div class="container py-0 mb-0">
 			
@@ -87,12 +88,12 @@
 			
 		  
 
-	{% for post in tops|slice:"4::-1" %}
+	{% for post in tops|slice:":4:" %}
 
 	 
 		<div class="carousel-item ">
 
-		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url(https://source.unsplash.com/1600x500/?nature,water); border-radius: 0; margin-bottom: 0px; ">
+		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
 
 			<div class="container py-0 mb-0">
 			
@@ -162,9 +163,7 @@
 
 		</div>
 
-		{% for post in tops|slice:":4:" %}
-		<h2>{{ post.title }}</h2>
-	{% endfor %}
+		
 
 	{% for post in posts|slice:"::-1"%}
 		<article class="media content-section">

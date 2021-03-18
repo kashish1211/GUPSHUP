@@ -41,7 +41,7 @@ class Post(models.Model):
 		return reverse('post-detail', kwargs={'pk' : self.pk})
 
 	likes = models.ManyToManyField(User, related_name = 'post_like')
-	num_likes = models.IntegerField(default=0)
+	
 
 	def number_of_likes(self):
 		return self.likes.count()
