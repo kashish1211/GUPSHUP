@@ -17,13 +17,15 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+	<script src="https://cdn.tiny.cloud/1/fdkbtb1jjkqkbh2snkl1my296s7wwl5vy8kgfxcgelqabz3p/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
 	{% if title %}
 		<title>GupShup - {{ title }}</title>
 	{% else %}
 		<title>GupShup </title>
 	{% endif %}
 	
-	
+	{% block head %}{% endblock head %}
 </head>
 
 <style>

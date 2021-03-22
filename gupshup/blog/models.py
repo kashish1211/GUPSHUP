@@ -62,7 +62,7 @@ class Post(models.Model):
 class PostComment(models.Model):
 	post_connected = models.ForeignKey(Post, related_name = 'comments', on_delete = models.CASCADE)
 	author = models.ForeignKey(User, on_delete = models.CASCADE)
-	content = models.TextField()
+	comment = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):

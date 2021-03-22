@@ -90,7 +90,7 @@
 				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{tops.4.author}}</h4></strong>
 				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid #ffa372; width: 60%; margin-left: 0px; ;"/>
 					{{tops.4.title}}</h6>
-				<p  style="color: #FFF;">{{tops.4.content}}</p>
+				<p  style="color: #FFF;">{{tops.4.content| safe}}</p>
 				<i style="color: #FFF;">~{{tops.4.date_posted|date:"F d, Y"}}</i>
 			
 		  <p class="lead px-3">
@@ -138,7 +138,7 @@
 				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>{{post.author}}</h4></strong>
 				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid white; width: 60%; margin-left: 0px;"/>
 					{{post.title}}</h6>
-				<p  style="color: #FFF;">{{post.content}}</p>
+				<p  style="color: #FFF;">{{post.content| safe}}</p>
 				<i style="color: #FFF;">~{{post.date_posted|date:"F d, Y"}}</i>
 			
 				<p class="lead px-3">
@@ -212,7 +212,11 @@
 			      <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
 			    </div>
 			    <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-			    <p class="article-content">{{ post.content }}</p>
+				{% if post.content|length > 170%}
+			    <p class="article-content">{{ post.content|slice:":170"| safe }}...</p>
+				{% else %}
+				 <p class="article-content">{{ post.content|slice:":170"| safe }}</p>
+				{% endif %}
 			</div>
 		</article>
 	{%endfor%}

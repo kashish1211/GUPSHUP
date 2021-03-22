@@ -17,9 +17,9 @@
 		      {% endif%}
 		    </div>
 			<h6><span class="badge badge-secondary">{{ object.category }}</span></h6>
-		    <h2 class="article-title">{{ object.title }} </h2>
+		    <h2 class="article-title">{{ object.title	| safe }} </h2>
 			
-		    <p class="article-content">{{ object.content }}</p>
+		    <p class="article-content">{{ object.content| safe }}</p>
 
 		    <!-- LIKES -->
 			{% if user.is_authenticated %}
@@ -64,7 +64,7 @@
 			          <small class="text-muted">{{ comment.date_posted }}</small>
 			        </span>
 			        <p>
-			          {{ comment.content|safe }}
+			          {{ comment.comment|safe }}
 			        </p>
 			      </div>
 			    </li>
