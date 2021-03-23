@@ -40,20 +40,13 @@ class Post(models.Model):
 	def get_absolute_url(self):
 		return reverse('post-detail', kwargs={'pk' : self.pk})
 
-	likes = models.ManyToManyField(User, related_name = 'post_like')
+	upvote = models.ManyToManyField(User, related_name = 'upvote')
+	downvote = models.ManyToManyField(User, related_name = 'downvote')
 	
 
 	def number_of_likes(self):
-		return self.likes.count()
+		return self.upvote.count()-self.downvote.count()
 		
-
-	# def save(self, *args, **kwargs):
-		
-	# 	self.num_likes= self.number_of_likes()
-	# 	super(Post, self).save(*args, **kwargs)
-	
-	
-
 	@property
 	def number_of_comments(self):
 		return PostComment.objects.filter(post_connected = self).count()

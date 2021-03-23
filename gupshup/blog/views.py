@@ -32,10 +32,9 @@ class PostListView(ListView):
 	context_object_name = 'posts' 
 	ordering = ['-date_posted']
 	paginate_by = 5
-	# queryset = Post.objects.published()
 
 	def get_context_data(self, **kwargs):
-		top3 = Post.objects.annotate(q_count=Count('likes')).order_by('-q_count')[:5]
+		top3 = Post.objects.annotate(q_count=Count('upvote')).order_by('-q_count')[:5]
 
 		
 		context = super(PostListView, self).get_context_data(**kwargs)
@@ -71,18 +70,26 @@ class CategoryPostListView(ListView):
 
 	def get_queryset(self):
 		category = self.kwargs.get('category')
-		# category = get_object_or_404(Post, category=self.kwargs.get('category'))
 		return Post.objects.filter(category=category).order_by('-date_posted')
 
 
 
 
-def PostLike(request, pk):
+def Upvote(request, pk):
 	post = get_object_or_404(Post, id = request.POST.get('post_id'))
-	if post.likes.filter(id = request.user.id).exists():
-		post.likes.remove(request.user)
+	if post.upvote.filter(id = request.user.id).exists():
+		post.upvote.remove(request.user)
 	else:
-		post.likes.add(request.user)
+		post.upvote.add(request.user)
+
+	return HttpResponseRedirect(reverse('post-detail',args=[str(pk)]))
+
+def Downvote(request, pk):
+	post = get_object_or_404(Post, id = request.POST.get('post_id'))
+	if post.downvote.filter(id = request.user.id).exists():
+		post.downvote.remove(request.user)
+	else:
+		post.downvote.add(request.user)
 
 	return HttpResponseRedirect(reverse('post-detail',args=[str(pk)]))
 
@@ -93,12 +100,16 @@ class PostDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		data = super().get_context_data(**kwargs)
 
-		likes_connected = get_object_or_404(Post, id = self.kwargs['pk'])
-		liked = False
-		if likes_connected.likes.filter(id = self.request.user.id).exists():
-			liked = True
-		data['number_of_likes'] = likes_connected.number_of_likes()
-		data['post_is_likes'] = liked
+		post_connected = get_object_or_404(Post, id = self.kwargs['pk'])
+		upvoted = False
+		downvoted = False
+		if post_connected.upvote.filter(id = self.request.user.id).exists():
+			upvoted = True
+		if post_connected.downvote.filter(id = self.request.user.id).exists():
+			downvoted = True
+		data['number_of_likes'] = post_connected.number_of_likes()
+		data['post_is_upvoted'] = upvoted
+		data['post_is_downvoted'] = downvoted
 
 
 		comments_connected = PostComment.objects.filter(post_connected = self.get_object()).order_by('-date_posted')
