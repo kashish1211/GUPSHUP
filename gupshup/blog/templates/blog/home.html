@@ -87,15 +87,15 @@
 
       	<div class="container py-0 mb-0">
 			
-				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{posts.0.author.profile.image.url}}>{{tops.4.author}}</h4></strong>
+				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{tops.0.author.profile.image.url}}>{{tops.0.author}}</h4></strong>
 				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid #ffa372; width: 60%; margin-left: 0px; ;"/>
-					{{tops.4.title}}</h6>
-				<p  style="color: #FFF;">{{tops.4.content| safe}}</p>
-				<i style="color: #FFF;">~{{tops.4.date_posted|date:"F d, Y"}}</i>
+					{{tops.0.title}}</h6>
+				<p  style="color: #FFF;">{{tops.0.content| safe}}</p>
+				<i style="color: #FFF;">~{{tops.0.date_posted|date:"F d, Y"}}</i>
 			
 		  <p class="lead px-3">
 			  <br>
-		    <a class="btn btn-light " href="{% url 'post-detail' tops.4.id %}" role="button">View Post</a>
+		    <a class="btn btn-light " href="{% url 'post-detail' tops.0.id %}" role="button">View Post</a>
 		  </p>
 	  </div>
     </div>
@@ -106,7 +106,7 @@
 			
 		  
 
-	{% for post in tops|slice:":4:" %}
+	{% for post in tops|slice:"1:" %}
 
 	 
 		<div class="carousel-item ">

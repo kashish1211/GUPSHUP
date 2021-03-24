@@ -34,9 +34,8 @@ class PostListView(ListView):
 	paginate_by = 5
 
 	def get_context_data(self, **kwargs):
-		top3 = Post.objects.annotate(q_count=Count('upvote')).order_by('-q_count')[:5]
-
-		
+		top3 = Post.objects.annotate(q_count=Count('upvote')).order_by('-q_count')[:5]	
+		print(top3)
 		context = super(PostListView, self).get_context_data(**kwargs)
 		context['posts']=Post.objects.all()
 		context['tops']=top3
