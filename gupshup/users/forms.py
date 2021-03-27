@@ -11,6 +11,21 @@ class UserRegisterForm(UserCreationForm):
 		model = User
 		fields = ['username', 'email' , 'password1', 'password2']
 
+	def clean_email(self):
+		data = self.cleaned_data['email']
+		domain = data.split('@')[1]
+		domain_list = ["somaiya.edu"]
+		if domain not in domain_list:
+			raise forms.ValidationError("Please enter an Email Address with a valid domain")
+		return data
+
+	def save(self, commit=True):
+		user = super(UserRegisterForm, self).save(commit=False)
+		user.email = self.cleaned_data["email"]
+		if commit:
+			user.save()
+		return user
+
 
 class UserUpdateForm(forms.ModelForm):
 	email = forms.EmailField()
@@ -19,7 +34,24 @@ class UserUpdateForm(forms.ModelForm):
 		model = User
 		fields = ['username', 'email']
 
+	def clean_email(self):
+		data = self.cleaned_data['email']
+		domain = data.split('@')[1]
+		domain_list = ["somaiya.edu"]
+		if domain not in domain_list:
+			raise forms.ValidationError("Please enter an Email Address with a valid domain")
+		return data
+
+	def save(self, commit=True):
+		user = super(UserUpdateForm, self).save(commit=False)
+		user.email = self.cleaned_data["email"]
+		if commit:
+			user.save()
+		return user
+
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = ['image']
+	
+	
