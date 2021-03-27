@@ -17,7 +17,13 @@ class UserRegisterForm(UserCreationForm):
 		domain_list = ["somaiya.edu"]
 		if domain not in domain_list:
 			raise forms.ValidationError("Please enter an Email Address with a valid domain")
-		return data
+		try:
+			match = User.objects.get(email=data)
+		except User.DoesNotExist:
+			return data    
+		raise forms.ValidationError('This email address is already in use.')
+		
+		
 
 	def save(self, commit=True):
 		user = super(UserRegisterForm, self).save(commit=False)

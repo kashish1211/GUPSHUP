@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from verify_email.email_handler import send_verification_email
 
 
 def register(request):
@@ -10,11 +11,16 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Your account has been created! You are now able to log in')
-            return redirect('login')
+            inactive_user = send_verification_email(request, form)
+            
+            return redirect('verify')
+            messages.success(request, f'Your account has been created! Please verify your email to log in!')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+def verify(request):
+    return render(request,'users/verify.html')
 
 
 @login_required
