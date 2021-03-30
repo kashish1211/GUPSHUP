@@ -1,100 +1,130 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags%}
 {% block content %}
-	
-	<article class="media content-section">
-		<img class="rounded-circle article-img "src = {{object.author.profile.image.url}}>
-	    <div class="media-body">
-		    <div class="article-metadata">
-		      <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
-		      <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
-		      {% if object.author == user %}
-			      <div>
-			      	<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
-			      	<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}"><i class="fas fa-trash" aria-hidden="true">&nbsp;</i>Delete</a>
-			      </div>
-		      	
-		      {% endif%}
-		    </div>
-			<h6><span class="badge badge-secondary">{{ object.category }}</span></h6>
-		    <h2 class="article-title">{{ object.title	| safe }} </h2>
-			
-		    <p class="article-content">{{ object.content| safe }}</p>
 
-		    <!-- LIKES -->
-			<div class='row'>
-				{% if user.is_authenticated %}
-				<div class="col-5">	
-					<form action="{% url 'post-upvote' object.id %}" method="POST">
+<article class="media content-section">
+
+	<img class="rounded-circle article-img " src={{object.author.profile.image.url}}>
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+			<small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+			{% if user.is_authenticated %}
+			<form action="{% url 'post-bookmark' object.id %}" method="POST">
+				{% csrf_token %}
+				{% if post_is_bookmarked%}
+				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg" style="float: right;"><i
+						class="fas fa-bookmark fa-2x" style="color: red;" aria-hidden="true"></i></button>
+				{% else %}
+				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg" style="float: right;"><i
+						class="far fa-bookmark fa-2x" style="color: red;" aria-hidden="true"></i></button>
+				{% endif %}
+			</form>
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to Bookmark this
+				article!</a><br>
+			{% endif %}
+
+			{% if object.author == user %}
+			<div>
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}"><i
+						class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
+				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}"><i
+						class="fas fa-trash" aria-hidden="true">&nbsp;</i>Delete</a>
+			</div>
+
+			{% endif%}
+		</div>
+
+		<h6><span class="badge badge-secondary">{{ object.category }}</span></h6>
+		<h2 class="article-title">{{ object.title | safe }} </h2>
+
+		<p class="article-content">{{ object.content| safe }}</p>
+
+		<!-- LIKES -->
+		<div class='row'>
+			{% if user.is_authenticated %}
+			<div class="col-5">
+				<form action="{% url 'post-upvote' object.id %}" method="POST">
 					{% csrf_token %}
 					{% if post_is_downvoted%}
-						<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-secondary container" disabled><i class="fas fa-thumbs-up" aria-hidden="true">&nbsp; Upvote</i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-secondary container"
+						disabled><i class="fas fa-thumbs-up" aria-hidden="true">&nbsp; Upvote</i></button>
 					{% elif post_is_upvoted %}
-						<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i class="fas fa-thumbs-up" aria-hidden="true">&nbsp; Upvoted</i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
+							class="fas fa-thumbs-up" aria-hidden="true">&nbsp; Upvoted</i></button>
 					{% else %}
-						<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i class="far fa-thumbs-up" aria-hidden="true">&nbsp; Upvote</i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
+							class="far fa-thumbs-up" aria-hidden="true">&nbsp; Upvote</i></button>
 					{% endif %}
-					</form>
-				</div>
-				<div class="col-2">			
-					<strong class="text-xl-center mx-4 my-1">{{ number_of_likes }}</strong>
-				</div>
-				<div class="col-5">
-					<form action="{% url 'post-downvote' object.id %}" method="POST">
-						{% csrf_token %}
-						 {% if post_is_upvoted%}
-							 <button type="submit" name="post_id" value="{{object.id}}" class="btn btn-secondary container" disabled><i class="fas fa-thumbs-down" aria-hidden="true">&nbsp; Downvote</i></button>
-						 {% elif post_is_downvoted %}
-							 <button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i class="fas fa-thumbs-down" aria-hidden="true">&nbsp; Downvoted</i></button>
-						 {% else %}
-							 <button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container" ><i class="far fa-thumbs-down" aria-hidden="true">&nbsp; Downvote</i></button>
-						 {% endif %}
-					</form>
-				</div>
-				{% else %}
-					   <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this article!</a><br>
-				{% endif %}
+				</form>
 			</div>
-			<h4>Answer This Here!</h4>
-			<div id="comments_section">
-
-			  {% if user.is_authenticated %}
-			  <form method="POST">
-			    {% csrf_token %}
-			    <div class="form-group">
-			      {{ comment_form|crispy }}
-			      <button class="btn btn-info" type="submit">Continue Discussion <i class="fa fa-comments"></i></button>
-			    </div>
-			  </form>
-			  {% else %}
-			  <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to answer this!</a><br>
-			  {% endif %}
-
-			  {% if comments %}
-			  <strong class="text-secondary">{{ object.number_of_comments }} Reply{{ object.number_of_comments|pluralize }}</strong>
-			  <hr>
-			  <ul>
-			    {% for comment in comments %}
-			    <li>           
-			     <div>
-			        <span>
-			          <strong class="text-info">{{ comment.author }} </strong>
-			          <small class="text-muted">{{ comment.date_posted }}</small>
-			        </span>
-			        <p>
-			          {{ comment.comment|safe }}
-			        </p>
-			      </div>
-			    </li>
-			    {% endfor %}
-			  </ul>
-			  {% else %}
-			    <strong class="text-secondary">No Replies...</strong>
-			  {% endif %}
-
+			<div class="col-2">
+				<strong class="text-xl-center mx-4 my-1">{{ number_of_likes }}</strong>
 			</div>
+			<div class="col-5">
+				<form action="{% url 'post-downvote' object.id %}" method="POST">
+					{% csrf_token %}
+					{% if post_is_upvoted%}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-secondary container"
+						disabled><i class="fas fa-thumbs-down" aria-hidden="true">&nbsp; Downvote</i></button>
+					{% elif post_is_downvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
+							class="fas fa-thumbs-down" aria-hidden="true">&nbsp; Downvoted</i></button>
+					{% else %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
+							class="far fa-thumbs-down" aria-hidden="true">&nbsp; Downvote</i></button>
+					{% endif %}
+				</form>
+			</div>
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
+				article!</a><br>
+			{% endif %}
+		</div>
+		<h4>Answer This Here!</h4>
+		<div id="comments_section">
+
+			{% if user.is_authenticated %}
+			<form method="POST">
+				{% csrf_token %}
+				<div class="form-group">
+					{{ comment_form|crispy }}
+					<button class="btn btn-info" type="submit">Continue Discussion <i
+							class="fa fa-comments"></i></button>
+				</div>
+			</form>
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to answer
+				this!</a><br>
+			{% endif %}
+
+			{% if comments %}
+			<strong class="text-secondary">{{ object.number_of_comments }} Reply{{ object.number_of_comments|pluralize
+				}}</strong>
+			<hr>
+			<ul>
+				{% for comment in comments %}
+				<li>
+					<div>
+						<span>
+							<strong class="text-info">{{ comment.author }} </strong>
+							<small class="text-muted">{{ comment.date_posted }}</small>
+						</span>
+						<p>
+							{{ comment.comment|safe }}
+						</p>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<strong class="text-secondary">No Replies...</strong>
+			{% endif %}
 
 		</div>
-	</article>
-	
+
+	</div>
+</article>
+
 {% endblock content %}
