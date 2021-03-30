@@ -1,6 +1,6 @@
 from django.urls import path
 from django.http import HttpResponseRedirect, request
-from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView, SearchResultView, CategoryPostListView, PostListView, BookmarkListView
+from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView, SearchResultView, CategoryPostListView, PostListView
 from . import views
 
 urlpatterns = [
