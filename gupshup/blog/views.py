@@ -67,17 +67,6 @@ class CategoryPostListView(ListView):
         return Post.objects.filter(category=category).order_by('-date_posted')
 
 
-class BookmarkListView(ListView):
-
-    template_name = 'blog/.html'
-    context_object_name = 'posts'
-
-    paginate_by = 5
-
-    # def get_queryset(self):
-    #     return Post.objects.filter(bookmark=True and id==request.user.id)
-
-
 class BookmarkView(ListView):
     model = Post
     template_name = 'blog/bookmark.html'
