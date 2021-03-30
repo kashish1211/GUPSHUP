@@ -74,7 +74,7 @@ class BookmarkView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return (Post.objects.filter(bookmark=True))
+        return (Post.objects.filter(bookmark = self.request.user))
 
 
 def Upvote(request, pk):
