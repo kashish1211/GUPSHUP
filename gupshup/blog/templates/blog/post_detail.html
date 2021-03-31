@@ -1,5 +1,29 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags%}
+{% block style %}
+	.form-control-sm
+	{
+    min-height: 34px;
+    padding: 7px 8px;
+    font-size: 13px;
+    color: #333;
+    vertical-align: middle;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 8%);
+	}
+	.dropdown-menu
+	{
+		padding: 20px 10px 10px 10px;
+		
+	}
+
+	
+{% endblock style %}
 {% block content %}
 
 <article class="media content-section">
@@ -31,9 +55,21 @@
 						class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
 				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}"><i
 						class="fas fa-trash" aria-hidden="true">&nbsp;</i>Delete</a>
+
+				{% endif%}
+				<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-share"></i> Share</button>
+					<div class="dropdown-menu">
+					<input id="foo" class="form-control-sm" value="{{ request.build_absolute_uri }}">
+
+					<!-- Trigger -->
+					<button class="sharebtn" data-clipboard-text="{{ request.build_absolute_uri }}" style = "border: None;" data-toggle="tooltip" data-placement="bottom" title="Copied Link!">
+					<i class="fas fa-clipboard"></i>
+				</button>
+					
+			
 			</div>
 
-			{% endif%}
+			
 		</div>
 
 		<h6><span class="badge badge-secondary">{{ object.category }}</span></h6>
@@ -92,16 +128,19 @@
 					{{ comment_form|crispy }}
 					<button class="btn btn-info" type="submit">Continue Discussion <i
 							class="fa fa-comments"></i></button>
+					
 				</div>
 			</form>
+		
+		
+			
 			{% else %}
 			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to answer
 				this!</a><br>
 			{% endif %}
 
 			{% if comments %}
-			<strong class="text-secondary">{{ object.number_of_comments }} Reply{{ object.number_of_comments|pluralize
-				}}</strong>
+			<strong class="text-secondary">{{ object.number_of_comments }} Reply{{ object.number_of_comments|pluralize}}</strong>
 			<hr>
 			<ul>
 				{% for comment in comments %}
@@ -128,3 +167,13 @@
 </article>
 
 {% endblock content %}
+{% block script %}
+ new ClipboardJS('.sharebtn');
+
+
+$( document ).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip({'placement': 'bottom', trigger: 'focus', delay:{hide:50}});
+    }); 
+ 
+
+{% endblock script %}
