@@ -80,38 +80,37 @@
 		<!-- LIKES -->
 		<div class='row'>
 			{% if user.is_authenticated %}
-			<div class="col-5">
+			<div >
 				<form action="{% url 'post-upvote' object.id %}" method="POST">
 					{% csrf_token %}
-					{% if post_is_downvoted%}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-secondary container"
-						disabled><i class="fas fa-thumbs-up" aria-hidden="true">&nbsp; Upvote</i></button>
-					{% elif post_is_upvoted %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
-							class="fas fa-thumbs-up" aria-hidden="true">&nbsp; Upvoted</i></button>
+					
+					{% if post_is_upvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
+							class="fas fa-thumbs-up" aria-hidden="true"></i></button>
 					{% else %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
-							class="far fa-thumbs-up" aria-hidden="true">&nbsp; Upvote</i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
+							class="far fa-thumbs-up" aria-hidden="true"></i></button>
 					{% endif %}
 				</form>
 			</div>
-			<div class="col-2">
-				<strong class="text-xl-center mx-4 my-1">{{ number_of_likes }}</strong>
+			<div class="my-2" >
+				<strong class="text-xl-center">{{ number_of_upvotes }}</strong>
 			</div>
-			<div class="col-5">
+			<div>
 				<form action="{% url 'post-downvote' object.id %}" method="POST">
 					{% csrf_token %}
-					{% if post_is_upvoted%}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-secondary container"
-						disabled><i class="fas fa-thumbs-down" aria-hidden="true">&nbsp; Downvote</i></button>
-					{% elif post_is_downvoted %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
-							class="fas fa-thumbs-down" aria-hidden="true">&nbsp; Downvoted</i></button>
+					
+					{% if post_is_downvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
+							class="fas fa-thumbs-down" aria-hidden="true"></i></button>
 					{% else %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-info container"><i
-							class="far fa-thumbs-down" aria-hidden="true">&nbsp; Downvote</i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
+							class="far fa-thumbs-down" aria-hidden="true"></i></button>
 					{% endif %}
 				</form>
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center">{{ number_of_downvotes }}</strong>
 			</div>
 			{% else %}
 			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
@@ -153,7 +152,50 @@
 						<p>
 							{{ comment.comment|safe }}
 						</p>
+
+					
+
 					</div>
+
+				<div class='row'>
+			{% if user.is_authenticated %}
+			<div >
+				<form action="{% url 'comment-upvote' object.id cid %}" method="POST">
+					{% csrf_token %}
+					
+					{% if comment_is_upvoted %}
+					<button type="submit" name="comment_id" value="{{cid}}" class="btn btn-lg"><i
+							class="fas fa-thumbs-up" aria-hidden="true"></i></button>
+					{% else %}
+					<button type="submit" name="comment_id" value="{{cid}}" class="btn btn-lg"><i
+							class="far fa-thumbs-up" aria-hidden="true"></i></button>
+					{% endif %}
+				</form>
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center">{{ number_of_upvotes_comment }}</strong>
+			</div>
+			<div>
+				<form action="{% url 'comment-downvote' object.id cid%}" method="POST">
+					{% csrf_token %}
+					
+					{% if comment_is_downvoted %}
+					<button type="submit" name="comment_id" value="{{cid}}" class="btn btn-lg"><i
+							class="fas fa-thumbs-down" aria-hidden="true"></i></button>
+					{% else %}
+					<button type="submit" name="comment_id" value="{{cid}}" class="btn btn-lg"><i
+							class="far fa-thumbs-down" aria-hidden="true"></i></button>
+					{% endif %}
+				</form>
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center">{{ number_of_downvotes_comment  }}</strong>
+			</div>
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
+				article!</a><br>
+			{% endif %}
+		</div>
 				</li>
 				{% endfor %}
 			</ul>

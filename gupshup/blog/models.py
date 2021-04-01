@@ -43,8 +43,11 @@ class Post(models.Model):
     downvote = models.ManyToManyField(User, related_name='downvote')
     bookmark = models.ManyToManyField(User, related_name='bookmark')
 
-    def number_of_likes(self):
-        return self.upvote.count()-self.downvote.count()
+    def number_of_downvotes(self):
+        return self.downvote.count()
+
+    def number_of_upvotes(self):
+        return self.upvote.count()
 
     @property
     def number_of_comments(self):
@@ -52,11 +55,22 @@ class Post(models.Model):
 
 
 class PostComment(models.Model):
-    post_connected = models.ForeignKey(
-        Post, related_name='comments', on_delete=models.CASCADE)
+    post_connected = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
+
+    upvote_comment = models.ManyToManyField(User, related_name='upvote_comment')
+    downvote_comment = models.ManyToManyField(User, related_name='downvote_comment')
+
+    def number_of_downvotes_comment(self):
+        return self.downvote_comment.count()
+
+    def number_of_upvotes_comment(self):
+        return self.upvote_comment.count()
+        
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return str(self.author) + ', ' + self.post_connected.title[:40]
