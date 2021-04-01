@@ -31,7 +31,8 @@ class PostListView(ListView):
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
-        top3 = Post.objects.annotate(q_count=Count('upvote')).order_by('-q_count')[:5]
+        top3 = Post.objects.annotate(
+            q_count=Count('upvote')).order_by('-q_count')[:5]
         context = super(PostListView, self).get_context_data(**kwargs)
         context['posts'] = Post.objects.all()
         context['tops'] = top3
@@ -73,7 +74,7 @@ class BookmarkView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return (Post.objects.filter(bookmark = self.request.user))
+        return (Post.objects.filter(bookmark=self.request.user))
 
 
 def Upvote(request, pk):
@@ -86,7 +87,7 @@ def Upvote(request, pk):
             post.downvote.remove(request.user)
             post.upvote.add(request.user)
         else:
-             post.upvote.add(request.user)
+            post.upvote.add(request.user)
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
@@ -110,7 +111,7 @@ def Downvote(request, pk):
             post.upvote.remove(request.user)
             post.downvote.add(request.user)
         else:
-             post.downvote.add(request.user)
+            post.downvote.add(request.user)
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
@@ -124,12 +125,12 @@ def Downvote_comment(request, pk, pck):
             comment.upvote_comment.remove(request.user)
             comment.downvote_comment.add(request.user)
         else:
-             comment.downvote_comment.add(request.user)
+            comment.downvote_comment.add(request.user)
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
 
-def Upvote_comment(request,pk, pck):
+def Upvote_comment(request, pk, pck):
     comment = get_object_or_404(PostComment, id=request.POST.get('comment_id'))
     if comment.upvote_comment.filter(id=request.user.id).exists():
         comment.upvote_comment.remove(request.user)
@@ -138,7 +139,7 @@ def Upvote_comment(request,pk, pck):
             comment.downvote_comment.remove(request.user)
             comment.upvote_comment.add(request.user)
         else:
-             comment.upvote_comment.add(request.user)
+            comment.upvote_comment.add(request.user)
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
@@ -154,10 +155,10 @@ class PostDetailView(DetailView):
         downvoted = False
         bookmarked = False
         if post_connected.upvote.filter(id=self.request.user.id).exists():
-            
+
             upvoted = True
         if post_connected.downvote.filter(id=self.request.user.id).exists():
-            
+
             downvoted = True
         if post_connected.bookmark.filter(id=self.request.user.id).exists():
             bookmarked = True
@@ -167,35 +168,22 @@ class PostDetailView(DetailView):
         data['post_is_downvoted'] = downvoted
         data['post_is_bookmarked'] = bookmarked
 
-        comments_connected = PostComment.objects.filter(post_connected=self.get_object()).order_by('-date_posted')
-        comment_new = {}
-       
-        
+        comments_connected = PostComment.objects.filter(
+            post_connected=self.get_object()).order_by('-date_posted')
+
+        comment_new = []
         for c in comments_connected:
-            
-            upvoted_comment  = False
+            upvoted_comment = False
             downvoted_comment = False
             if c.upvote_comment.filter(id=self.request.user.id).exists():
-                
                 upvoted_comment = True
             if c.downvote_comment.filter(id=self.request.user.id).exists():
-                
                 downvoted_comment = True
-            data['cid'] = c.id
-            data['number_of_upvotes_comment'] = c.number_of_upvotes_comment()
-            data['number_of_downvotes_comment'] = c.number_of_downvotes_comment()
-            data['comment_is_upvoted'] = upvoted_comment
-            data['comment_is_downvoted'] = downvoted_comment
-        #     new.cid = c.id
-        #     new.number_of_upvotes_comment = c.number_of_upvotes_comment
-        #     new.number_of_downvotes_comment = c.number_of_downvotes_comment
-        #     new.comment_is_upvoted = c.comment_is_upvoted
-        #     new.comment_is_downvoted = c.comment_is_downvoted
-        #     comment_new.update(new)
+            comment_new.append([c.id, upvoted_comment, downvoted_comment])
+
         data['comments'] = comments_connected
-        
-        
-        
+        data['comment_status'] = comment_new
+
         if self.request.user.is_authenticated:
             data['comment_form'] = NewCommentForm(instance=self.request.user)
 
