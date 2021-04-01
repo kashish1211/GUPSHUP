@@ -1,5 +1,6 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags%}
+{% load social_share %}
 {% block style %}
 	.form-control-sm
 	{
@@ -21,6 +22,33 @@
 		padding: 20px 10px 10px 10px;
 		
 	}
+
+	.fa-whatsapp {
+  
+  color: #25D366;
+}
+.fa-google-plus-g {
+  
+  color: #db4a39;
+}
+.fa-envelope {
+    
+    color: #BB001B;
+}
+
+.fa-twitter {
+    
+    color: #00acee;
+}
+.fa-facebook-f {
+    
+    color: #3b5998;
+}
+.fa-telegram {
+    
+    color: #0088cc;
+}
+
 {% endblock style %}
 {% block content %}
 
@@ -58,17 +86,64 @@
 
 				{% endif%}
 <!-- share a post -->
-				<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-share"></i> Share</button>
-					<div class="dropdown-menu">
-					<input id="foo" class="form-control-sm" value="{{ request.build_absolute_uri }}">
+				
 
-					<!-- Trigger -->
-					<button class="sharebtn" data-clipboard-text="{{ request.build_absolute_uri }}" style = "border: None;" data-toggle="tooltip" data-placement="bottom" title="Copied Link!">
-					<i class="fas fa-clipboard"></i>
-				</button>
-					
-			
+
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+			<i class="fas fa-share"></i> Share
+			</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Share</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ml-3">
+				<div class="row my-3">
+								<div class="col-3">{% post_to_facebook object_or_url '<i class="fab fa-facebook-f fa-3x mx-3"></i>' %}</div>
+								<div class="col-3">{% post_to_whatsapp object_or_url '<i class="fab fa-whatsapp fa-3x mx-3"></i>' %}</div>
+								<div class="col-3">{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url '<i class="fab fa-twitter fa-3x mx-3"></i>' %}</div>
+								<div class="col-3">{% post_to_gplus object_or_url '<i class="fab fa-3x fa-google-plus-g"></i>' %}</div>
+								</div>
+								<div class="row my-3">
+
+								
+								<div class="col-3" > </div>
+								<div class="col-3" >{% send_email object.title "New Post: {{object.title}}. Check it out!" object_or_url '<i class="fas fa-envelope fa-3x mx-3"></i>' %}</div>
+								
+								<div class="col-3" >{% post_to_telegram "New Post: {{object.title}}" object_or_url '<i class="fab fa-telegram fa-3x mx-3"></i>'  %}</div>
+								<div class="col-3" ></div>
+								</div>
+				<div class="row container-fluid">
+					<input  class="form-control mx-0 px-0 col-10" value="{{ request.build_absolute_uri }}">
+								<!-- Trigger -->
+								 
+								<button class="sharebtn col-2 btn btn-secondary" data-clipboard-text="{{ request.build_absolute_uri }}" style = "border: None;" data-toggle="tooltip" data-placement="bottom" title="Copied Link!">
+								<i class="fas fa-clipboard"></i>
+									
+							</button>
+							
+						
+							
+
+				</div>
+				</div>
 			</div>
+			</div>
+
+
+
+
+
+
+
+
 
 			
 		</div>
