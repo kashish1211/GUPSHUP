@@ -1,7 +1,28 @@
 {% extends "blog/base.html" %}
 {% block content %}
-<h1 class="mb-3">Posts in {{ view.kwargs.category }} ({{ page_obj.paginator.count }})</h1>
-{% for post in posts%}
+
+
+<br>
+<div class="jumbotron py-2 pt-2">
+{% if user.is_authenticated %}
+  <h1 class="display-5">{{ view.kwargs.category }} </h1>
+ 
+  <hr class="my-2">
+  
+  <p class="lead">
+    <a class="btn btn-success btn-lg" href="{% url 'room' view.kwargs.category  %}" role="button">Chat  <i class="fas fa-comments"></i></a>
+  </p>
+
+  {% endif %}
+</div>
+
+
+
+
+
+
+<h3 class="mb-3">Posts: ({{ page_obj.paginator.count }})</h3>
+{% for post in posts %}
 <article class="media content-section">
 	<img class="rounded-circle article-img " src={{post.author.profile.image.url}}>
 	<div class="media-body">
