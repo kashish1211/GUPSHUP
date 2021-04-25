@@ -4,8 +4,9 @@
 
 <br>
 <div class="jumbotron py-2 pt-2">
+<h1 class="display-5">{{ view.kwargs.category }} </h1>
 {% if user.is_authenticated %}
-  <h1 class="display-5">{{ view.kwargs.category }} </h1>
+  {% comment %} <h1 class="display-5">{{ view.kwargs.category }} </h1> {% endcomment %}
  
   <hr class="my-2">
   

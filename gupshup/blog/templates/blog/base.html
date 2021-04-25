@@ -127,13 +127,15 @@
 	    </div>
 	    <div class="col-md-4">
 	      <div class="content-section">
-	        <h3>Our Sidebar</h3>
-	        <p class=''>You can put any information here you'd like.
+	        <h3>Quick Access</h3>
+	        <p class=''>
 	          <ul class="list-group">
-	            <li class="list-group-item list-group-item-light">Latest Posts</li>
-	            <li class="list-group-item list-group-item-light">Announcements</li>
-	            <li class="list-group-item list-group-item-light">Calendars</li>
-	            <li class="list-group-item list-group-item-light">etc</li>
+	            <a href="{% url 'category' "Announcments" %}"><li class="list-group-item list-group-item-light">Announcements</li></a>
+	            <a href="{% url 'bookmark-post'%}"><li class="list-group-item list-group-item-light">Bookmarks</li></a>
+				<a  href="{% url 'category' "Mechanical" %}"><li class="list-group-item list-group-item-light">Mechanical</li></a>
+				<a  href="{% url 'category' "Electronic" %}"><li class="list-group-item list-group-item-light">Electronic</li></a>
+				<a  href="{% url 'category' "Technology" %}"><li class="list-group-item list-group-item-light">Technology</li></a>
+	           
 	          </ul>
 	        </p>
 	      </div>

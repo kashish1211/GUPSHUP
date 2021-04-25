@@ -111,7 +111,7 @@
 				<div class="row my-3">
 								<div class="col-3">{% post_to_facebook object_or_url '<i class="fab fa-facebook-f fa-3x mx-3"></i>' %}</div>
 								<div class="col-3">{% post_to_whatsapp object_or_url '<i class="fab fa-whatsapp fa-3x mx-3"></i>' %}</div>
-								<div class="col-3">{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url '<i class="fab fa-twitter fa-3x mx-3"></i>' %}</div>
+								<div class="col-3">{% post_to_twitter "New Post on Gupshup!!!: {{object.title}}. Check it out!" object_or_url '<i class="fab fa-twitter fa-3x mx-3"></i>' %}</div>
 								<div class="col-3">{% post_to_gplus object_or_url '<i class="fab fa-3x fa-google-plus-g"></i>' %}</div>
 								</div>
 								<div class="row my-3">
@@ -151,7 +151,7 @@
 			
 		</div>
 <!-- post content -->
-		<h6><span class="badge badge-secondary">{{ object.category }}</span></h6>
+		<a href="{% url 'category' object.category %}"><h6><span class="badge badge-secondary">{{ object.category }}</span></h6></a>
 		<h2 class="article-title">{{ object.title | safe }} </h2>
 
 		<p class="article-content">{{ object.content| safe }}</p>
@@ -217,7 +217,11 @@
 			{% endif %}
 <!-- comments -->
 			{% if comments %}
-			<strong class="text-secondary">{{ object.number_of_comments }} Reply{{ object.number_of_comments|pluralize}}</strong>
+				{% if  object.number_of_comments > 1 %}
+			<strong class="text-secondary">{{ object.number_of_comments }} Replies</strong>
+			{% else %}
+				<strong class="text-secondary">{{ object.number_of_comments }} Reply</strong>
+			{% endif %}
 			<hr>
 			<ul>
 				{% for comment in comments %}
