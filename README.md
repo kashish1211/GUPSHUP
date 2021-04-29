@@ -85,6 +85,9 @@ Snapshots of the project
 ![img](Screenshots/ss5.PNG)  
 
 ---
+
+<img align="right" width=200px height=200px alt="side_sticker" src="https://github.com/kashish1211/GUPSHUP/blob/master/Screenshots/giphchat.gif" />
+
 ### Features of GupShup
 * Login into the web portal using a unique id.
 * Adding blogs to the website.
