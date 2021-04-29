@@ -37,13 +37,15 @@
 
   <hr>
   </p>
-  ---
+  
+ ---
+ 
  ### Team Members
  #### 1. Rushabh Gandhi: 1911012
  #### 2. Kashish Harisinghani: 1911016
  #### 3. Harshit Jain: 1911017
  
-
+---
  
  ### Instructions to run
  * Install virtual environment using the following command
@@ -71,9 +73,9 @@ docker run -p 6379:6379 -d redis:5
 python manage.py runserver
 ```
  
+---
 
 Snapshots of the project
----
 ![img](Screenshots/ss1.PNG)
 ![img](Screenshots/ss2.PNG)  
 ![img](Screenshots/ss3.PNG)  
