@@ -74,13 +74,28 @@ python manage.py runserver
 ```
  
 ---
-
+<h2 align="center">
 Snapshots of the project
+</h2>
+  
 ![img](Screenshots/ss1.PNG)
 ![img](Screenshots/ss2.PNG)  
 ![img](Screenshots/ss3.PNG)  
 ![img](Screenshots/ss4.PNG)  
 ![img](Screenshots/ss5.PNG)  
+
+---
+### Features of GupShup
+* Login into the web portal using a unique id.
+* Adding blogs to the website.
+* Question answer-based forum.
+* Writing comments for other posts.
+* Answering a question.
+* Upvote and downvote.
+* Segregating the posts based on different categories
+* Functionality to bookmark a blog.
+* Functionality to share a post.
+* Live chat for like-minded people.
 
 ---
 <h3 align="center"><b>Developed with :heart: by <a href="https://github.com/rushabhgandhi13">Rushabh Gandhi</a>, <a href="https://github.com/kashish1211">Kashish Harisinghani</a>, <a href="https://github.com/HarshitJain28">Harshit Jain</a>.</b></h1>
