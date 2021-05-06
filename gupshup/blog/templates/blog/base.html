@@ -79,6 +79,9 @@
 				<a class="nav-link" href="{% url 'bookmark-post'%}" style="color: #1e212d">Bookmark</a>
 			</li>
 		{% endif %}
+		<li class="nav-item ">
+				<a class="nav-link" href="{% url 'about'%}" style="color: #1e212d">About</a>
+			</li>
     </ul>
     <!-- Navbar Right Side -->
 	        <div class="navbar-nav">
@@ -125,6 +128,10 @@
 	      {% block content %}{% endblock %}
 	    	
 	    </div>
+
+		{% block sidebarstart %}{% endblock sidebarstart %}
+		
+
 	    <div class="col-md-4">
 	      <div class="content-section">
 	        <h3>Quick Access</h3>
@@ -142,6 +149,9 @@
 	        </p>
 	      </div>
 	    </div>
+
+		{% block sidebarend %}{% endblock sidebarend %}
+
 	  </div>
 	</main>
 	
