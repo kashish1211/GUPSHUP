@@ -99,6 +99,7 @@ Snapshots of the project
 * Functionality to bookmark a blog.
 * Functionality to share a post.
 * Live chat for like-minded people.
-
+---
+![User guide video]( https://drive.google.com/file/d/1KI7BdVSxiOW3bYIXvsrOzjFCfDHf7qBb/view?usp=sharing/ https://drive.google.com/file/d/1KI7BdVSxiOW3bYIXvsrOzjFCfDHf7qBb/view?usp=sharing)
 ---
 <h3 align="center"><b>Developed with :heart: by <a href="https://github.com/rushabhgandhi13">Rushabh Gandhi</a>, <a href="https://github.com/kashish1211">Kashish Harisinghani</a>, <a href="https://github.com/HarshitJain28">Harshit Jain</a>.</b></h1>
