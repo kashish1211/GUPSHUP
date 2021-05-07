@@ -102,7 +102,6 @@ Snapshots of the project
 ---
 Click to see the user guide video
 [![User guide video](https://media.sproutsocial.com/uploads/2020/10/Sprout-Guide-Get-Most-Out-of-Video-Featured-Image.svg)](https://drive.google.com/file/d/1KI7BdVSxiOW3bYIXvsrOzjFCfDHf7qBb/view?usp=sharing)
-<img  src="https://drive.google.com/file/d/1KI7BdVSxiOW3bYIXvsrOzjFCfDHf7qBb/view?usp=sharing" />
 
 
 ---
