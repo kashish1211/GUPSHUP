@@ -17,10 +17,21 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from users import views as user_views
+# from . import users
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import url
 admin.site.site_header = 'Gupshup Admin Panel'
 admin.site.site_title = 'Gupshup'
+handler404 = 'users.views.handler404'
+handler500 = 'users.views.handler500'
+
+# handler404 = 'GUPSHUP.views.error_404'
+# handler500 = 'GUPSHUP.views.error_500'
+# handler403 = 'GUPSHUP.views.error_403'
+# handler400 = 'GUPSHUP.views.error_400'
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/',user_views.register, name='register'),
@@ -32,6 +43,8 @@ urlpatterns = [
     path('password-reset-complete/',auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('password-reset-confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
     path('verification/', include('verify_email.urls')),
+    # path('accounts/', include('allauth.urls')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     path('verify/', user_views.verify,name='verify'),	
     path('', include('blog.urls')),
     path('chat/', include('chat.urls')),
