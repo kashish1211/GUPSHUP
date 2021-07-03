@@ -1,6 +1,8 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags%}
 {% load social_share %}
+
+
 {% block style %}
 	.form-control-sm
 	{
@@ -61,16 +63,15 @@
 			<small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
 			{% if user.is_authenticated %}
 <!-- bookmarks -->
-			<form action="{% url 'post-bookmark' object.id %}" method="POST">
-				{% csrf_token %}
+			
 				{% if post_is_bookmarked%}
-				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg" style="float: right;"><i
-						class="fas fa-bookmark fa-2x" style="color: red;" aria-hidden="true"></i></button>
+				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none" style="float: right;"><i
+						class="fas fa-bookmark fa-2x btn-bookmark" style="color: red;" aria-hidden="true"></i></button>
 				{% else %}
-				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg" style="float: right;"><i
-						class="far fa-bookmark fa-2x" style="color: red;" aria-hidden="true"></i></button>
+				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none " style="float: right;"><i
+						class="far fa-bookmark fa-2x btn-bookmark" style="color: red;" aria-hidden="true"></i></button>
 				{% endif %}
-			</form>
+		
 			{% else %}
 			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to Bookmark this
 				article!</a><br>
@@ -160,37 +161,34 @@
 		<div class='row'>
 			{% if user.is_authenticated %}
 			<div >
-				<form action="{% url 'post-upvote' object.id %}" method="POST">
-					{% csrf_token %}
 					
 					{% if post_is_upvoted %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
-							class="fas fa-thumbs-up" aria-hidden="true"></i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="fas fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
 					{% else %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
-							class="far fa-thumbs-up" aria-hidden="true"></i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="far fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
 					{% endif %}
-				</form>
+			
 			</div>
 			<div class="my-2" >
-				<strong class="text-xl-center">{{ number_of_upvotes }}</strong>
+				<strong class="text-xl-center" id='upvote_count'>{{ number_of_upvotes }}</strong>
 			</div>
 <!-- downvotes -->
 			<div>
-				<form action="{% url 'post-downvote' object.id %}" method="POST">
-					{% csrf_token %}
+				
 					
 					{% if post_is_downvoted %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
-							class="fas fa-thumbs-down" aria-hidden="true"></i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="fas fa-thumbs-down btn_downvote" aria-hidden="true"></i></button>
 					{% else %}
-					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg"><i
-							class="far fa-thumbs-down" aria-hidden="true"></i></button>
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="far fa-thumbs-down btn_downvote" aria-hidden="true"></i></button>
 					{% endif %}
-				</form>
+			
 			</div>
 			<div class="my-2" >
-				<strong class="text-xl-center">{{ number_of_downvotes }}</strong>
+				<strong class="text-xl-center" id='downvote_count'>{{ number_of_downvotes }}</strong>
 			</div>
 <!-- user authentication check -->
 			{% else %}
@@ -242,50 +240,48 @@
 				<div class='row'>
 			{% if user.is_authenticated %}
 			<div >
-				<form action="{% url 'comment-upvote' object.id comment.id %}" method="POST">
-					{% csrf_token %}
+				
 <!--comment_upvotes  -->
 					{% for com in comment_status%}
 					
 						{% if com.0 == comment.id %}
 							{% if com.1  %}
-								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg"><i
-								class="fas fa-thumbs-up" aria-hidden="true"></i></button>
+								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none"><i
+								class="fas fa-thumbs-up c-btn-upvote" id="up{{comment.id}}" aria-hidden="true"></i></button>
 							
 							{% else %}
-								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg"><i
-								class="far fa-thumbs-up" aria-hidden="true"></i></button>
+								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none"><i
+								class="far fa-thumbs-up c-btn-upvote"  id="up{{comment.id}}" aria-hidden="true"></i></button>
 							{% endif %}
 					{% endif %}
 					{% endfor %}
-				</form>
+				
 			</div>
 			<div class="my-2" >
-				<strong class="text-xl-center">{{ comment.number_of_upvotes_comment }}</strong>
+				<strong class="text-xl-center" id="com-upvote-count{{comment.id}}">{{ comment.number_of_upvotes_comment }}</strong>
 			</div>
 <!-- comment-downvotes -->
 			<div>
-				<form action="{% url 'comment-downvote' object.id comment.id%}" method="POST">
-					{% csrf_token %}
+				
 
 					{% for com in comment_status%}
 					
 						{% if com.0 == comment.id %}
 							{% if com.2  %}
-								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg"><i
-							class="fas fa-thumbs-down" aria-hidden="true"></i></button>
+								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
+							class="fas fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
 						{% else %}
-						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg"><i
-							class="far fa-thumbs-down" aria-hidden="true"></i></button>
+						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
+							class="far fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
 						{% endif %}
 					{% endif %}
 					{% endfor %}
 					
 					
-				</form>
+				
 			</div>
 			<div class="my-2" >
-				<strong class="text-xl-center">{{ comment.number_of_downvotes_comment  }}</strong>
+				<strong class="text-xl-center" id="com-downvote-count{{comment.id}}">{{ comment.number_of_downvotes_comment  }}</strong>
 			</div>
 			{% else %}
 			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
@@ -305,13 +301,125 @@
 </article>
 
 {% endblock content %}
+
 {% block script %}
  new ClipboardJS('.sharebtn');
-
+ 
 
 $( document ).ready(function() {
         $('[data-toggle="tooltip"]').tooltip({'placement': 'bottom', trigger: 'focus', delay:{hide:50}});
     }); 
- 
+
+$('.c-upvote-btn').click(function(){
+	console.log('hehe');
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'comment-upvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','comment_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+			  if (response.up_status == 'liked'){
+				 
+				   $('#up'+response.id+'').replaceWith("<i class='fas fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+				   $('#down'+response.id+'').replaceWith("<i class='far fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  else{
+				  $('#up'+response.id+'').replaceWith("<i class='far fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
+			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+
+$('.c-downvote-btn').click(function(){
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'comment-downvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','comment_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+				 console.log(response);
+			  if (response.down_status == 'liked'){
+				 
+				   $('#up'+response.id+'').replaceWith("<i class='far fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+				   $('#down'+response.id+'').replaceWith("<i class='fas fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  else{
+				 $('#down'+response.id+'').replaceWith("<i class='far fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
+			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+
+$('.upvote_btn').click(function(){
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'post-upvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','post_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+			  if (response.up_status == 'liked'){
+				   $('.btn_upvote').replaceWith("<i class='fas fa-thumbs-up btn_upvote' aria-hidden='true'></i>");
+				   $('.btn_downvote').replaceWith("<i class='far fa-thumbs-down btn_downvote' aria-hidden='true'></i>");
+			  }
+			  else{
+				  $('.btn_upvote').replaceWith("<i class='far fa-thumbs-up btn_upvote' aria-hidden='true'></i>");
+			  }
+			  $('#upvote_count').replaceWith("<strong class='text-xl-center' id='upvote_count'>" + response.up_count + "</strong>")
+			  $('#downvote_count').replaceWith("<strong class='text-xl-center' id='downvote_count'>" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+
+$('.downvote_btn').click(function(){
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'post-downvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','post_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+			  if (response.down_status == 'liked'){
+				   $('.btn_upvote').replaceWith("<i class='far fa-thumbs-up btn_upvote' aria-hidden='true'></i>");
+				   $('.btn_downvote').replaceWith("<i class='fas fa-thumbs-down btn_downvote' aria-hidden='true'></i>");
+			  }
+			  else{
+				  $('.btn_downvote').replaceWith("<i class='far fa-thumbs-down btn_downvote' aria-hidden='true'></i>");
+			  }
+			  $('#upvote_count').replaceWith("<strong class='text-xl-center' id='upvote_count'>" + response.up_count + "</strong>")
+			  $('#downvote_count').replaceWith("<strong class='text-xl-center' id='downvote_count'>" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+
+$('.bookmark-btn').click(function(){
+		console.log("hehehe");
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'post-bookmark-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','post_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+			  if (response.status){
+				   $('.btn-bookmark').replaceWith("<i class='fas fa-bookmark fa-2x btn-bookmark' style='color: red;' aria-hidden='true'></i>");
+			  }
+			  else{
+				   $('.btn-bookmark').replaceWith("<i class='far fa-bookmark fa-2x btn-bookmark' style='color: red;' aria-hidden='true'></i>");
+			  }
+              }
+
+        });
+
+	 })
 
 {% endblock script %}

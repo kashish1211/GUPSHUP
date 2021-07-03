@@ -12,7 +12,8 @@ from .forms import NewCommentForm
 import operator
 from django.db.models import Count, F, Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-
+import json
+from django.http import HttpResponse
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -77,71 +78,102 @@ class BookmarkView(ListView):
         return (Post.objects.filter(bookmark=self.request.user))
 
 
-def Upvote(request, pk):
+
+def Upvote_ajax(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    up_status = ''
     if post.upvote.filter(id=request.user.id).exists():
         post.upvote.remove(request.user)
-
+        up_status = 'disliked'
     else:
         if post.downvote.filter(id=request.user.id).exists():
             post.downvote.remove(request.user)
             post.upvote.add(request.user)
+            up_status = 'liked'
         else:
             post.upvote.add(request.user)
+            up_status = 'liked'
+    up_count = post.number_of_upvotes()
+    down_count = post.number_of_downvotes()
+    ctx = {'up_status':up_status,'up_count':up_count,'down_count':down_count}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
-    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
-
-
-def Bookmark(request, pk):
+def Downvote_ajax(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    if post.bookmark.filter(id=request.user.id).exists():
-        post.bookmark.remove(request.user)
-    else:
-        post.bookmark.add(request.user)
-
-    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
-
-
-def Downvote(request, pk):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    down_status = ''
     if post.downvote.filter(id=request.user.id).exists():
         post.downvote.remove(request.user)
+        down_status = 'disliked'
     else:
         if post.upvote.filter(id=request.user.id).exists():
             post.upvote.remove(request.user)
             post.downvote.add(request.user)
+            down_status = 'liked'
         else:
             post.downvote.add(request.user)
+            down_status = 'liked'
 
-    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+    up_count = post.number_of_upvotes()
+    down_count = post.number_of_downvotes()
+    ctx = {'down_status':down_status,'up_count':up_count,'down_count':down_count}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-def Downvote_comment(request, pk, pck):
-    comment = get_object_or_404(PostComment, id=request.POST.get('comment_id'))
-    if comment.downvote_comment.filter(id=request.user.id).exists():
-        comment.downvote_comment.remove(request.user)
+
+def Bookmark_ajax(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    status = ''
+    if post.bookmark.filter(id=request.user.id).exists():
+        post.bookmark.remove(request.user)
+        status = False
     else:
-        if comment.upvote_comment.filter(id=request.user.id).exists():
-            comment.upvote_comment.remove(request.user)
-            comment.downvote_comment.add(request.user)
-        else:
-            comment.downvote_comment.add(request.user)
-
-    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+        post.bookmark.add(request.user)
+        status = True
+    ctx = {'status':status}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-def Upvote_comment(request, pk, pck):
+
+
+
+def Upvote_Comment_Ajax(request):
     comment = get_object_or_404(PostComment, id=request.POST.get('comment_id'))
+    up_status = ''
     if comment.upvote_comment.filter(id=request.user.id).exists():
         comment.upvote_comment.remove(request.user)
+        up_status = 'disliked'
     else:
         if comment.downvote_comment.filter(id=request.user.id).exists():
             comment.downvote_comment.remove(request.user)
             comment.upvote_comment.add(request.user)
+            up_status = 'liked'
         else:
             comment.upvote_comment.add(request.user)
+            up_status = 'liked'
+    count_upvotes = comment.number_of_upvotes_comment()
+    count_downvotes = comment.number_of_downvotes_comment()
+    ctx = {'up_status':up_status,'up_count':count_upvotes,'down_count':count_downvotes,'id':request.POST.get('comment_id')}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
-    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+def Downvote_Comment_Ajax(request):
+    comment = get_object_or_404(PostComment, id=request.POST.get('comment_id'))
+    down_status = ''
+    if comment.downvote_comment.filter(id=request.user.id).exists():
+        comment.downvote_comment.remove(request.user)
+        down_status = 'disliked'
+    else:
+        if comment.upvote_comment.filter(id=request.user.id).exists():
+            comment.upvote_comment.remove(request.user)
+            comment.downvote_comment.add(request.user)
+            down_status = 'liked'
+        else:
+            comment.downvote_comment.add(request.user)
+            down_status = 'liked'
+    count_upvotes = comment.number_of_upvotes_comment()
+    count_downvotes = comment.number_of_downvotes_comment()
+    ctx = {'down_status':down_status,'up_count':count_upvotes,'down_count':count_downvotes,'id':request.POST.get('comment_id')}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
+
 
 
 class PostDetailView(DetailView):
