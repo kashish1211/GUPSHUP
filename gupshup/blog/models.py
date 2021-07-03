@@ -39,9 +39,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
 
-    upvote = models.ManyToManyField(User, related_name='upvote')
-    downvote = models.ManyToManyField(User, related_name='downvote')
-    bookmark = models.ManyToManyField(User, related_name='bookmark')
+    upvote = models.ManyToManyField(User, related_name='upvote',blank=True)
+    downvote = models.ManyToManyField(User, related_name='downvote',blank=True)
+    bookmark = models.ManyToManyField(User, related_name='bookmark',blank=True)
 
     def number_of_downvotes(self):
         return self.downvote.count()
@@ -60,8 +60,8 @@ class PostComment(models.Model):
     comment = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
 
-    upvote_comment = models.ManyToManyField(User, related_name='upvote_comment')
-    downvote_comment = models.ManyToManyField(User, related_name='downvote_comment')
+    upvote_comment = models.ManyToManyField(User, related_name='upvote_comment',blank=True)
+    downvote_comment = models.ManyToManyField(User, related_name='downvote_comment',blank=True)
 
     def number_of_downvotes_comment(self):
         return self.downvote_comment.count()

@@ -6,10 +6,11 @@ from .models import Profile
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
+	
 
 	class Meta:
 		model = User
-		fields = ['username', 'email' , 'password1', 'password2']
+		fields = ['username', 'email', 'password1', 'password2']
 
 	def clean_email(self):
 		data = self.cleaned_data['email']
@@ -58,10 +59,21 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['image']
+		fields = ['image','gender']
 	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['image'].widget.input_text = "Update image"
+		self.fields['image'].widget.initial_text = "Current image"
+
+
+class ProfileRegisterForm(forms.ModelForm):
+	class Meta:
+		model = Profile
+		fields = ['image','gender']
+	
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['image'].widget.input_text = "Upload image"
 		self.fields['image'].widget.initial_text = "Current image"
 	
