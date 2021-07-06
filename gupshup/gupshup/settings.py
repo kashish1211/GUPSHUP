@@ -127,13 +127,13 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': [
             'profile',
             'email',
+            'gender',
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
     }
 }
-
 
 
 AUTHENTICATION_BACKENDS = (
@@ -226,10 +226,12 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.social_auth.associate_by_email',  # <--- enable this one
     'social_core.pipeline.user.create_user',
-    # 'path.to.save_profile'
+    'users.views.save_profileee',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    
+    # 'users.views.update_user_social_data'
 )
 
 
