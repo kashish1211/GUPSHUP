@@ -6,20 +6,24 @@ import os
 from django.core.files import File
 from urllib.request import urlopen
 from tempfile import NamedTemporaryFile
+from ckeditor.fields import RichTextField
 import os
 
 
 
-gender_choices = (
-	("Male", "Male"),
-	("Female", "Female"),
-	("Others", "Others"),
+college_choices = (
+	("KJSCE", "KJSCE"),
+	("Aurobindo", "Aurobindo"),
+	("Chanakya", "Chanakya"),
+	
 )
+
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	image = models.ImageField(default='default2.png',upload_to='profile_pics')
-	gender = models.CharField(max_length = 20,choices=gender_choices,default='Select your gender',blank=True, null=True)
+	college = models.CharField(max_length = 20,choices=college_choices,default='KJSCE',blank=True, null=True)
+	about = RichTextField(blank=True, null=True)
 	image_url = models.URLField(default = "http://127.0.0.1:8000/media/default2.png")
 	def __str__(self):
 		return f'{self.user.username} Profile '

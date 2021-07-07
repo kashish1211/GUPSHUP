@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'crispy_forms',
     'channels',
+    'ckeditor',
     'chat',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -127,7 +128,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': [
             'profile',
             'email',
-            'gender',
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
@@ -165,12 +165,14 @@ SITE_ID = 3
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -225,14 +227,14 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.auth_allowed',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
-    'social_core.pipeline.social_auth.associate_by_email',  # <--- enable this one
+    'social_core.pipeline.social_auth.associate_by_email', 
     'social_core.pipeline.user.create_user',
     'users.views.save_profileee',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
     
-    # 'users.views.update_user_social_data'
+
 )
 
 
@@ -242,3 +244,12 @@ SOCIAL_AUTH_PIPELINE = (
 
 VERIFICATION_SUCCESS_TEMPLATE = "users/success.html"
 
+# CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
+
+
+CKEDITOR_CONFIGS = {
+    'default':{
+        'width': '99%'
+    }
+    
+}
