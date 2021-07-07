@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 
 class UserRegisterForm(UserCreationForm):
@@ -59,12 +61,14 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['image','college','about']
+		fields = ['image', 'college','about']
 	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['image'].widget.input_text = "Update image"
-		# self.fields['image'].widget.initial_text = "Current image"
+		self.fields['image'].widget.initial_text = "Current image"
+
+
 
 
 class ProfileRegisterForm(forms.ModelForm):
@@ -75,5 +79,5 @@ class ProfileRegisterForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['image'].widget.input_text = "Upload image"
-		# self.fields['image'].widget.initial_text = "Current image"
+		self.fields['image'].widget.initial_text = "Current image"
 	

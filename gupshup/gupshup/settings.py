@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_social_share',
     'django.contrib.sites',
+    'awesome_avatar',
      "verify_email",
+     'django_cleanup.apps.CleanupConfig',
      
     
 ]

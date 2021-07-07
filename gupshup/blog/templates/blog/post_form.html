@@ -1,6 +1,7 @@
 {% extends "blog/base.html" %}
+{% load static %}
 {% block head %}
-<script src="https://cdn.tiny.cloud/1/fdkbtb1jjkqkbh2snkl1my296s7wwl5vy8kgfxcgelqabz3p/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+{% comment %} <script src="https://cdn.tiny.cloud/1/fdkbtb1jjkqkbh2snkl1my296s7wwl5vy8kgfxcgelqabz3p/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
       tinymce.init({
         selector: '#id_content',
@@ -26,7 +27,7 @@
       });
 	
 	
-    </script>
+    </script> {% endcomment %}
 {% endblock head %}
  
 {% load crispy_forms_tags%}
@@ -53,5 +54,9 @@
 		
 			
 	</div>
+
+
+  <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+  <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 	
 {% endblock content %}
