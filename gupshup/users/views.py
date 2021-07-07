@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ProfileRegisterForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ProfileRegisterForm,ProfileImageUpdateForm
 from verify_email.email_handler import send_verification_email
 from django.contrib.auth import login
 from .models import Profile
 from django.contrib.auth.models import User
+
 
 def register(request):
 	if request.method == 'POST':
@@ -32,6 +33,8 @@ def profile(request):
 	if request.method == 'POST':
 		u_form = UserUpdateForm(request.POST, instance=request.user)
 		p_form = ProfileUpdateForm(request.POST,
+								   instance=request.user.profile)
+		i_form = ProfileImageUpdateForm(request.POST,
 								   request.FILES,
 								   instance=request.user.profile)
 		if u_form.is_valid() and p_form.is_valid():
@@ -39,14 +42,22 @@ def profile(request):
 			p_form.save()
 			messages.success(request, f'Your account has been updated!')
 			return redirect('profile')
+			
+		if i_form.is_valid():
+			i_form.save()
+			messages.success(request, f'Your profile picture has been updated!')
+			return redirect('profile')
+			
 
 	else:
 		u_form = UserUpdateForm(instance=request.user)
 		p_form = ProfileUpdateForm(instance=request.user.profile)
+		i_form = ProfileImageUpdateForm(instance=request.user.profile)
 
 	context = {
 		'u_form': u_form,
-		'p_form': p_form
+		'p_form': p_form,
+		'i_form': i_form
 	}
 
 	return render(request, 'users/profile.html', context)

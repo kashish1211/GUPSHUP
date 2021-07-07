@@ -61,7 +61,19 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['image', 'college','about']
+		fields = ['college','about']
+	
+	# def __init__(self, *args, **kwargs):
+	# 	super().__init__(*args, **kwargs)
+	# 	self.fields['image'].widget.input_text = "Update image"
+	# 	self.fields['image'].widget.initial_text = "Current image"
+
+
+class ProfileImageUpdateForm(forms.ModelForm):
+	image = forms.ImageField(label=('Profile Picture'),required=False, error_messages = {'invalid':("Image files only")}, widget=forms.FileInput)
+	class Meta:
+		model = Profile
+		fields = ['image']
 	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
