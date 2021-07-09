@@ -14,6 +14,7 @@ from django.db.models import Count, F, Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import json
 from django.http import HttpResponse
+from notifications.signals import notify
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -81,6 +82,7 @@ class BookmarkView(ListView):
 
 def Upvote_ajax(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post_id = post.id
     up_status = ''
     if post.upvote.filter(id=request.user.id).exists():
         post.upvote.remove(request.user)
@@ -89,9 +91,21 @@ def Upvote_ajax(request):
         if post.downvote.filter(id=request.user.id).exists():
             post.downvote.remove(request.user)
             post.upvote.add(request.user)
+            sender = User.objects.get(id=request.user.id)
+            recipient = User.objects.get(id=post.author.id)
+            if sender != recipient:
+                message = f'liked your '
+                notify.send(sender=sender, recipient=recipient, verb='Message',
+                description=message, target = post)
             up_status = 'liked'
         else:
             post.upvote.add(request.user)
+            sender = User.objects.get(id=request.user.id)
+            recipient = User.objects.get(id=post.author.id)
+            if sender != recipient:
+                message = f'liked your '
+                notify.send(sender=sender, recipient=recipient, verb='Message',
+                description=message, target = post)
             up_status = 'liked'
     up_count = post.number_of_upvotes()
     down_count = post.number_of_downvotes()

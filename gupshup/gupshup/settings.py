@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'awesome_avatar',
      "verify_email",
      'django_cleanup.apps.CleanupConfig',
+     'notifications',
      
     
 ]

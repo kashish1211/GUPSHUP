@@ -21,6 +21,7 @@ from users import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
+import notifications.urls
 admin.site.site_header = 'Gupshup Admin Panel'
 admin.site.site_title = 'Gupshup'
 handler404 = 'users.views.handler404'
@@ -49,6 +50,7 @@ urlpatterns = [
     path('verify/', user_views.verify,name='verify'),	
     path('', include('blog.urls')),
     path('chat/', include('chat.urls')),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
 
 if settings.DEBUG:
