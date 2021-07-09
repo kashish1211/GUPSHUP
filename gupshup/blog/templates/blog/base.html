@@ -152,9 +152,21 @@
 					
 					
 					{% for notification in  user.notifications.unread %}
-					<div class="alert alert-success">
-					<strong class="default"><i class="fas fa-thumbs-up"></i> &nbsp; &nbsp;<a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> post </a></strong>  
+
+
+					{% if notification.verb == "Comment" %}
+					<div class="alert alert-info">
+					<strong class="default"><i class="fas fa-thumbs-up"></i> &nbsp; &nbsp;<a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
 					</div>
+					{% elif notification.description == "liked your " %}
+					<div class="alert alert-success">
+					<strong class="default"><i class="fas fa-thumbs-up"></i> &nbsp; &nbsp;<a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
+					{% elif notification.description == "commented on your  " %}
+					<div class="alert alert-warning">
+					<strong class="default"><i class="fa fa-comments"></i> &nbsp; &nbsp;<a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
+					{% endif %}
 					{% endfor %}
 
 

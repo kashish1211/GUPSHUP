@@ -95,7 +95,7 @@ def Upvote_ajax(request):
             recipient = User.objects.get(id=post.author.id)
             if sender != recipient:
                 message = f'liked your '
-                notify.send(sender=sender, recipient=recipient, verb='Message',
+                notify.send(sender=sender, recipient=recipient, verb='Post',
                 description=message, target = post)
             up_status = 'liked'
         else:
@@ -104,7 +104,7 @@ def Upvote_ajax(request):
             recipient = User.objects.get(id=post.author.id)
             if sender != recipient:
                 message = f'liked your '
-                notify.send(sender=sender, recipient=recipient, verb='Message',
+                notify.send(sender=sender, recipient=recipient, verb='Post',
                 description=message, target = post)
             up_status = 'liked'
     up_count = post.number_of_upvotes()
@@ -161,8 +161,21 @@ def Upvote_Comment_Ajax(request):
             comment.downvote_comment.remove(request.user)
             comment.upvote_comment.add(request.user)
             up_status = 'liked'
+            comment.upvote_comment.add(request.user)
+            sender = User.objects.get(id=request.user.id)
+            recipient = User.objects.get(id=comment.author.id)
+            if sender != recipient:
+                message = f'liked your '
+                notify.send(sender=sender, recipient=recipient, verb='Comment',
+                description=message, target = comment.post_connected)
         else:
             comment.upvote_comment.add(request.user)
+            sender = User.objects.get(id=request.user.id)
+            recipient = User.objects.get(id=comment.author.id)
+            if sender != recipient:
+                message = f'liked your '
+                notify.send(sender=sender, recipient=recipient, verb='Comment',
+                description=message, target = comment.post_connected)
             up_status = 'liked'
     count_upvotes = comment.number_of_upvotes_comment()
     count_downvotes = comment.number_of_downvotes_comment()
@@ -238,6 +251,12 @@ class PostDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         new_comment = PostComment(comment=request.POST.get(
             'comment'), author=self.request.user, post_connected=self.get_object())
+        sender = User.objects.get(id=request.user.id)
+        recipient = User.objects.get(id=self.get_object().author.id)
+        if sender != recipient:
+            message = f'commented on your  '
+            notify.send(sender=sender, recipient=recipient, verb='Post',
+            description=message, target = self.get_object())
         new_comment.save()
         return self.get(self, request, *args, **kwargs)
 
