@@ -12,6 +12,7 @@ urlpatterns = [
     path('post-bookmark-ajax/', views.Bookmark_ajax, name='post-bookmark-ajax'),
     path('comment-upvote-ajax/', views.Upvote_Comment_Ajax, name='comment-upvote-ajax'),
     path('comment-downvote-ajax/', views.Downvote_Comment_Ajax, name='comment-downvote-ajax'),
+    path('comment-ajax/', views.Comment_Ajax, name='comment-ajax'),
     path('post/bookmark/', views.BookmarkView.as_view(), name='bookmark-post'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', views.PostCreateView.as_view(), name='post-create'),

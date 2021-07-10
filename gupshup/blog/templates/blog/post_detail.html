@@ -200,100 +200,24 @@
 		<div id="comments_section">
 
 			{% if user.is_authenticated %}
-			<form method="POST">
-				{% csrf_token %}
+			
 				<div class="form-group">
-					{{ comment_form|crispy }}
-					<button class="btn btn-info" type="submit">Continue Discussion <i
+					<form action="{% url 'comment-ajax' %}" method="POST" id="comment-form">
+					<textarea id="comment-content" name="comment-content" value = "{{object.id}}" rows="5" cols="80"> </textarea>
+  					<br><br>
+					  <button class="btn btn-info comment-form" type="submit">Continue Discussion <i
 							class="fa fa-comments"></i></button>
-					
+					  </form>
 				</div>
-			</form>
+			
 			{% else %}
 			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to answer
 				this!</a><br>
 			{% endif %}
 <!-- comments -->
-			{% if comments %}
-				{% if  object.number_of_comments > 1 %}
-			<strong class="text-secondary">{{ object.number_of_comments }} Replies</strong>
-			{% else %}
-				<strong class="text-secondary">{{ object.number_of_comments }} Reply</strong>
-			{% endif %}
-			<hr>
-			<ul>
-				{% for comment in comments %}
-				<li>
-					<div>
-						<span>
-							<strong class="text-info">{{ comment.author }} </strong>
-							<small class="text-muted">{{ comment.date_posted }}</small>
-						</span>
-						<p>
-							{{ comment.comment|safe }}
-						</p>
-
-					
-
-					</div>
-
-				<div class='row'>
-			{% if user.is_authenticated %}
-			<div >
-				
-<!--comment_upvotes  -->
-					{% for com in comment_status%}
-					
-						{% if com.0 == comment.id %}
-							{% if com.1  %}
-								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none"><i
-								class="fas fa-thumbs-up c-btn-upvote" id="up{{comment.id}}" aria-hidden="true"></i></button>
-							
-							{% else %}
-								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none"><i
-								class="far fa-thumbs-up c-btn-upvote"  id="up{{comment.id}}" aria-hidden="true"></i></button>
-							{% endif %}
-					{% endif %}
-					{% endfor %}
-				
+			<div id='comment-loop'>
+				{% include 'blog/comments.html' %}
 			</div>
-			<div class="my-2" >
-				<strong class="text-xl-center" id="com-upvote-count{{comment.id}}">{{ comment.number_of_upvotes_comment }}</strong>
-			</div>
-<!-- comment-downvotes -->
-			<div>
-				
-
-					{% for com in comment_status%}
-					
-						{% if com.0 == comment.id %}
-							{% if com.2  %}
-								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
-							class="fas fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
-						{% else %}
-						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
-							class="far fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
-						{% endif %}
-					{% endif %}
-					{% endfor %}
-					
-					
-				
-			</div>
-			<div class="my-2" >
-				<strong class="text-xl-center" id="com-downvote-count{{comment.id}}">{{ comment.number_of_downvotes_comment  }}</strong>
-			</div>
-			{% else %}
-			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
-				article!</a><br>
-			{% endif %}
-		</div>
-				</li>
-				{% endfor %}
-			</ul>
-			{% else %}
-			<strong class="text-secondary">No Replies...</strong>
-			{% endif %}
 
 		</div>
 
@@ -421,5 +345,35 @@ $('.bookmark-btn').click(function(){
         });
 
 	 })
+
+$('#comment-form').on('submit', function(event){
+		event.preventDefault();
+		console.log("form submitted!")  // sanity check
+		create_post();
+	});
+
+
+	function create_post() {
+    
+    $.ajax({
+        url : {% url 'comment-ajax' %}, // the endpoint
+        type : "POST", // http method
+        data : {'csrfmiddlewaretoken': '{{ csrf_token }}', 'the_comment' : $('#comment-content').val(), 'object': {{ post_connect }} }, // data sent with the post request
+
+        // handle a successful response
+        success : function(response) {
+            $('#comment-content').val(''); // remove the value from the input
+			$("#comment-loop").empty();
+			$("#comment-loop").html(response);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
 
 {% endblock script %}

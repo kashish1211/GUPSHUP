@@ -1,0 +1,132 @@
+{% if comments %}
+				{% if  object.number_of_comments > 1 %}
+			<strong class="text-secondary">{{ object.number_of_comments }} Replies</strong>
+			{% else %}
+				<strong class="text-secondary">{{ object.number_of_comments }} Reply</strong>
+			{% endif %}
+			<hr>
+			<ul>
+				{% for comment in comments %}
+				<li>
+					<div>
+						<span>
+							<strong class="text-info">{{ comment.author }} </strong>
+							<small class="text-muted">{{ comment.date_posted }}</small>
+						</span>
+						<p>
+							{{ comment.comment|safe }}
+						</p>
+
+					
+
+					</div>
+
+				<div class='row'>
+			{% if user.is_authenticated %}
+			<div >
+				
+<!--comment_upvotes  -->
+					{% for com in comment_status%}
+					
+						{% if com.0 == comment.id %}
+							{% if com.1  %}
+								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none"><i
+								class="fas fa-thumbs-up c-btn-upvote" id="up{{comment.id}}" aria-hidden="true"></i></button>
+							
+							{% else %}
+								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none"><i
+								class="far fa-thumbs-up c-btn-upvote"  id="up{{comment.id}}" aria-hidden="true"></i></button>
+							{% endif %}
+					{% endif %}
+					{% endfor %}
+				
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id="com-upvote-count{{comment.id}}">{{ comment.number_of_upvotes_comment }}</strong>
+			</div>
+<!-- comment-downvotes -->
+			<div>
+				
+
+					{% for com in comment_status%}
+					
+						{% if com.0 == comment.id %}
+							{% if com.2  %}
+								<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
+							class="fas fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
+						{% else %}
+						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
+							class="far fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
+						{% endif %}
+					{% endif %}
+					{% endfor %}
+					
+					
+				
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id="com-downvote-count{{comment.id}}">{{ comment.number_of_downvotes_comment  }}</strong>
+			</div>
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
+				article!</a><br>
+			{% endif %}
+		</div>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<strong class="text-secondary">No Replies...</strong>
+			{% endif %}
+
+{% block script %}
+$('.c-upvote-btn').click(function(){
+	console.log('hehe');
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'comment-upvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','comment_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+			  if (response.up_status == 'liked'){
+				 
+				   $('#up'+response.id+'').replaceWith("<i class='fas fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+				   $('#down'+response.id+'').replaceWith("<i class='far fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  else{
+				  $('#up'+response.id+'').replaceWith("<i class='far fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
+			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+
+$('.c-downvote-btn').click(function(){
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'comment-downvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','comment_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+				 console.log(response);
+			  if (response.down_status == 'liked'){
+				 
+				   $('#up'+response.id+'').replaceWith("<i class='far fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+				   $('#down'+response.id+'').replaceWith("<i class='fas fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  else{
+				 $('#down'+response.id+'').replaceWith("<i class='far fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
+			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+
+
+{% endblock script %}

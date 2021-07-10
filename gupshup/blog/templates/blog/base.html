@@ -41,7 +41,7 @@
 	 /* Modify the background color */ 
           
         .navbar-custom { 
-            background-color: #98ded9; 
+            background-color: #FFFFFF; 
         } 
         /* Modify brand and text color */ 
           
@@ -63,7 +63,7 @@
 	<nav class="navbar sticky-top navbar-expand-lg navbar-custom pb-2">
 	<a class="navbar-brand" href="/">
 	<img style="max-width:70px; margin-top: -7px;border-radius: 35%;"class="mr-2" src="{%static 'blog/LOGO_PNG.png'%}"></a>
-  <a class="navbar-brand" href="/">Gupshup</a>
+  <a class="navbar-brand" style="color: black" href="/">Gupshup</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon ">
 		<i class="fa fa-bars" style="color: white; font-size:28px;"></i>
@@ -73,15 +73,15 @@
   <div class="collapse navbar-collapse"  id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/" style="color: #1e212d">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/" style="color: black">Home <span class="sr-only">(current)</span></a>
       </li>
 	    {% if user.is_authenticated %}
 			<li class="nav-item ">
-				<a class="nav-link" href="{% url 'bookmark-post'%}" style="color: #1e212d">Bookmark</a>
+				<a class="nav-link" href="{% url 'bookmark-post'%}" style="color: black">Bookmark</a>
 			</li>
 		{% endif %}
 		<li class="nav-item ">
-				<a class="nav-link" href="{% url 'about'%}" style="color: #1e212d">About</a>
+				<a class="nav-link" href="{% url 'about'%}" style="color: black">About</a>
 			</li>
 		
 			
@@ -93,7 +93,7 @@
 	        	<form action="{% url 'search-result' %}" method="GET">
 				<div style=" display: flex;">
 	        		<input class="form-control" style="display: inline;" type="text" name="q" placeholder="Search">
-					<button type="submit" class="btn btn-success-outline" ><i class="fa fa-search " style="font-size:24px; color:white;"></i> </i></button>
+					<button type="submit" class="btn btn-success-outline" ><i class="fa fa-search " style="font-size:24px; color: black;"></i> </i></button>
 					</div>
 	        	</form>
 	        	
