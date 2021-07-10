@@ -230,7 +230,7 @@ def Comment_Ajax(request):
 		if c.downvote_comment.filter(id=request.user.id).exists():
 			downvoted_comment = True
 		comment_new.append([c.id, upvoted_comment, downvoted_comment])
-
+	data['object']=post_connected
 	data['comments'] = comments_connected
 	data['comment_status'] = comment_new
 	

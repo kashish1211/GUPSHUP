@@ -236,6 +236,7 @@ $( document ).ready(function() {
 
 $('.c-upvote-btn').click(function(){
 	console.log('hehe');
+	
 		 $.ajax({
              type: "POST",
              url: "{% url 'comment-upvote-ajax' %}",
@@ -253,6 +254,7 @@ $('.c-upvote-btn').click(function(){
 			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
 			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
               }
+			  
 
         });
 
@@ -365,6 +367,8 @@ $('#comment-form').on('submit', function(event){
             $('#comment-content').val(''); // remove the value from the input
 			$("#comment-loop").empty();
 			$("#comment-loop").html(response);
+			init();
+			
         },
 
         // handle a non-successful response
@@ -375,5 +379,58 @@ $('#comment-form').on('submit', function(event){
         }
     });
 };
+
+function init()
+{
+	$('.c-upvote-btn').click(function(){
+	console.log('hehe');
+	
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'comment-upvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','comment_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+			  if (response.up_status == 'liked'){
+				 
+				   $('#up'+response.id+'').replaceWith("<i class='fas fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+				   $('#down'+response.id+'').replaceWith("<i class='far fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  else{
+				  $('#up'+response.id+'').replaceWith("<i class='far fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
+			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
+              }
+			  
+
+        });
+
+	 })
+
+$('.c-downvote-btn').click(function(){
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'comment-downvote-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','comment_id': $(this).attr('value')},
+             dataType: "json",
+             success: function(response) {
+				 console.log(response);
+			  if (response.down_status == 'liked'){
+				 
+				   $('#up'+response.id+'').replaceWith("<i class='far fa-thumbs-up c-btn-upvote' id=up" + response['id'] + " aria-hidden='true'></i>");
+				   $('#down'+response.id+'').replaceWith("<i class='fas fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  else{
+				 $('#down'+response.id+'').replaceWith("<i class='far fa-thumbs-down c-btn-downvote' id=down" + response['id'] + " aria-hidden='true'></i>");
+			  }
+			  $('#com-upvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-upvote-count"+ response.id + " >" + response.up_count + "</strong>")
+			  $('#com-downvote-count'+response.id+'').replaceWith("<strong class='text-xl-center' id=com-downvote-count"+ response.id + " >" + response.down_count + "</strong>")
+              }
+
+        });
+
+	 })
+}
 
 {% endblock script %}
