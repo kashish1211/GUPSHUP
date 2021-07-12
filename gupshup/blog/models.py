@@ -75,3 +75,13 @@ class PostComment(models.Model):
 
     def __str__(self):
         return str(self.author) + ', ' + self.post_connected.title[:40]
+
+
+class Report(models.Model):
+    post_connected = models.ForeignKey(Post, related_name='report', on_delete=models.CASCADE)
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(default=timezone.now)
+    status  = models.BooleanField(default = False)
+
+    def __str__(self):
+        return str(self.reporter) + ', ' + self.post_connected.title[:40]

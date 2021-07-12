@@ -7,8 +7,8 @@ from django.http import HttpResponseRedirect, request
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormView
-from .models import Post, PostComment
-from .forms import NewCommentForm
+from .models import Post, PostComment, Report
+from .forms import NewCommentForm, NewReportForm
 import operator
 from django.db.models import Count, F, Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -145,8 +145,6 @@ def Bookmark_ajax(request):
 		status = True
 	ctx = {'status':status}
 	return HttpResponse(json.dumps(ctx), content_type='application/json')
-
-
 
 
 
@@ -296,6 +294,8 @@ class PostDetailView(DetailView):
 		new_comment.save()
 		return self.get(self, request, *args, **kwargs)
 
+	
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
@@ -341,3 +341,15 @@ class SearchResultView(ListView):
 
 def about(request):
 	return render(request, 'blog/about.html', {'title': 'About'})
+
+
+def Report_Form(request, pk):
+	print("ehehe")
+	post_connected=get_object_or_404(Post, id=pk)
+	reporter= request.user
+	report = Report(post_connected=post_connected, reporter=reporter)
+	report.save()
+	# return render(request ,'')
+	return redirect('post-detail',pk)
+
+
