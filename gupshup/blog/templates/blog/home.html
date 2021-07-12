@@ -199,6 +199,7 @@
 		
 
 	{% for post in posts|slice:"{{ page_obj.paginator.count }}-1::-1"%}
+	{% if post.is_appropriate %}
 		<article class="media content-section">
 			<img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>
 		    <div class="media-body">
@@ -214,6 +215,7 @@
 				{% endif %}
 			</div>
 		</article>
+	{% endif %}
 	{%endfor%}
 
 	{% if is_paginated%}

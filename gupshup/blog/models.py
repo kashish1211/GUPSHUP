@@ -27,7 +27,8 @@ class Post(models.Model):
     content = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    is_appropriate  = models.BooleanField(default = True)
+    notice = models.CharField(max_length=100, default="This Post was DELETED",null=True, blank=True)
     category = models.CharField(
         max_length=20,
         choices=Category_choices,
