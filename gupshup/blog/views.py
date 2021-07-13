@@ -54,7 +54,7 @@ class UserPostListView(ListView):
 
 	def get_queryset(self):
 		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		return Post.objects.filter(author=user).order_by('-date_posted')
+		return Post.objects.filter(author=user, is_appropriate = True).order_by('-date_posted')
 
 
 class CategoryPostListView(ListView):
@@ -66,7 +66,7 @@ class CategoryPostListView(ListView):
 
 	def get_queryset(self):
 		category = self.kwargs.get('category')
-		return Post.objects.filter(category=category).order_by('-date_posted')
+		return Post.objects.filter(category=category, is_appropriate = True).order_by('-date_posted')
 
 
 class BookmarkView(ListView):
@@ -76,7 +76,7 @@ class BookmarkView(ListView):
 	paginate_by = 5
 
 	def get_queryset(self):
-		return (Post.objects.filter(bookmark=self.request.user))
+		return (Post.objects.filter(bookmark=self.request.user, is_appropriate = True))
 
 
 

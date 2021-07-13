@@ -166,6 +166,10 @@
 					<div class="alert alert-warning">
 					<strong class="default"><i class="fa fa-comments"></i> &nbsp; &nbsp;<a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
 					</div>
+					{% elif notification.description == "deleted your " %}
+					<div class="alert alert-danger">
+					<strong class="default"><i class="fas fa-exclamation-triangle"></i> &nbsp; &nbsp; Admin {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
 					{% endif %}
 					{% endfor %}
 
