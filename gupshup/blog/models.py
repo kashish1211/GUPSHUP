@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 
+
 Category_choices = (
     ("Technology", "Technology"),
     ("Mechanical", "Mechanical"),
@@ -78,11 +79,19 @@ class PostComment(models.Model):
         return str(self.author) + ', ' + self.post_connected.title[:40]
 
 
+
+
+
 class Report(models.Model):
     post_connected = models.ForeignKey(Post, related_name='report', on_delete=models.CASCADE)
-    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    reporter = models.ManyToManyField(User, related_name='reporter',blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
     status  = models.BooleanField(default = False)
+    count = models.IntegerField(default = 1)
+    
 
+    def number_of_counts(self):
+        return self.count()
+    
     def __str__(self):
-        return str(self.reporter) + ', ' + self.post_connected.title[:40]
+        return self.post_connected.title[:40]

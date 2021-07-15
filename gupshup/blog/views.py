@@ -34,7 +34,7 @@ class PostListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		top3 = Post.objects.annotate(
-			q_count=Count('upvote')).order_by('-q_count')[:5]
+			q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
 		context = super(PostListView, self).get_context_data(**kwargs)
 		context['posts'] = Post.objects.all()
 		context['tops'] = top3
@@ -345,10 +345,20 @@ def about(request):
 
 def Report_Form(request, pk):
 	print("ehehe")
-	post_connected=get_object_or_404(Post, id=pk)
-	reporter= request.user
-	report = Report(post_connected=post_connected, reporter=reporter)
-	report.save()
+	post_connected=Post.objects.get(id=pk)
+	if Report.objects.filter(post_connected = post_connected).exists():
+		report = Report.objects.filter(post_connected = post_connected)[0]
+		if Report.objects.filter(reporter = request.user).exists():
+			pass
+		else:
+			report.reporter.add(request.user)
+			report.count += 1
+			report.save()
+	else:
+		report = Report(post_connected=post_connected)
+		
+		report.save()
+		report.reporter.add(request.user)
 	# return render(request ,'')
 	return redirect('post-detail',pk)
 
