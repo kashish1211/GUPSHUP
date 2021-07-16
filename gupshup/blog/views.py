@@ -15,10 +15,12 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import json
 from django.http import HttpResponse
 from notifications.signals import notify
+from taggit.models import Tag
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
-	fields = ['title', 'content', 'category']
+	fields = ['title', 'content', 'tags']
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user
@@ -242,7 +244,8 @@ class PostDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		data = super().get_context_data(**kwargs)
 		post_connected = get_object_or_404(Post, id=self.kwargs['pk'])
-
+		tags = Tag.objects.filter(name__contains = 'hel')
+		print(tags)
 		upvoted = False
 		downvoted = False
 		bookmarked = False
@@ -362,4 +365,27 @@ def Report_Form(request, pk):
 	# return render(request ,'')
 	return redirect('post-detail',pk)
 
+def autocompleteModel(request):
+	if request.is_ajax():
+		q = request.GET.get('term', '').capitalize()
+		q = list(q)
+		q = q[-1]
+		search_tags  = Tag.objects.filter(name__contains = q)
+		results = []
+		
+		for r in search_tags:
+			data = {}
+			data['label']= r.name
+			results.append(data)
+
+		if len(search_tags)==0:
+			data = {}
+			data['label']= "No search available"
+			results.append(data)
+
+		data = json.dumps(results)
+	else:
+		data = 'fail'
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)
 

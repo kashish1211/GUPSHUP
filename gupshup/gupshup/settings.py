@@ -55,6 +55,7 @@ INSTALLED_APPS = [
      "verify_email",
      'django_cleanup.apps.CleanupConfig',
      'notifications',
+     'taggit',
      
     
 ]
@@ -163,6 +164,8 @@ USE_L10N = True
 USE_TZ = True
 
 SITE_ID = 3
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

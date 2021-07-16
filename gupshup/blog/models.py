@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+from taggit.managers import TaggableManager
 
 
 Category_choices = (
@@ -45,6 +46,7 @@ class Post(models.Model):
     upvote = models.ManyToManyField(User, related_name='upvote',blank=True)
     downvote = models.ManyToManyField(User, related_name='downvote',blank=True)
     bookmark = models.ManyToManyField(User, related_name='bookmark',blank=True)
+    tags = TaggableManager()
 
     def number_of_downvotes(self):
         return self.downvote.count()

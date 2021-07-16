@@ -42,7 +42,6 @@
 				<legend class="border-bottom mb-4">
 					Post Your Question
 				</legend>
-				
 				{{ form|crispy }}
 			</fieldset>
 			<div class="form-group">
@@ -60,3 +59,27 @@
   <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 	
 {% endblock content %}
+
+
+{% block script %}
+
+$(document).keypress(
+  function(event){
+    if (event.which == '13') {
+      event.preventDefault();
+    }
+});
+
+ $("#id_tags").autocomplete({
+         source: "{% url 'tags-auto' %}",
+        minLength: 1,
+        autoFocus: true,
+        open: function(){
+                    setTimeout(function () {
+                        $('.ui-autocomplete').css({'z-index':'1000000', 'max-width':'70%', 'border':'none', 'box-shadow':'0px 0 30px rgba(1, 41, 112, 0.08)'});
+                    }, 0);
+                },
+        });
+
+
+{% endblock script %}

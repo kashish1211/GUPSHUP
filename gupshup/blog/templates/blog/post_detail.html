@@ -101,7 +101,22 @@
 						  </button>
 						</div>
 						<div class="modal-body">
+						
 						  Are you sure you want to report the post?
+						<br>
+						<br>
+						<label for="report">Select a reason:</label>
+
+							<select name="report" id="report">
+							<option value="Violent">Violent or repulsive content</option>
+							<option value="Hateful">Hateful or abusive content</option>
+							<option value="Harassment">Harassment or bullying</option>
+							<option value="Spam">Spam or misleading</option>
+							</select>
+
+
+							
+						
 						</div>
 						<div class="modal-footer">
 						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -177,6 +192,9 @@
 		</div>
 <!-- post content -->
 		<a href="{% url 'category' object.category %}"><h6><span class="badge badge-secondary">{{ object.category }}</span></h6></a>
+		{% for tag in object.tags.all %}
+            <h6><span class="badge badge-secondary">{{ tag.name }}</span></h6>
+        {% endfor %}
 		{% if object.is_appropriate%}
 		<h2 class="article-title">{{ object.title | safe }} </h2>
 		<p class="article-content">{{ object.content| safe }}</p>
