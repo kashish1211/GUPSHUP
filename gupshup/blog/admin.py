@@ -15,6 +15,7 @@ admin.site.register(PostComment)
 	# description=message)
 # queryset.update(status='p')
 # admin.site.add_action(mark_inappropriate)
+
 class ReportAdmin(admin.ModelAdmin):
 	list_display = ('post_connected','count','status')
 	search_fields= ['post_connected__id','post_connected__title','reporter__username','status']
@@ -26,6 +27,7 @@ class ReportAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
 	list_display = ('title','author','date_posted')
 	search_fields= ['title','author__username','date_posted','content']
+	
 	
 	filter_horizontal=()
 	list_filter=()

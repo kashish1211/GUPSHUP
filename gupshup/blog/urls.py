@@ -21,5 +21,5 @@ urlpatterns = [
     path('post/<int:pk>/report', views.Report_Form, name='post-report'),
     path('post/search/', SearchResultView.as_view(), name='search-result'),
     path('about/', views.about, name='about'),
-     path('autocomplete/', views.autocompleteModel, name='tags-auto'),
+    path('autocomplete/', views.autocompleteModel, name='tags-auto'),
 ]

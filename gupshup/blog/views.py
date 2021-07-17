@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect, request
 from django.urls import reverse
@@ -25,6 +25,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 	def form_valid(self, form):
 		form.instance.author = self.request.user
 		return super().form_valid(form)
+
+# @login_required
+# def Create_Post(request):
+# 	if request.method == 'POST':
+		
+
+
 
 
 class PostListView(ListView):
@@ -367,9 +374,11 @@ def Report_Form(request, pk):
 
 def autocompleteModel(request):
 	if request.is_ajax():
+		print('heheheheh')
 		q = request.GET.get('term', '').capitalize()
-		q = list(q)
-		q = q[-1]
+		q = q.split(',')
+		print(q)
+		q = q[-1].strip()
 		search_tags  = Tag.objects.filter(name__contains = q)
 		results = []
 		
@@ -378,10 +387,6 @@ def autocompleteModel(request):
 			data['label']= r.name
 			results.append(data)
 
-		if len(search_tags)==0:
-			data = {}
-			data['label']= "No search available"
-			results.append(data)
 
 		data = json.dumps(results)
 	else:

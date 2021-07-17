@@ -259,3 +259,4 @@ CKEDITOR_CONFIGS = {
     }
     
 }
+
