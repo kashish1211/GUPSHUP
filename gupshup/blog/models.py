@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from taggit.managers import TaggableManager
-
+from autoslug import AutoSlugField
 
 Category_choices = (
     ("Technology", "Technology"),
@@ -26,6 +26,7 @@ Category_choices = (
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
+    slug = AutoSlugField(populate_from='title')
     content = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -41,7 +42,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post-detail', kwargs={'pk': self.pk})
+        return reverse('post-detail', kwargs={'slug': self.slug})
 
     upvote = models.ManyToManyField(User, related_name='upvote',blank=True)
     downvote = models.ManyToManyField(User, related_name='downvote',blank=True)
@@ -75,7 +76,7 @@ class PostComment(models.Model):
         return self.upvote_comment.count()
         
     def get_absolute_url(self):
-        return reverse('post-detail', kwargs={'pk': self.pk})
+        return reverse('post-detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return str(self.author) + ', ' + self.post_connected.title[:40]

@@ -81,9 +81,9 @@
 <!-- post update and delete  -->
 				{% if object.is_appropriate %}
 			<div>
-				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}"><i
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'post-update' object.slug %}"><i
 						class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
-				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}"><i
+				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.slug %}"><i
 						class="fas fa-trash" aria-hidden="true">&nbsp;</i>Delete</a>
 				{% endif %}
 			{% else %}
@@ -245,7 +245,7 @@
 			
 				<div class="form-group">
 					<form action="{% url 'comment-ajax' %}" method="POST" id="comment-form">
-					<textarea id="comment-content" name="comment-content" value = "{{object.id}}" rows="5" cols="80"> </textarea>
+					<textarea id="comment-content" name="comment-content" value = "{{object.slug}}" rows="5" cols="80"> </textarea>
   					<br><br>
 					  <button class="btn btn-info comment-form" type="submit">Continue Discussion <i
 							class="fa fa-comments"></i></button>
@@ -400,11 +400,11 @@ $('#comment-form').on('submit', function(event){
 
 
 	function create_post() {
-    
+    console.log('IN create');
     $.ajax({
         url : {% url 'comment-ajax' %}, // the endpoint
         type : "POST", // http method
-        data : {'csrfmiddlewaretoken': '{{ csrf_token }}', 'the_comment' : $('#comment-content').val(), 'object': {{ post_connect }} }, // data sent with the post request
+        data : {'csrfmiddlewaretoken': '{{ csrf_token }}', 'the_comment' : $('#comment-content').val(), 'object': '{{ post_connect }}' }, // data sent with the post request
 
         // handle a successful response
         success : function(response) {

@@ -174,7 +174,7 @@
   
   	<i class="fa fa-lightbulb-o" style="font-size:24px; color:red;"></i> 
  
-			    <span ><a href="{% url 'post-detail' post.id %}" style="color: #1e212d; text-decoration: none" >{{ post.title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>  </span>
+			    <span ><a href="{% url 'post-detail' post.slug %}" style="color: #1e212d; text-decoration: none" >{{ post.title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>  </span>
 				
 		    
 			
@@ -207,7 +207,7 @@
 			      <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
 			      <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
 			    </div>
-			    <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+			    <h2><a class="article-title" href="{% url 'post-detail' post.slug %}">{{ post.title }}</a></h2>
 				{% if post.content|length > 170%}
 			    <p class="article-content">{{ post.content|slice:":170"| safe }}...</p>
 				{% else %}

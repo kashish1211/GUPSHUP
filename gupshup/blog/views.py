@@ -229,8 +229,7 @@ def Downvote_Comment_Ajax(request):
 
 def Comment_Ajax(request):
 	comment_text = request.POST.get('the_comment')
-	print(request.POST.get('object'))
-	post_connected = get_object_or_404(Post, id=request.POST.get('object'))
+	post_connected = get_object_or_404(Post, slug = request.POST.get('object'))
 	response_data = {}
 	comment = PostComment(comment=comment_text, author= request.user, post_connected=post_connected)
 	comment.save()
@@ -267,7 +266,7 @@ class PostDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		data = super().get_context_data(**kwargs)
-		post_connected = get_object_or_404(Post, id=self.kwargs['pk'])
+		post_connected = get_object_or_404(Post, slug=self.kwargs['slug'])
 		
 		upvoted = False
 		downvoted = False
@@ -285,7 +284,7 @@ class PostDetailView(DetailView):
 		data['post_is_upvoted'] = upvoted
 		data['post_is_downvoted'] = downvoted
 		data['post_is_bookmarked'] = bookmarked
-		data['post_connect']= self.kwargs['pk']
+		data['post_connect'] = self.kwargs['slug']
 
 		comments_connected = PostComment.objects.filter(
 			post_connected=self.get_object()).order_by('-date_posted')
