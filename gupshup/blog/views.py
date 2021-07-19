@@ -20,7 +20,7 @@ from taggit.models import Tag
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
-	fields = ['title', 'content', 'tags']
+	fields = ['title', 'content', 'tags','category']
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user
@@ -45,7 +45,7 @@ class PostListView(ListView):
 		top3 = Post.objects.annotate(
 			q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
 		context = super(PostListView, self).get_context_data(**kwargs)
-		context['posts'] = Post.objects.all()
+		context['posts'] = Post.objects.filter(is_appropriate = True)
 		context['tops'] = top3
 		context['announcments'] = Post.objects.filter(category='Announcments')
 		p = Paginator(Post.objects.select_related().all().order_by(
@@ -74,8 +74,25 @@ class CategoryPostListView(ListView):
 	paginate_by = 5
 
 	def get_queryset(self):
+	
 		category = self.kwargs.get('category')
 		return Post.objects.filter(category=category, is_appropriate = True).order_by('-date_posted')
+
+
+
+
+class TagsPostListView(ListView):
+	model = Post
+	template_name = 'blog/post_tags.html'
+	context_object_name = 'posts'
+	paginate_by = 5
+
+	
+
+	def get_queryset(self):
+		post_tag = self.kwargs.get('post_tags')
+		return  Post.objects.filter(tags__name=post_tag,is_appropriate = True).order_by('-date_posted')
+
 
 
 class BookmarkView(ListView):
@@ -251,8 +268,7 @@ class PostDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		data = super().get_context_data(**kwargs)
 		post_connected = get_object_or_404(Post, id=self.kwargs['pk'])
-		tags = Tag.objects.filter(name__contains = 'hel')
-		print(tags)
+		
 		upvoted = False
 		downvoted = False
 		bookmarked = False
@@ -309,7 +325,7 @@ class PostDetailView(DetailView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
-	fields = ['title', 'content', 'category']
+	fields = ['title', 'content', 'category','tags']
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user
@@ -341,11 +357,14 @@ class SearchResultView(ListView):
 	paginate_by = 5
 
 	def get_queryset(self):
+		
 		query = self.request.GET.get('q')
 
 		posts = Post.objects.filter(
 			Q(title__icontains=query) |
-			Q(content__icontains=query))
+			Q(category__icontains=query) |
+			Q(content__icontains=query) |
+			Q(tags__name__icontains=query))
 		return posts
 
 
@@ -374,11 +393,7 @@ def Report_Form(request, pk):
 
 def autocompleteModel(request):
 	if request.is_ajax():
-		print('heheheheh')
 		q = request.GET.get('term', '').capitalize()
-		q = q.split(',')
-		print(q)
-		q = q[-1].strip()
 		search_tags  = Tag.objects.filter(name__contains = q)
 		results = []
 		

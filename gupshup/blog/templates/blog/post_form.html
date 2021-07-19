@@ -129,6 +129,11 @@
       </div>
       </div>
         <div class="form-row">
+      <div class="form-group col-12 " >
+        {{ form.category|as_crispy_field }}
+      </div>
+      </div>
+        <div class="form-row">
           <div class="form-group col-12"  >
 			      {{ form.tags|as_crispy_field }}
 				<small class="form-text text-muted">Separate keywords with a comma, space bar, or enter key</small>

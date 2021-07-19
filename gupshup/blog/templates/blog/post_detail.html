@@ -193,7 +193,7 @@
 <!-- post content -->
 		<a href="{% url 'category' object.category %}"><h6><span class="badge badge-secondary">{{ object.category }}</span></h6></a>
 		{% for tag in object.tags.all %}
-            <h6><span class="badge badge-secondary">{{ tag.name }}</span></h6>
+            <a href="{% url 'post-tags'  tag.name %}"><h6><span class="badge badge-secondary">{{ tag.name }}</span></h6></a>
         {% endfor %}
 		{% if object.is_appropriate%}
 		<h2 class="article-title">{{ object.title | safe }} </h2>

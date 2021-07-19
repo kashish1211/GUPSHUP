@@ -1,12 +1,13 @@
 from django.urls import path
 from django.http import HttpResponseRedirect, request
-from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView, SearchResultView, CategoryPostListView, PostListView
+from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView, SearchResultView, CategoryPostListView, PostListView, TagsPostListView
 from . import views
 
 urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
     path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
-    path('post/<str:category>', CategoryPostListView.as_view(), name='category'),
+    path('post/tags/<str:post_tags>', TagsPostListView.as_view(), name='post-tags'),
+    path('post/category/<str:category>', CategoryPostListView.as_view(), name='category'),
     path('post-upvote-ajax/', views.Upvote_ajax, name='post-upvote-ajax'),
     path('post-downvote-ajax/', views.Downvote_ajax, name='post-downvote-ajax'),
     path('post-bookmark-ajax/', views.Bookmark_ajax, name='post-bookmark-ajax'),
