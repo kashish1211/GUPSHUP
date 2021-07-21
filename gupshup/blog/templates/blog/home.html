@@ -1,253 +1,154 @@
 {% extends "blog/base.html" %}
-{%block carousel%}
-{% load crispy_forms_tags%}
-
-<style>
-#ip2 {
-    border-radius: 25px;
-    border: 2px solid #98ded9;
-    padding: 20px; 
-    width: 700px;
-    height: 15px;
-	text-align: center;    
-}
-
-.card-img-overlay {
-  background-color: rgba(#000, 0.4);
-}
-
-.home_newpost:hover{
-	background-color: #98ded9;
-	color: black;
-}
-</style>
 {% load static %}
 
-{% comment %} 
+{% block carousel %}
+{% include 'blog/carousel.html' %}
+{% endblock carousel %}
 
-
-
-
-
-
-{% comment %} second navbar {% endcomment %}
-<div class="container-fluid" style="background-color: #E7E8E9">
-		<div class="nav-scroller py-0 my-0 ">
-			<nav class="nav d-flex justify-content-between">
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Mechanical" %}">Mechanical</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Electronic" %}">Electronic</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Technology" %}">Technology</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Sports" %}">Sports</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Business" %}">Business</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Announcments" %}">Announcments</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Cultural" %}">Cultural</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Politics" %}">Politics</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Fashion" %}">Fashion</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Health" %}">Health</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Travel" %}">Travel</a>
-			<a class="p-2 " style="color: #1e212d" href="{% url 'category' "Miscellenous" %}">Miscellenous</a>
-
-
-			</nav>
-		</div>
-		<hr>
-	</div>
-
-
-
-
-<div class="container-fluid px-0 ">
-
-	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-		<ol class="carousel-indicators">
-		  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-		  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-		  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-		  <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-		  <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-		</ol>
-		<div class="carousel-inner mt-0 py-0">
-		  <div class="carousel-item active">
-			
-			{% if tops.4.category == "Business"%}
-
-		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/business_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  tops.4.category == "Electronic" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/electronic_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  tops.4.category == "Mechanical" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/machine_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  tops.4.category == "Sports" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/sports_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  tops.4.category == "Technology" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/tech_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% else %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-
-		{% endif %}
-
-      	<div class="container py-0 mb-0">
-			
-				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{tops.0.author.profile.image.url}}>{{tops.0.author}}</h4></strong>
-				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid #ffa372; width: 60%; margin-left: 0px; ;"/>
-					{{tops.0.title}}</h6>
-				<p  style="color: #FFF;">{{tops.0.content| safe}}</p>
-				<i style="color: #FFF;">~{{tops.0.date_posted|date:"F d, Y"}}</i>
-			
-		  <p class="lead px-3">
-			  <br>
-		    <a class="btn btn-light " href="{% url 'post-detail' tops.0.id %}" role="button">View Post</a>
-		  </p>
-	  </div>
-    </div>
-    </div>
-			 
-			
-			
-			
-		  
-
-	{% for post in tops|slice:"1:" %}
-
-	 
-		<div class="carousel-item ">
-
-		{% if post.category == "Business"%}
-
-		  <div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/business_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  post.category == "Electronic" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/electronic_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  post.category == "Mechanical" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/machine_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  post.category == "Sports" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/sports_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% elif  post.category == "Technology" %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/tech_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-		{% else %}
-			<div class="jumbotron " style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%),url({%static 'blog/misc_banner.jpg'%}); border-radius: 0; margin-bottom: 0px; ">
-
-		{% endif %}
-		
-			<div class="container py-0 mb-0">
-			
-				<strong><h4 style="color: #FFFF;"><img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>{{post.author}}</h4></strong>
-				<h6 class="mb-2" style="color: white;"><hr style=" border-top: 2px solid white; width: 60%; margin-left: 0px;"/>
-					{{post.title}}</h6>
-				<p  style="color: #FFF;">{{post.content| safe}}</p>
-				<i style="color: #FFF;">~{{post.date_posted|date:"F d, Y"}}</i>
-			
-				<p class="lead px-3">
-					<br>
-				<a class="btn btn-light " href="{% url 'post-detail' post.id %}" role="button">View Post</a>
-				</p>
-			</div>
-  		</div>
-	</div>
-
-	{% endfor %}
-		  
-</div>
-		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		  <span class="sr-only">Previous</span>
-		</a>
-		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		  <span class="sr-only">Next</span>
-		</a>
-	  </div>
-</div>
-
-
-
-
-
-
-   
-  
-<div class="container-fluid px-0 mx-0 my-0 py-0 mb-3">
-
-	<div class="alert alert-secondary my-0 py-0 " role="alert">
-
-  <marquee  class="my-0 py-0"><p class="my-0 py-0" style="font-family: Impact; font-size: 15pt "> 
-  <div  style="white-space: nowrap">
-  {% for post in announcments|slice:"::-1"%}
-  
-  	<i class="fa fa-lightbulb-o" style="font-size:24px; color:red;"></i> 
- 
-			    <span ><a href="{% url 'post-detail' post.slug %}" style="color: #1e212d; text-decoration: none" >{{ post.title }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>  </span>
-				
-		    
-			
-	{%endfor%}
-	</div>
-	</marquee>	
-
-	</div>
-</div>
-	
-	{% endblock %}
 {% block content %}
 
+    <article class="entry">
 
-
-		<div class="container-fluid my-3 ">
-			<a type="button" class="btn btn-outline-primary container-fluid home_newpost" href="{% url 'post-create' %}" style="border-radius: 15px; background-color: white;">Click here to Post!</a>
-			
-		</div>
-		
-
-		
-
-	{% for post in posts|slice:"{{ page_obj.paginator.count }}-1::-1"%}
-	{% if post.is_appropriate %}
-		<article class="media content-section">
-			<img class="rounded-circle article-img "src = {{post.author.profile.image.url}}>
-		    <div class="media-body">
-			    <div class="article-metadata">
-			      <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-			      <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-			    </div>
-			    <h2><a class="article-title" href="{% url 'post-detail' post.slug %}">{{ post.title }}</a></h2>
-				{% if post.content|length > 170%}
-			    <p class="article-content">{{ post.content|slice:":170"| safe }}...</p>
-				{% else %}
-				 <p class="article-content">{{ post.content|slice:":170"| safe }}</p>
-				{% endif %}
+			<div class="entry-img">
+			<img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
 			</div>
-		</article>
-	{% endif %}
-	{%endfor%}
 
-	{% if is_paginated%}
-		{% if page_obj.has_previous %}
-			<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-		{% endif %}
+			<h2 class="entry-title">
+			<a href="blog-single.html">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</a>
+			</h2>
 
-		{% for num in page_obj.paginator.page_range %}
+			<div class="entry-meta">
+			<ul>
+				<li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="blog-single.html">John Doe</a></li>
+				<li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
+				<li class="d-flex align-items-center"><i class="icofont-comment"></i> <a href="blog-single.html">12 Comments</a></li>
+			</ul>
+			</div>
 
-			{% if page_obj.number == num %}
+			<div class="entry-content">
+			<p>
+				Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
+				Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
+			</p>
+			<div class="read-more">
+				<a href="blog-single.html">Read More</a>
+			</div>
+			</div>
 
-				<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-			{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
-				<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
-			{% endif %}
+		</article><!-- End blog entry -->
 
-		{% endfor %}
+		<article class="entry">
 
-		{% if page_obj.has_next %}
-			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-		{% endif %}
+			<div class="entry-img">
+			<img src="assets/img/blog/blog-2.jpg" alt="" class="img-fluid">
+			</div>
 
-	{% endif %}
+			<h2 class="entry-title">
+			<a href="blog-single.html">Nisi magni odit consequatur autem nulla dolorem</a>
+			</h2>
+
+			<div class="entry-meta">
+			<ul>
+				<li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="blog-single.html">John Doe</a></li>
+				<li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
+				<li class="d-flex align-items-center"><i class="icofont-comment"></i> <a href="blog-single.html">12 Comments</a></li>
+			</ul>
+			</div>
+
+			<div class="entry-content">
+			<p>
+				Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Quo libero rerum voluptatem pariatur nam.
+				Ad impedit qui officiis est in non aliquid veniam laborum. Id ipsum qui aut. Sit aliquam et quia molestias laboriosam. Tempora nam odit omnis eum corrupti qui aliquid excepturi molestiae. Facilis et sint quos sed voluptas. Maxime sed tempore enim omnis non alias odio quos distinctio.
+			</p>
+			<div class="read-more">
+				<a href="blog-single.html">Read More</a>
+			</div>
+			</div>
+
+		</article><!-- End blog entry -->
+
+		<article class="entry">
+
+			<div class="entry-img">
+			<img src="assets/img/blog/blog-3.jpg" alt="" class="img-fluid">
+			</div>
+
+			<h2 class="entry-title">
+			<a href="blog-single.html">Possimus soluta ut id suscipit ea ut. In quo quia et soluta libero sit sint.</a>
+			</h2>
+
+			<div class="entry-meta">
+			<ul>
+				<li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="blog-single.html">John Doe</a></li>
+				<li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
+				<li class="d-flex align-items-center"><i class="icofont-comment"></i> <a href="blog-single.html">12 Comments</a></li>
+			</ul>
+			</div>
+
+			<div class="entry-content">
+			<p>
+				Aut iste neque ut illum qui perspiciatis similique recusandae non. Fugit autem dolorem labore omnis et. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
+				Doloremque est saepe laborum aut. Ipsa cupiditate ex harum at recusandae nesciunt. Ut dolores velit.
+			</p>
+			<div class="read-more">
+				<a href="blog-single.html">Read More</a>
+			</div>
+			</div>
+
+		</article><!-- End blog entry -->
+
+		<article class="entry">
+
+			<div class="entry-img">
+			<img src="assets/img/blog/blog-4.jpg" alt="" class="img-fluid">
+			</div>
+
+			<h2 class="entry-title">
+			<a href="blog-single.html">Non rem rerum nam cum quo minus. Dolor distinctio deleniti explicabo eius exercitationem.</a>
+			</h2>
+
+			<div class="entry-meta">
+			<ul>
+				<li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="blog-single.html">John Doe</a></li>
+				<li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
+				<li class="d-flex align-items-center"><i class="icofont-comment"></i> <a href="blog-single.html">12 Comments</a></li>
+			</ul>
+			</div>
+
+			<div class="entry-content">
+			<p>
+				Aspernatur rerum perferendis et sint. Voluptates cupiditate voluptas atque quae. Rem veritatis rerum enim et autem. Saepe atque cum eligendi eaque iste omnis a qui.
+				Quia sed sunt. Ea asperiores expedita et et delectus voluptates rerum. Id saepe ut itaque quod qui voluptas nobis porro rerum. Quam quia nesciunt qui aut est non omnis. Inventore occaecati et quaerat magni itaque nam voluptas. Voluptatem ducimus sint id earum ut nesciunt sed corrupti nemo.
+			</p>
+			<div class="read-more">
+				<a href="blog-single.html">Read More</a>
+			</div>
+			</div>
+
+	</article><!-- End blog entry -->
+
+		<div class="blog-pagination">
+			<ul class="justify-content-center">
+			<li class="disabled"><i class="icofont-rounded-left"></i></li>
+			<li><a href="#">1</a></li>
+			<li class="active"><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#"><i class="icofont-rounded-right"></i></a></li>
+			</ul>
+        </div>
+
+
+
+          
+
+        
+ 
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  
+
+
+
+
 {% endblock content %}
 
-{% block script %}
-{% comment %} <script>
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-    }
-</script> {% endcomment %}
-
-{% endblock script %}
