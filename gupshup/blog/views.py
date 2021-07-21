@@ -408,3 +408,7 @@ def autocompleteModel(request):
 	mimetype = 'application/json'
 	return HttpResponse(data, mimetype)
 
+def Carousel(request):
+	top5 = Post.objects.annotate(
+			q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
+	return render(request, 'blog/carousel.html', {'posts':top5})

@@ -22,38 +22,29 @@
  
 <div class="body-inner">
 
+
+
 <div class="banner-carousel banner-carousel-2 mb-0">
+  {% for post in posts %}
   <div class="banner-carousel-item" style="background-image:url({%static 'blog/business_banner.jpg'%});">
     <div class="container">
         <div class="box-slider-content">
           <div class="box-slider-text">
-              <h2 class="box-slide-title">17 Years Of Excellence In</h2>
-              <h3 class="box-slide-sub-title">Construction Industry</h3>
-              <p class="box-slide-description">You have ideas, goals, and dreams. We have a culturally diverse, forward
-                thinking team looking for talent like.</p>
+          <img class="rounded-circle article-img " src = {{post.author.profile.image.url}} height="45px" width="45px">
+              <h2 class="box-slide-title">{{ post.author }}</h2>
+              <h3 class="box-slide-sub-title">{{ post.title }}</h3>
+              
+              <p class="box-slide-description">{{ post.content|safe }}</p>
+              <hr style="color: white;">
+              {% comment %} <img class="rounded-circle article-img " src = {{post.author.profile.image.url}}> {% endcomment %}
               <p>
-                <a href="services.html" class="slider btn btn-primary">Our Service</a>
+                <a href="services.html" class="slider btn btn-primary">View Post</a>
               </p>
           </div>
         </div>
     </div>
   </div>
-
-  <div class="banner-carousel-item" style="background-image:url(images/slider-main/bg5.jpg)">
-    <div class="slider-content text-left">
-        <div class="container">
-          <div class="box-slider-content">
-              <div class="box-slider-text">
-                <h2 class="box-slide-title">When Services Matters</h2>
-                <h3 class="box-slide-sub-title">Your Choice is Simple</h3>
-                <p class="box-slide-description">You have ideas, goals, and dreams. We have a culturally diverse, forward
-                    thinking team looking for talent like.</p>
-                <p><a href="about.html" class="slider btn btn-primary" aria-label="about-us">Know Us</a></p>
-              </div>
-          </div>
-        </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 

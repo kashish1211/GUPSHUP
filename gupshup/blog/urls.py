@@ -23,4 +23,5 @@ urlpatterns = [
     path('post/search/', SearchResultView.as_view(), name='search-result'),
     path('about/', views.about, name='about'),
     path('autocomplete/', views.autocompleteModel, name='tags-auto'),
+    path('carousel/', views.Carousel, name='carousel'),
 ]
