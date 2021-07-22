@@ -27,11 +27,13 @@
 <div class="banner-carousel banner-carousel-2 mb-0">
   {% for post in posts %}
   <div class="banner-carousel-item" style="background-image:url({%static 'blog/business_banner.jpg'%});">
-    <div class="container">
+    <div class="container" >
         <div class="box-slider-content">
-          <div class="box-slider-text">
-          <img class="rounded-circle article-img " src = {{post.author.profile.image.url}} height="45px" width="45px">
-              <h2 class="box-slide-title">{{ post.author }}</h2>
+          <div class="box-slider-text" >
+          
+          <img class="rounded-circle article-img" src = "{{post.author.profile.image.url}} "  style="height:50px; width: 50px;">
+              <h2 class="box-slide-title my-3">{{ post.author }}</h2>
+              
               <h3 class="box-slide-sub-title">{{ post.title }}</h3>
               
               <p class="box-slide-description">{{ post.content|safe }}</p>

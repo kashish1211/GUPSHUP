@@ -35,7 +35,7 @@
 	{% comment %} BOOTSTRAPMADE VENDOR {% endcomment %}
 
 	  <!-- Favicons -->
-		<link href="{% static 'blog/assets/img/favicon.png' %}" rel="icon">
+		<link href="{% static 'blog/assets/img/gupshup_red.png'%}" rel="icon">
 		<link href="{% static 'blog/assets/img/apple-touch-icon.png" rel="apple-touch-icon' %}">
 
 		<!-- Google Fonts -->
@@ -70,7 +70,7 @@
 <style>
 	{% block style %} {% endblock style %}
 
-	 /* Modify the background color */ 
+	 {% comment %} /* Modify the background color */ 
           
         .navbar-custom { 
             background-color: #FFFFFF; 
@@ -84,7 +84,7 @@
 
 		.custom-toggler .navbar-toggler-icon {
   				background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-}
+} {% endcomment %}
 
 
 </style>
@@ -93,16 +93,17 @@
 
 <header id="header" class="fixed-top">
     <div class="container-fluid">
-      <div class="row justify-content-center">
+      <div class="row " style="padding-left:5%;">
         <div class="col-xl-10 d-flex align-items-center">
-          <h1 class="logo mr-auto"><a href="index.html">Gupshup<span>.</span></a></h1>
+          <a href="/"><img src="{% static 'blog/assets/img/gupshup_red.png'%}" alt="" height="70px" width="100px"></a>
+          <h1 class="logo mr-auto"><a href="/">Gupshup<span>.</span></a></h1>
           <!-- Uncomment below if you prefer to use an image logo -->
           <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
 
-          <nav class="nav-menu d-none d-lg-block" style="margin-left: 40%;">
+          <nav class="nav-menu d-none d-lg-block" style="margin-left: 37%;">
             <ul>
               <li class="active"> <a class="nav-link" href="/" style="color: black">Home <span class="sr-only">(current)</span></a></li>
-              <li><a class="nav-link" href="{% url 'bookmark-post'%}" style="color: black">Bookmark</a></li>
+              
               <li><a class="nav-link" href="{% url 'about'%}" style="color: black">About</a></li>
               {% comment %} <li><a class="nav-link" href="#portfolio">extra</a></li>
               <li><a class="nav-link" href="#team">extra</a></li>
@@ -126,13 +127,14 @@
               </li>
               <li><a href="#contact">Contact</a></li> {% endcomment %}
 			  {% if user.is_authenticated %}
+        <li><a class="nav-link" href="{% url 'bookmark-post'%}" style="color: black">Bookmark</a></li>
 					
 	        		 <li><a class="get-started-btn scrollto" style="color:white; " href="{% url 'post-create' %}">New Post</a></li>
 	        		 
 					
 					 
 					 
-				<li class="drop-down mx-5" ><a href=""><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
+				<li class="drop-down mx-5" ><a href="{% url 'profile' %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
                			 <ul>
 						<li><a  href="{% url 'profile' %}">Profile</a></li>
 						
@@ -144,8 +146,8 @@
 				
 					
 	        	{% else %}
-		           <a class="get-started-btn scrollto" href="{% url 'login' %}">Login</a>
-		           <a class="get-started-btn scrollto" href="{% url 'register' %}">Register</a>
+		           <li><a class="get-started-btn scrollto" style="color:white; " href="{% url 'login' %}">Login</a></li>
+		           <li><a class="get-started-btn scrollto" style="color:white; "  href="{% url 'register' %}">Register</a></li>
 		           {% endif %}
 
           
@@ -171,6 +173,7 @@
 	
 	{% endblock %}
 	
+  <body style="background-color: #fbfafa;">
 	
 	{% comment %} <main id="main"> {% endcomment %}
 
@@ -211,13 +214,16 @@
 
               <h3 class="sidebar-title">Recent Posts</h3>
               <div class="sidebar-item recent-posts">
+              {% for post in recent %}
                 <div class="post-item clearfix">
-                  <img src="assets/img/blog/blog-recent-1.jpg" alt="">
-                  <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
-                  <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
+                    <img src = {{ post.author.profile.image.url }} alt="">
+                    <h4><a href="{% url 'post-detail' post.slug %}">{{ post.title }}</a></h4>
+                    <time datetime="2020-01-01">{{ post.date_posted|date }}</time>
+                  </div>
+              {% endfor %}
+                
 
-                <div class="post-item clearfix">
+                {% comment %} <div class="post-item clearfix">
                   <img src="assets/img/blog/blog-recent-2.jpg" alt="">
                   <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
                   <time datetime="2020-01-01">Jan 1, 2020</time>
@@ -239,14 +245,17 @@
                   <img src="assets/img/blog/blog-recent-5.jpg" alt="">
                   <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
                   <time datetime="2020-01-01">Jan 1, 2020</time>
-                </div>
+                </div> {% endcomment %}
 
               </div><!-- End sidebar recent posts-->
 
               <h3 class="sidebar-title">Tags</h3>
               <div class="sidebar-item tags">
                 <ul>
-                  <li><a href="#">App</a></li>
+                {% for tag in tags %}
+                  <li><a href="{% url 'post-tags' tag %}">{{ tag }}</a></li>
+                {% endfor %}
+                  {% comment %} <li><a href="#">App</a></li>
                   <li><a href="#">IT</a></li>
                   <li><a href="#">Business</a></li>
                   <li><a href="#">Mac</a></li>
@@ -256,7 +265,7 @@
                   <li><a href="#">Studio</a></li>
                   <li><a href="#">Smart</a></li>
                   <li><a href="#">Tips</a></li>
-                  <li><a href="#">Marketing</a></li>
+                  <li><a href="#">Marketing</a></li> {% endcomment %}
                 </ul>
               </div><!-- End sidebar tags-->
 

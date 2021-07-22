@@ -26,7 +26,7 @@
 .slide-title-box {
   font-size: 16px;
   line-height: 39px;
-  background: #ffb600;
+  background: #e03a3c;
   color: #fff;
   display: inline-block;
   padding: 0 15px;
@@ -122,11 +122,11 @@
 
 .slider.border {
   background: none;
-  border: 2px solid #ffb600 !important;
+  border: 2px solid #e03a3c !important;
 }
 
 .slider.border:hover {
-  background: #ffb600;
+  background: #e03a3c;
   border: 2px solid transparent;
 }
 
@@ -167,7 +167,7 @@
 .slick-dots li button:hover:before, .slick-dots .slick-dots li button:focus:before,
 .slick-dots li.slick-active button:before {
   opacity: 1;
-  color: #ffb600;
+  color: #e03a3c;
 }
 
 .slick-slide {
@@ -201,7 +201,7 @@
 }
 
 .banner-carousel .carousel-control i:hover {
-  background: #ffb600;
+  background: #e03a3c;
   color: #fff;
 }
 
@@ -228,6 +228,7 @@
     left: 20px;
     bottom: 20px;
     width: calc(100% - 40px);
+    
   }
 }
 
@@ -237,6 +238,7 @@
   display: inline-block;
   padding: 20px 30px;
   max-width: 650px;
+  min-width: 600px;
 }
 
 .box-slide-title {
@@ -249,6 +251,11 @@
 @media (max-width: 767px) {
   .box-slide-title {
     font-size: 16px;
+  }
+}
+@media (max-width: 767px) {
+  .box-slider-text {
+    min-width: 320px;
   }
 }
 

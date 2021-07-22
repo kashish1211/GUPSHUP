@@ -11,6 +11,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
+  background-color: #fbfafa;
 }
 
 a {
@@ -1563,7 +1564,9 @@ section {
 .blog .entry {
   padding: 30px;
   margin-bottom: 60px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgb(224 58 60 / 13%);
+  background-color: white;
+  
 }
 
 .blog .entry .entry-img {
@@ -1887,7 +1890,7 @@ section {
 .blog .blog-comments .reply-form .btn-primary:hover {
   background-color: #e03a3c;
 }
-
+/* 
 .blog .blog-pagination {
   color: #444444;
 }
@@ -1932,12 +1935,13 @@ section {
   color: #f1f1f1;
   padding: 10px 16px;
   display: inline-block;
-}
+} */
 
 .blog .sidebar {
   padding: 30px;
   margin: 0 0 60px 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgb(224 58 60 / 13%);
+  background-color: white;
 }
 
 .blog .sidebar .sidebar-title {

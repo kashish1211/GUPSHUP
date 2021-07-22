@@ -42,11 +42,8 @@ class PostListView(ListView):
 	paginate_by = 5
 
 	def get_context_data(self, **kwargs):
-		top3 = Post.objects.annotate(
-			q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
 		context = super(PostListView, self).get_context_data(**kwargs)
 		context['posts'] = Post.objects.filter(is_appropriate = True)
-		context['tops'] = top3
 		context['announcments'] = Post.objects.filter(category='Announcments')
 		p = Paginator(Post.objects.select_related().all().order_by(
 			'-date_posted'), self.paginate_by)
