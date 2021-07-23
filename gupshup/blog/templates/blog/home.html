@@ -57,6 +57,16 @@
                 {{ post.content|slice:":170"| safe }}
             {% endif %}
 			</p>
+			<p class="d-flex align-items-center">
+			{{ post.number_of_upvotes }}
+			&nbsp;
+			<i class="icofont-thumbs-up"></i>
+			&nbsp; &nbsp;
+			{{ post.number_of_downvotes }}
+			&nbsp;
+			<i class="icofont-thumbs-down"></i>
+	
+			</p>
 			<div class="read-more">
 				<a href="{% url 'post-detail' post.slug %}">Read More</a>
 			</div>
@@ -66,46 +76,6 @@
         {% endif %}
 	{%endfor%}
 
-
-{% comment %} 
-{% if is_paginated%}
-<div class="blog-pagination">
-			<ul class="justify-content-center">
-		{% if page_obj.has_previous %}
-    <li><a href="?page=1">1</a></li>
-            <li ><a href="?page={{ page_obj.previous_page_number }}"><i class="icofont-rounded-left"></i></a></li>
-			
-		{% endif %}
-
-		{% for num in page_obj.paginator.page_range %}
-
-			{% if page_obj.number == num %}
-                    <li><a href="?page={{ num }}">{{ num }}</a></li>
-				
-			{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
-            <li><a href="?page={{ num }}">{{ num }}</a></li>
-				
-			{% endif %}
-
-		{% endfor %}
-
-		{% if page_obj.has_next %}
-			
-            <li><a href="?page={{ page_obj.next_page_number }}"><i class="icofont-rounded-right"></i></a></li>
-			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-		{% endif %}
-</div>
-	{% endif %} {% endcomment %}
-
-		{% comment %} <div class="blog-pagination">
-			<ul class="justify-content-center">
-			<li class="disabled"><i class="icofont-rounded-left"></i></li>
-			<li><a href="#">1</a></li>
-			<li class="active"><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#"><i class="icofont-rounded-right"></i></a></li>
-			</ul>
-        </div> {% endcomment %}
 
 		<div  >
 		<div class="mr-auto">

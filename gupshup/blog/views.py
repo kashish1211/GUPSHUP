@@ -368,9 +368,9 @@ def about(request):
 	return render(request, 'blog/about.html', {'title': 'About'})
 
 
-def Report_Form(request, pk):
+def Report_Form(request, slug):
 	print("ehehe")
-	post_connected=Post.objects.get(id=pk)
+	post_connected=Post.objects.get(slug=slug)
 	if Report.objects.filter(post_connected = post_connected).exists():
 		report = Report.objects.filter(post_connected = post_connected)[0]
 		if Report.objects.filter(reporter = request.user).exists():
@@ -385,7 +385,7 @@ def Report_Form(request, pk):
 		report.save()
 		report.reporter.add(request.user)
 	# return render(request ,'')
-	return redirect('post-detail',pk)
+	return redirect('post-detail',slug)
 
 def autocompleteModel(request):
 	if request.is_ajax():

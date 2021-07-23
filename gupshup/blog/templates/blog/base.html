@@ -216,7 +216,7 @@
               <div class="sidebar-item recent-posts">
               {% for post in recent %}
                 <div class="post-item clearfix">
-                    <img src = {{ post.author.profile.image.url }} alt="">
+                    <img src = {{ post.author.profile.image.url }} alt="" style='height: 80px; width: 80px;'>
                     <h4><a href="{% url 'post-detail' post.slug %}">{{ post.title }}</a></h4>
                     <time datetime="2020-01-01">{{ post.date_posted|date }}</time>
                   </div>

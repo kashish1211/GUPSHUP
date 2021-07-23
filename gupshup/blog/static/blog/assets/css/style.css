@@ -1,13 +1,9 @@
-/**
-* Template Name: Presento - v1.1.1
-* Template URL: https://bootstrapmade.com/presento-bootstrap-corporate-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
+
 
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
@@ -1803,9 +1799,9 @@ section {
 }
 
 .blog .blog-comments .comment h5 {
-  margin-left: 65px;
+  margin-left: 10px;
   font-size: 16px;
-  margin-bottom: 2px;
+ 
 }
 
 .blog .blog-comments .comment h5 a {
@@ -1824,7 +1820,7 @@ section {
 }
 
 .blog .blog-comments .comment time {
-  margin-left: 65px;
+  margin-left: 10px;
   display: block;
   font-size: 14px;
   color: #777777;
@@ -1832,7 +1828,7 @@ section {
 }
 
 .blog .blog-comments .comment p {
-  margin-left: 65px;
+  margin-left: 10px;
 }
 
 .blog .blog-comments .comment.comment-reply {

@@ -30,10 +30,11 @@
     <div class="container" >
         <div class="box-slider-content">
           <div class="box-slider-text" >
-          
+          <div class="d-flex flex-row">
           <img class="rounded-circle article-img" src = "{{post.author.profile.image.url}} "  style="height:50px; width: 50px;">
+
               <h2 class="box-slide-title my-3">{{ post.author }}</h2>
-              
+              </div>
               <h3 class="box-slide-sub-title">{{ post.title }}</h3>
               
               <p class="box-slide-description">{{ post.content|safe }}</p>

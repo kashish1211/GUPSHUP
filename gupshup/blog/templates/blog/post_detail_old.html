@@ -1,51 +1,97 @@
-{% extends 'blog/base.html' %}
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags%}
 {% load social_share %}
+
+
 {% block style %}
+	.form-control-sm
+	{
+    min-height: 34px;
+    padding: 7px 8px;
+    font-size: 13px;
+    color: #333;
+    vertical-align: middle;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 8%);
+	}
+	.dropdown-menu
+	{
+		padding: 20px 10px 10px 10px;
+		
+	}
 
+	.fa-whatsapp {
+  
+  color: #25D366;
+}
+.fa-google-plus-g {
+  
+  color: #db4a39;
+}
+.fa-envelope {
+    
+    color: #BB001B;
+}
 
+.fa-twitter {
+    
+    color: #00acee;
+}
+.fa-facebook-f {
+    
+    color: #3b5998;
+}
+.fa-telegram {
+    
+    color: #0088cc;
+}
 
 {% endblock style %}
 {% block content %}
 
+<article class="media content-section">
+<!-- post details -->
+	<img class="rounded-circle article-img " src={{object.author.profile.image.url}}>
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+			<small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+			{% if user.is_authenticated %}
+<!-- bookmarks -->
+			{% if object.is_appropriate %}
+				{% if post_is_bookmarked%}
+				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none" style="float: right;"><i
+						class="fas fa-bookmark fa-2x btn-bookmark" style="color: red;" aria-hidden="true"></i></button>
+				{% else %}
+				<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none " style="float: right;"><i
+						class="far fa-bookmark fa-2x btn-bookmark" style="color: red;" aria-hidden="true"></i></button>
+				{% endif %}
+			{% endif %}
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to Bookmark this
+				article!</a><br>
+			{% endif %}
 
-
-    <!-- ======= Blog Single Section ======= -->
-    <section id="blog" class="blog" style="padding-top:0px;">
-      <div class="container" >
-
-        <div class="row">
-
-          <div class="entries">
-
-            <article class="entry entry-single">
-
-              <div class="entry-img">
-                <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
-              </div>
-
-              <h2 class="entry-title">
-                <a href="#">{{ post.title }}</a>
-              </h2>
-
-              <div class="entry-meta">
-                <ul>
-                  <li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a></li>
-                  <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <time datetime="2020-01-01">{{ post.date_posted|date }}</time></li>
-                  {% if post.author == user %}
-                  <li class="d-flex align-items-center"><i class="fa fa-pencil-square-o"></i> <a href="{% url 'post-update' object.slug %}">Edit Post</a></li>
-                  <li class="d-flex align-items-center"><i class="fas fa-trash"></i> <a href="{% url 'post-delete' object.slug %}">Delete Post</a></li>
-                  {% else %}
-
-                  {% if post_is_bookmarked%}
-                    <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none" ><i
-                        class="fas fa-bookmark fa-3x btn-bookmark"  aria-hidden="true"></i> Bookmark Post</a>
-                    {% else %}
-                    <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none " ><i
-                        class="far fa-bookmark fa-3x btn-bookmark"  aria-hidden="true"></i>Bookmark Post</a>
-                  {% endif %}
-
-                  <li class="d-flex align-items-center" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-exclamation-triangle"></i>Report Post</li>
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			{% if object.author == user %}
+<!-- post update and delete  -->
+				{% if object.is_appropriate %}
+			<div>
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'post-update' object.slug %}"><i
+						class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
+				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.slug %}"><i
+						class="fas fa-trash" aria-hidden="true">&nbsp;</i>Delete</a>
+				{% endif %}
+			{% else %}
+				
+				<button type="button" class="btn btn-danger btn-sm mt-1 mb-1" data-toggle="modal" data-target="#exampleModal">
+					<i class='fas fa-exclamation-triangle'> Report</i>
+				</button>
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 					  <div class="modal-content">
 						<div class="modal-header">
@@ -74,59 +120,25 @@
 						</div>
 						<div class="modal-footer">
 						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						  <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-report' object.slug %}" value='{{ object.slug }}'><i
+						  <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-report' object.id %}" value='{{ object.id }}'><i
 							class="fas fa-exclamation-triangle"></i>&nbsp;</i>Report</a>
 						</div>
 					  </div>
 					</div>
 				  </div>
-                  
-                  {% endif %}
-                  {% comment %} <li class="d-flex align-items-center"><i class="icofont-comment"></i> <a href="blog-single.html">12 Comments</a></li> {% endcomment %}
-                </ul>
-              </div>
-
-              <div class="entry-content">
-                
-                <p>
-                {{ post.content|safe }}
-                </p>
+					{% endif%}
+<!-- share a post -->
+				
 
 
-               
-              </div>
-
-              <div class="entry-footer clearfix">
-                <div class="float-left">
-                  <i class="icofont-folder"></i>
-                  <ul class="cats">
-                    <li><a href="#">{{ post.category }}</a></li>
-                  </ul>
-
-                  <i class="icofont-tags"></i>
-                  <ul class="tags">
-                  {% for tag in object.tags.all %}
-        
-                    <li><a href="{% url 'post-tags'  tag.name %}">{{ tag.name }}</a></li>
-                    {% endfor %}
-                  
-                  </ul>
-                </div>
-
-                <div class="float-right share">
-
-
-
-
-
-<span>	<!-- Button trigger modal -->
+			<!-- Button trigger modal -->
 			{% if object.is_appropriate %}
-			<button type="button" class="" data-toggle="modal" data-target="#myModalCenter">
+			<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
 			<i class="fas fa-share"></i> Share
 			</button>
 			{% endif %}
 			<!-- Modal -->
-			<div class="modal" id="myModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
                     <div class="modal-header">
@@ -141,7 +153,7 @@
 								<div class="col-3">{% post_to_whatsapp object_or_url '<i class="fab fa-whatsapp fa-3x mx-3"></i>' %}</div>
 								<div class="col-3">{% post_to_twitter "New Post on Gupshup!!!: {{object.title}}. Check it out!" object_or_url '<i class="fab fa-twitter fa-3x mx-3"></i>' %}</div>
 								<div class="col-3">{% post_to_gplus object_or_url '<i class="fab fa-3x fa-google-plus-g"></i>' %}</div>
-								</div> 
+								</div>
 								<div class="row my-3">
 
 								
@@ -168,87 +180,99 @@
 			</div>
 		</div>
 
+
+
+
+
+
+
+
+
 			
 		</div>
-</span>
-
-				
-
-
-
-             
-<!-- 
-                  {% comment %} <a href="" title="Share on Twitter"><i class="icofont-twitter"></i></a>
-                  <a href="" title="Share on Facebook"><i class="icofont-facebook"></i></a>
-                  <a href="" title="Share on Instagram"><i class="icofont-instagram"></i></a> {% endcomment %} -->
-                </div>
-
-              </div>
-
-            </article><!-- End blog entry -->
-
-
-			 
-
-            <div class="blog-author clearfix">
-              <img src={{object.author.profile.image.url}} class="rounded-circle float-left" alt="" style="height: 120px; width: 120px;">
-              <h4><a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a> </h4>
-              <div class="social-links">
-                <a href="https://twitters.com/#"><i class="icofont-twitter"></i></a>
-                <a href="https://facebook.com/#"><i class="icofont-facebook"></i></a>
-                <a href="https://instagram.com/#"><i class="icofont-instagram"></i></a>
-              </div>
-              <p>
-              {{ post.author.profile.about|safe }}
-              </p>
-            </div><!-- End blog author bio -->
-
-
-
-
+<!-- post content -->
+		<a href="{% url 'category' object.category %}"><h6><span class="badge badge-secondary">{{ object.category }}</span></h6></a>
+		{% for tag in object.tags.all %}
+            <a href="{% url 'post-tags'  tag.name %}"><h6><span class="badge badge-secondary">{{ tag.name }}</span></h6></a>
+        {% endfor %}
+		{% if object.is_appropriate%}
+		<h2 class="article-title">{{ object.title | safe }} </h2>
+		<p class="article-content">{{ object.content| safe }}</p>
+		
+		<!-- upvotes -->
+		<div class='row'>
+			{% if user.is_authenticated %}
+			<div >
+					
+					{% if post_is_upvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="fas fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
+					{% else %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="far fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
+					{% endif %}
 			
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id='upvote_count'>{{ number_of_upvotes }}</strong>
+			</div>
+<!-- downvotes -->
+			<div>
+				
+					
+					{% if post_is_downvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="fas fa-thumbs-down btn_downvote" aria-hidden="true"></i></button>
+					{% else %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="far fa-thumbs-down btn_downvote" aria-hidden="true"></i></button>
+					{% endif %}
+			
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id='downvote_count'>{{ number_of_downvotes }}</strong>
+			</div>
+<!-- user authentication check -->
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this
+				article!</a><br>
+			{% endif %}
+		</div>
+		<h4>Answer This Here!</h4>
+		<div id="comments_section">
 
-            <div class="blog-comments">
+			{% if user.is_authenticated %}
+			
+				<div class="form-group">
+					<form action="{% url 'comment-ajax' %}" method="POST" id="comment-form">
+					<textarea id="comment-content" name="comment-content" value = "{{object.slug}}" rows="5" cols="80"> </textarea>
+  					<br><br>
+					  <button class="btn btn-info comment-form" type="submit">Continue Discussion <i
+							class="fa fa-comments"></i></button>
+					  </form>
+				</div>
+			
+			{% else %}
+			<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to answer
+				this!</a><br>
+			{% endif %}
+<!-- comments -->
+			<div id='comment-loop'>
+				{% include 'blog/comments.html' %}
+			</div>
+		{% else %}
+		<h2 class="article-title">{{ object.notice | safe }} </h2>
+		{% endif %}
+		</div>
 
+	</div>
+</article>
 
-
-				<div class="reply-form">
-					<h4>Leave a Reply</h4>
-					<p>Your email address will not be published. Required fields are marked * </p>
-					<form action="{% url 'comment-ajax' %}" method="POST" id="comment-form">{% csrf_token %}
-					  
-					  <div class="row">
-						<div class="col form-group">
-						  <textarea id="comment-content" value = "{{object.slug}}" name="comment" class="form-control" placeholder="Your Comment*"></textarea>
-						</div>
-					  </div>
-					  <button type="submit" class="btn btn-primary comment-form">Post Comment</button>
-	
-					</form>
-	
-				  </div>
-
-        <div id='comment-loop' class='mt-4'>
-				      {% include 'blog/comments.html' %}
-			  </div>
-
-
-          </div><!-- End blog entries list -->
-
-
-         
-
-    
-
-      </div>
-    </section><!-- End Blog Single Section -->
-
-  </main><!-- End #main -->
 {% endblock content %}
-
 
 {% block script %}
  new ClipboardJS('.sharebtn');
+ 
 
 $( document ).ready(function() {
         $('[data-toggle="tooltip"]').tooltip({'placement': 'bottom', trigger: 'focus', delay:{hide:50}});
@@ -357,10 +381,10 @@ $('.bookmark-btn').click(function(){
              dataType: "json",
              success: function(response) {
 			  if (response.status){
-				   $('.btn-bookmark').replaceWith("<i class='fas fa-bookmark fa-3x btn-bookmark'  aria-hidden='true'> </i>");
+				   $('.btn-bookmark').replaceWith("<i class='fas fa-bookmark fa-2x btn-bookmark' style='color: red;' aria-hidden='true'></i>");
 			  }
 			  else{
-				   $('.btn-bookmark').replaceWith("<i class='far fa-bookmark fa-3x btn-bookmark'  aria-hidden='true'> </i>");
+				   $('.btn-bookmark').replaceWith("<i class='far fa-bookmark fa-2x btn-bookmark' style='color: red;' aria-hidden='true'></i>");
 			  }
               }
 
@@ -452,12 +476,5 @@ $('.c-downvote-btn').click(function(){
 
 	 })
 }
-
-
-
-
-
-
-
 
 {% endblock script %}
