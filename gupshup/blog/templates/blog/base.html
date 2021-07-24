@@ -68,6 +68,74 @@
 </head>
 
 <style>
+
+
+/* CSS used here will be applied after bootstrap.css */
+
+{% comment %} .dropdown {
+    display:inline-block;
+    margin-left:20px;
+    padding:10px;
+  } {% endcomment %}
+
+
+{% comment %} .glyphicon-bell {
+   
+    font-size:1.5rem;
+  } {% endcomment %}
+
+{% comment %} .notifications {
+  min-width:580px;
+  } {% endcomment %}
+  
+  .notifications-wrapper {
+     overflow:auto;
+      max-height:250px;
+    }
+    
+ {% comment %} .menu-title {
+     color:#ff7788;
+     font-size:1.5rem;
+      display:inline-block;
+      } {% endcomment %}
+ 
+{% comment %} .glyphicon-circle-arrow-right {
+      margin-left:10px;     
+   }
+   {% endcomment %}
+   
+ {% comment %} .notification-heading, .notification-footer  {
+ 	padding:2px 10px;
+       } {% endcomment %}
+      
+        
+{% comment %} .dropdown-menu.divider {
+  margin:5px 0;          
+  } {% endcomment %}
+
+{% comment %} .item-title {
+  
+ font-size:1.3rem;
+ color:#000;
+    
+} {% endcomment %}
+
+{% comment %} .notifications a.content {
+ text-decoration:none;
+ background:#ccc;
+
+ }
+    
+.notification-item {
+ padding:10px;
+ margin:5px;
+ background:#ccc;
+ border-radius:4px;
+ } {% endcomment %}
+
+
+
+
 	{% block style %} {% endblock style %}
 
 	 {% comment %} /* Modify the background color */ 
@@ -101,35 +169,75 @@
           <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
 
           <nav class="nav-menu d-none d-lg-block" style="margin-left: 37%;">
-            <ul>
-              <li class="active"> <a class="nav-link" href="/" style="color: black">Home <span class="sr-only">(current)</span></a></li>
+            <ul style="margin-top:1%;">
+              <li class="active"> <a class="nav-link" href="/" ><i class="fas fa-home" style="font-size:24px;"></i><span class="sr-only">(current)</span></a></li>
               
-              <li><a class="nav-link" href="{% url 'about'%}" style="color: black">About</a></li>
-              {% comment %} <li><a class="nav-link" href="#portfolio">extra</a></li>
-              <li><a class="nav-link" href="#team">extra</a></li>
-              <li><a class="nav-link" href="blog.html">extra</a></li>
-              <li class="drop-down"><a href="">Drop Down</a>
-                <ul>
-                  <li><a href="#">Drop Down 1</a></li>
-                  <li class="drop-down"><a href="#">Deep Drop Down</a>
-                    <ul>
-                      <li><a href="#">Deep Drop Down 1</a></li>
-                      <li><a href="#">Deep Drop Down 2</a></li>
-                      <li><a href="#">Deep Drop Down 3</a></li>
-                      <li><a href="#">Deep Drop Down 4</a></li>
-                      <li><a href="#">Deep Drop Down 5</a></li>
-                    </ul>	
-                  </li>
-                  <li><a href="#">Drop Down 2</a></li>
-                  <li><a href="#">Drop Down 3</a></li>
-                  <li><a href="#">Drop Down 4</a></li>
-                </ul>
-              </li>
-              <li><a href="#contact">Contact</a></li> {% endcomment %}
+              <li><a  class="nav-link" href="{% url 'about'%}" > <i class="fas fa-users-cog" style="font-size:24px;"></i></a></li>
+             
 			  {% if user.is_authenticated %}
+
+
+
+
+
+
+
+
+
+
+
+
         
-					
-	        		 <li><a class="get-started-btn scrollto" style="color:white; " href="{% url 'post-create' %}">New Post</a></li>
+     <li  class="drop-down" >
+                
+                
+                {% comment %} <div class="dropdown"> {% endcomment %}
+  <a class="nav-link" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+    <i class="fas fa-bell fa-lg" style="font-size:24px; "></i>
+  </a>  
+  
+  <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+    
+    <div class="notification-heading"><h4 class="menu-title">Notifications</h4>
+    </div>
+    <li class="divider"></li>
+    
+   <div class="notifications-wrapper">
+   			{% for notification in  user.notifications.unread %}
+             
+       
+        {% if notification.verb == "Comment" %}
+        <div class="alert alert-info">
+					<strong class="default"><i class="fas fa-thumbs-up"></i> <a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
+        {% elif notification.description == "liked your " %}
+          <div class="alert alert-success">
+					<strong class="default"><i class="fas fa-thumbs-up"></i> <a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
+        {% elif notification.description == "commented on your  " %}
+        <div class="alert alert-warning">
+					<strong class="default"><i class="fa fa-comments"></i> <a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
+        {% elif notification.description == "deleted your " %}
+        <div class="alert alert-danger">
+					<strong class="default"><i class="fas fa-exclamation-triangle"></i> Admin {{ notification.description }}  <a href="{% url 'post-detail' notification.target_object_id %}"> {{ notification.verb }} </a></strong>  
+					</div>
+        {% endif %}
+     
+  
+       
+  
+            {% endfor %}
+     
+   </div>
+   <li class="divider"></li>
+  </ul>
+  
+{% comment %} </div> {% endcomment %}
+                
+                
+                </li>
+                 <li><a  class="nav-link" href="{% url 'post-create' %}" > <i class="fas fa-plus-circle" style="font-size:24px;"></i></a></li>
 	        		 
 					
 					 

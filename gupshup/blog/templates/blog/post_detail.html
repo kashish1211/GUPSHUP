@@ -2,6 +2,18 @@
 {% load social_share %}
 {% block style %}
 
+@media(min-width:768px)
+{
+	.entries
+{
+	min-width:740px;
+}
+.blog .sidebar
+{
+	margin: 0 0 0px 0px;
+}
+
+}
 
 
 {% endblock style %}
@@ -231,6 +243,7 @@
                 <a href="https://facebook.com/#"><i class="icofont-facebook"></i></a>
                 <a href="https://instagram.com/#"><i class="icofont-instagram"></i></a>
               </div>
+			  
               <p>
               {{ post.author.profile.about|safe }}
               </p>

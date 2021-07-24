@@ -128,13 +128,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-menu a {
-  display: block;
+  /* display: block; */
   position: relative;
   color: #111111;
   transition: 0.3s;
   font-size: 17px;
   font-weight: 600;
   font-family: "Raleway", sans-serif;
+  /* padding: 0px 0px 0px 0px; */
 }
 
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
@@ -167,7 +168,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-menu .drop-down ul a {
-  padding: 10px 20px;
+  padding: 0px 0px;;
   font-size: 14px;
   text-transform: none;
 }
@@ -1563,6 +1564,7 @@ section {
   box-shadow: 0 4px 16px rgb(224 58 60 / 13%);
   background-color: white;
   
+  
 }
 
 .blog .entry .entry-img {
@@ -1753,6 +1755,7 @@ section {
   padding: 20px;
   margin-bottom: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+ 
 }
 
 .blog .blog-author img {
@@ -1779,6 +1782,7 @@ section {
   margin-left: 140px;
   font-style: italic;
   color: #b7b7b7;
+  
 }
 
 .blog .blog-comments {
