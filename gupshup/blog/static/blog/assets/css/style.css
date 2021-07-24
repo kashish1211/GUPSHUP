@@ -88,10 +88,10 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo a {
   color: #111111;
 }
-
+/* 
 #header .logo a span {
   color: #e03a3c;
-}
+} */
 
 #header .logo img {
   max-height: 40px;
@@ -176,6 +176,8 @@ h1, h2, h3, h4, h5, h6 {
 .nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul .active > a, .nav-menu .drop-down ul li:hover > a {
   color: #e03a3c;
 }
+
+
 
 .nav-menu .drop-down > a:after {
   content: "\ea99";
