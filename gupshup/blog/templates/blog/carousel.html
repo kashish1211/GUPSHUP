@@ -41,7 +41,7 @@
               <hr style="color: white;">
               {% comment %} <img class="rounded-circle article-img " src = {{post.author.profile.image.url}}> {% endcomment %}
               <p>
-                <a href="services.html" class="slider btn btn-primary">View Post</a>
+                <a href="{% url 'post-detail' post.slug %}" class="slider btn btn-danger">View Post</a>
               </p>
           </div>
         </div>

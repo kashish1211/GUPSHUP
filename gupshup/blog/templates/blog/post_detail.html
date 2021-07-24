@@ -96,6 +96,40 @@
                
               </div>
 
+			  <div class='row'>
+			
+			<div>
+					
+					{% if post_is_upvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="fas fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
+					{% else %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="far fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
+					{% endif %}
+			
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id='upvote_count'>{{ number_of_upvotes }}</strong>
+			</div>
+<!-- downvotes -->
+			<div>
+				
+					
+					{% if post_is_downvoted %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="fas fa-thumbs-down btn_downvote" aria-hidden="true"></i></button>
+					{% else %}
+					<button type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="far fa-thumbs-down btn_downvote" aria-hidden="true"></i></button>
+					{% endif %}
+			
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id='downvote_count'>{{ number_of_downvotes }}</strong>
+			</div>
+			</div>
+
               <div class="entry-footer clearfix">
                 <div class="float-left">
                   <i class="icofont-folder"></i>
@@ -121,9 +155,8 @@
 
 <span>	<!-- Button trigger modal -->
 			{% if object.is_appropriate %}
-			<button type="button" class="" data-toggle="modal" data-target="#myModalCenter">
-			<i class="fas fa-share"></i> Share
-			</button>
+			<i class="fas fa-share-square" type="button" class="" data-toggle="modal" data-target="#myModalCenter">
+			</i> 
 			{% endif %}
 			<!-- Modal -->
 			<div class="modal" id="myModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -137,26 +170,26 @@
                     </div>
 				<div class="modal-body ml-3">
 				<div class="row my-3">
-								<div class="col-3">{% post_to_facebook object_or_url '<i class="fab fa-facebook-f fa-3x mx-3"></i>' %}</div>
-								<div class="col-3">{% post_to_whatsapp object_or_url '<i class="fab fa-whatsapp fa-3x mx-3"></i>' %}</div>
-								<div class="col-3">{% post_to_twitter "New Post on Gupshup!!!: {{object.title}}. Check it out!" object_or_url '<i class="fab fa-twitter fa-3x mx-3"></i>' %}</div>
-								<div class="col-3">{% post_to_gplus object_or_url '<i class="fab fa-3x fa-google-plus-g"></i>' %}</div>
+								<div class="col-3" >{% post_to_facebook object_or_url '<i class="fab fa-facebook fa-3x mx-3" style="color: #3b5998;"></i>' %}</div>
+								<div class="col-3">{% post_to_whatsapp object_or_url '<i class="fab fa-whatsapp fa-3x mx-3" style="color: #25D366;"></i>' %}</div>
+								<div class="col-3">{% post_to_twitter "New Post on Gupshup!!!: {{object.title}}. Check it out!" object_or_url '<i class="fab fa-twitter fa-3x mx-3" style="color: #00acee;"></i>' %}</div>
+								<div class="col-3">{% post_to_gplus object_or_url '<i class="fab fa-3x fa-google-plus-g" style=" color: #db4a39;"></i>' %}</div>
 								</div> 
 								<div class="row my-3">
 
 								
 								<div class="col-3" > </div>
-								<div class="col-3" >{% send_email object.title "New Post: {{object.title}}. Check it out!" object_or_url '<i class="fas fa-envelope fa-3x mx-3"></i>' %}</div>
+								<div class="col-3" >{% send_email object.title "New Post: {{object.title}}. Check it out!" object_or_url '<i class="fas fa-envelope fa-3x mx-3" style="color: #BB001B;"></i>' %}</div>
 								
-								<div class="col-3" >{% post_to_telegram "New Post: {{object.title}}" object_or_url '<i class="fab fa-telegram fa-3x mx-3"></i>'  %}</div>
+								<div class="col-3" >{% post_to_telegram "New Post: {{object.title}}" object_or_url '<i class="fab fa-telegram fa-3x mx-3" style=" color: #0088cc;"></i>'  %}</div>
 								<div class="col-3" ></div>
 								</div>
 				<div class="row container-fluid">
-					<input  class="form-control mx-0 px-0 col-10" value="{{ request.build_absolute_uri }}">
+					<input id="myInput" class="form-control mx-0 px-0 col-10" value="{{ request.build_absolute_uri }}">
 								<!-- Trigger -->
 								 
-								<button class="sharebtn col-2 btn btn-secondary" data-clipboard-text="{{ request.build_absolute_uri }}" style = "border: None;" data-toggle="tooltip" data-placement="bottom" title="Copied Link!">
-								<i class="fas fa-clipboard"></i>
+								<button class="sharebtn col-2 btn-sm  btn-secondary px-0"  data-clipboard-text="{{ request.build_absolute_url }}" style = "border: None; background-color:white; margin:0px;" data-toggle="tooltip" data-placement="bottom" onclick="copyLink()" title="Copied Link!">
+								<i class="fas fa-clipboard fa-2x"></i>
 									
 							</button>
 							
@@ -248,6 +281,20 @@
 
 
 {% block script %}
+
+
+
+function copyLink() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+ 
+}
+
+
+
+
  new ClipboardJS('.sharebtn');
 
 $( document ).ready(function() {

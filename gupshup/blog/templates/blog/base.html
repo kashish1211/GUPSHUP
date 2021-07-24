@@ -127,7 +127,7 @@
               </li>
               <li><a href="#contact">Contact</a></li> {% endcomment %}
 			  {% if user.is_authenticated %}
-        <li><a class="nav-link" href="{% url 'bookmark-post'%}" style="color: black">Bookmark</a></li>
+        
 					
 	        		 <li><a class="get-started-btn scrollto" style="color:white; " href="{% url 'post-create' %}">New Post</a></li>
 	        		 
@@ -137,6 +137,7 @@
 				<li class="drop-down mx-5" ><a href="{% url 'profile' %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
                			 <ul>
 						<li><a  href="{% url 'profile' %}">Profile</a></li>
+            <li><a  href="{% url 'bookmark-post'%}" >Bookmark</a></li>
 						
 						<li><a  href="{% url 'logout' %}">Logout</a></li>
 						
