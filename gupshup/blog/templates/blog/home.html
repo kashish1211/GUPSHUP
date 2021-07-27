@@ -61,12 +61,12 @@
 			{{ post.number_of_upvotes }}
 			&nbsp;
 			<i class="icofont-thumbs-up"></i>
-			&nbsp; &nbsp;
-			{{ post.number_of_downvotes }}
+			 &nbsp; &nbsp;
+			{% comment %} {{ post.number_of_downvotes }}
 			&nbsp;
 			<i class="icofont-thumbs-down"></i>
 	
-			</p>
+			</p> {% endcomment %}
 			<div class="read-more">
 				<a href="{% url 'post-detail' post.slug %}">Read More</a>
 			</div>
@@ -74,7 +74,7 @@
 
 		</article><!-- End blog entry -->
         {% endif %}
-	{%endfor%}
+	{% endfor %}
 
 
 		<div  >

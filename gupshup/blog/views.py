@@ -16,7 +16,7 @@ import json
 from django.http import HttpResponse
 from notifications.signals import notify
 from taggit.models import Tag
-
+from datetime import date
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
@@ -40,6 +40,8 @@ class PostListView(ListView):
 	context_object_name = 'posts'
 	ordering = ['-date_posted']
 	paginate_by = 5
+	
+	
 
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
@@ -48,6 +50,8 @@ class PostListView(ListView):
 		p = Paginator(Post.objects.select_related().all().order_by(
 			'-date_posted'), self.paginate_by)
 		context['posts'] = p.page(context['page_obj'].number)
+		
+
 		return context
 
 
@@ -58,9 +62,11 @@ class UserPostListView(ListView):
 
 	paginate_by = 5
 
-	def get_queryset(self):
-		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		return Post.objects.filter(author=user, is_appropriate = True).order_by('-date_posted')
+	def get_context_data(self, **kwargs):
+		user_profile = get_object_or_404(User, username=self.kwargs.get('username'))
+		posts =Post.objects.filter(author=user_profile, is_appropriate = True).order_by('-date_posted')
+		
+		return {'user_profile':user_profile,'posts':posts}
 
 
 class CategoryPostListView(ListView):
@@ -406,6 +412,15 @@ def autocompleteModel(request):
 	return HttpResponse(data, mimetype)
 
 def Carousel(request):
-	top5 = Post.objects.annotate(
+	today = date.today()
+	today = str(today)
+	today_mon = today[5:7]
+	prev_mon = int(today_mon)-1
+	prev = today[:5] + str(prev_mon) + today[7:]
+	f = [ int(x) for x in prev.split('-')]
+	t = [ int(x) for x in today.split('-')]
+	pos = Post.objects.filter(date_posted__range=(date(f[0],f[1],f[2]), date(t[0],t[1],t[2])))
+	top5 = pos.annotate(
 			q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
+	print(top5)
 	return render(request, 'blog/carousel.html', {'posts':top5})

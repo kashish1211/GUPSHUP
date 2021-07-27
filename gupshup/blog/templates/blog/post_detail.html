@@ -221,11 +221,7 @@
 
 
 
-             
-<!-- 
-                  {% comment %} <a href="" title="Share on Twitter"><i class="icofont-twitter"></i></a>
-                  <a href="" title="Share on Facebook"><i class="icofont-facebook"></i></a>
-                  <a href="" title="Share on Instagram"><i class="icofont-instagram"></i></a> {% endcomment %} -->
+           
                 </div>
 
               </div>
@@ -238,11 +234,16 @@
             <div class="blog-author clearfix">
               <img src={{object.author.profile.image.url}} class="rounded-circle float-left" alt="" style="height: 120px; width: 120px;">
               <h4><a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a> </h4>
-              <div class="social-links">
-                <a href="https://twitters.com/#"><i class="icofont-twitter"></i></a>
+              
+			  <p>
+			  <a href = "mailto: {{ post.author.email }}" style="color: #b7b7b7;;">{{ post.author.email }}</a>
+			  
+			  </p>
+			  	
+                {% comment %} <a href="https://twitters.com/#"><i class="icofont-twitter"></i></a>
                 <a href="https://facebook.com/#"><i class="icofont-facebook"></i></a>
-                <a href="https://instagram.com/#"><i class="icofont-instagram"></i></a>
-              </div>
+                <a href="https://instagram.com/#"><i class="icofont-instagram"></i></a> {% endcomment %}
+              
 			  
               <p>
               {{ post.author.profile.about|safe }}

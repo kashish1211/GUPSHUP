@@ -140,6 +140,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
   color: #e03a3c;
+  
 }
 
 .nav-menu .drop-down ul {
@@ -154,6 +155,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #fff;
   box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
   transition: 0.3s;
+ 
 }
 
 .nav-menu .drop-down:hover > ul {
@@ -165,16 +167,22 @@ h1, h2, h3, h4, h5, h6 {
 .nav-menu .drop-down li {
   min-width: 180px;
   position: relative;
+ 
 }
 
 .nav-menu .drop-down ul a {
   padding: 0px 0px;;
   font-size: 14px;
   text-transform: none;
+  
 }
+
+
 
 .nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul .active > a, .nav-menu .drop-down ul li:hover > a {
   color: #e03a3c;
+ 
+  
 }
 
 
@@ -241,7 +249,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .drop-down ul a:hover, .drop-down ul .active > a, .drop-down ul li:hover > a {
+  
   color: #e03a3c;
+  text-decoration: none !important;
+  
 }
 
 .drop-down > a:after {
@@ -2073,8 +2084,8 @@ section {
 
 .blog .sidebar .tags ul a:hover {
   color: #fff;
-  border: 1px solid #111111;
-  background: #111111;
+  border: 1px solid #e03a3c;
+  background: #e03a3c;
 }
 
 .blog .sidebar .tags ul a span {
