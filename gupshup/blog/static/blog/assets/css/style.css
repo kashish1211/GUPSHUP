@@ -367,7 +367,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-nav a {
-  display: block;
+  
   position: relative;
   color: #111111;
   padding: 10px 20px;

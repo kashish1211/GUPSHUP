@@ -66,9 +66,9 @@
 
 	
 	{% if title %}
-		<title>GupShup - {{ title }}</title>
+		<title>Gupshup - {{ title }}</title>
 	{% else %}
-		<title>GupShup </title>
+		<title>Gupshup </title>
 	{% endif %}
 	
 	{% block head %}{% endblock head %}
@@ -99,7 +99,11 @@
      overflow:auto;
       max-height:250px;
     }
-    
+    .alert{
+         padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    }
+       
  {% comment %} .menu-title {
      color:#ff7788;
      font-size:1.5rem;
@@ -171,7 +175,7 @@
       <div class="row " style="padding-left:5%;">
         <div class="col-xl-10 d-flex align-items-center">
           <a href="{% url 'blog-home'%}"><img src="{% static 'blog/assets/img/gupshup_red.png'%}" alt="" height="70px" width="100px"></a>
-          <h1 class="logo mr-auto"><a href="{% url 'blog-home'%}">Gupshup<span>.</span></a></h1>
+          <h1 class="logo mr-auto"><a href="{% url 'blog-home'%}">Gupshup<span style="color:#DF3537;">.</span></a></h1>
           <!-- Uncomment below if you prefer to use an image logo -->
           <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
 
@@ -190,34 +194,41 @@
                 
                 
                 {% comment %} <div class="dropdown"> {% endcomment %}
-  <a class="nav-link" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+                
+  <a class="nav-link " id="dLabel" role="button"  href="#">
     <i class="fas fa-bell fa-lg" style="font-size:24px; "></i>
   </a>  
   
-  <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+  <ul class=" notifications" role="menu" aria-labelledby="dLabel" id="notification_id">
     
-    <div class="notification-heading nav-link"><h4 class="menu-title" style="text-align:center;">Notifications</h4>
+    <div class=" notification-heading nav-link"><h4 class="menu-title" style="text-align:center;">Notifications</h4>
     </div>
     <li class="divider"></li>
     
-   <div class="notifications-wrapper nav-link">
+   <div class="drop-down notifications-wrapper nav-link">
+        {% if user.notifications.unread.count == 0 %}
+        	<strong class="default">
+          No Notifications:(
+            </strong>
+        
+        {% endif %}
    			{% for notification in  user.notifications.unread %}
              
        
         {% if notification.verb == "Comment" %}
-        <div class="alert alert-info">
+        <div class=" alert alert-info">
 					<strong class="default"><i class="fas fa-thumbs-up"></i> <a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target.slug %}"> {{ notification.verb }} </a></strong>  
 					</div>
         {% elif notification.description == "liked your " %}
-          <div class="alert alert-success">
+          <div class=" alert alert-success">
 					<strong class="default"><i class="fas fa-thumbs-up"></i> <a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target.slug %}"> {{ notification.verb }} </a></strong>  
 					</div>
         {% elif notification.description == "commented on your  " %}
-        <div class="alert alert-warning">
+        <div class=" alert alert-warning">
 					<strong class="default"><i class="fa fa-comments"></i> <a href="{% url 'user-posts' notification.actor.username %}">{{ notification.actor.username }}</a> {{ notification.description }}  <a href="{% url 'post-detail' notification.target.slug %}"> {{ notification.verb }} </a></strong>  
 					</div>
         {% elif notification.description == "deleted your " %}
-        <div class="alert alert-danger">
+        <div class=" alert alert-danger">
 					<strong class="default"><i class="fas fa-exclamation-triangle"></i> Admin {{ notification.description }}  <a href="{% url 'post-detail' notification.target.slug %}"> {{ notification.verb }} </a></strong>  
 					</div>
         {% endif %}
@@ -228,6 +239,7 @@
             {% endfor %}
      
    </div>
+   
    <li class="divider"></li>
   </ul>
   
@@ -240,9 +252,9 @@
 					
 					 
 					 
-				<li class="drop-down mx-5" ><a href="{% url 'profile' %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
+				<li class="drop-down mx-5" ><a href="{% url 'user-posts' user.username %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
                			 <ul>
-						<li class="  nav-link {% if request.path == profile_url %} active {%endif%}"><a  href="{% url 'profile' %}">Profile</a></li>
+						<li class="  nav-link {% if request.path == profile_url %} active {%endif%}"><a  href="{% url 'user-posts' user.username %}">Profile</a></li>
             <li class=" nav-link{% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'bookmark-post'%}" >Bookmark</a></li>
 						
 						<li class="nav-link {% if request.path == logout_url %} active {%endif%}"><a  href="{% url 'logout' %}">Logout</a></li>

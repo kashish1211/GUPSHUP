@@ -16,7 +16,7 @@ import json
 from django.http import HttpResponse
 from notifications.signals import notify
 from taggit.models import Tag
-from datetime import date
+import datetime
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
@@ -50,6 +50,11 @@ class PostListView(ListView):
 		p = Paginator(Post.objects.select_related().all().order_by(
 			'-date_posted'), self.paginate_by)
 		context['posts'] = p.page(context['page_obj'].number)
+		start_date = datetime.datetime.now() - datetime.timedelta(30)
+		pos = Post.objects.filter(date_posted__range=(start_date,datetime.datetime.now()))
+		top5 = pos.annotate(
+				q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
+		context['top5'] = top5
 		
 
 		return context
@@ -410,17 +415,3 @@ def autocompleteModel(request):
 		data = 'fail'
 	mimetype = 'application/json'
 	return HttpResponse(data, mimetype)
-
-def Carousel(request):
-	today = date.today()
-	today = str(today)
-	today_mon = today[5:7]
-	prev_mon = int(today_mon)-1
-	prev = today[:5] + str(prev_mon) + today[7:]
-	f = [ int(x) for x in prev.split('-')]
-	t = [ int(x) for x in today.split('-')]
-	pos = Post.objects.filter(date_posted__range=(date(f[0],f[1],f[2]), date(t[0],t[1],t[2])))
-	top5 = pos.annotate(
-			q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
-	print(top5)
-	return render(request, 'blog/carousel.html', {'posts':top5})

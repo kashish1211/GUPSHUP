@@ -25,19 +25,24 @@
 
 
 <div class="banner-carousel banner-carousel-2 mb-0">
-  {% for post in posts %}
+
+  {% for post in top5 %}
   <div class="banner-carousel-item" style="background-image:url({%static 'blog/business_banner.jpg'%});">
     <div class="container" >
         <div class="box-slider-content">
           <div class="box-slider-text" >
           <div class="d-flex flex-row">
-          <img class="rounded-circle article-img" src = "{{post.author.profile.image.url}} "  style="height:50px; width: 50px;">
+           <a href="{% url 'user-posts' post.author.username %}" style="text-decoration:none;"><img class="rounded-circle article-img" src = "{{post.author.profile.image.url}} "  style="height:50px; width: 50px;"></a>
 
-              <h2 class="box-slide-title my-3">{{ post.author }}</h2>
+              <a href="{% url 'user-posts' post.author.username %}" style="text-decoration:none;"><h2 class="box-slide-title my-3">{{ post.author }}</h2></a>
               </div>
               <h3 class="box-slide-sub-title">{{ post.title }}</h3>
+              {% if post.content|length > 170%}
+                  <p class="box-slide-description">{{ post.content|slice:":170"|safe }}...</p>
+              {% else %}
+                  <p class="box-slide-description">{{ post.content|slice:":170"|safe }}</p>
+              {% endif %}
               
-              <p class="box-slide-description">{{ post.content|safe }}</p>
               <hr style="color: white;">
               {% comment %} <img class="rounded-circle article-img " src = {{post.author.profile.image.url}}> {% endcomment %}
               <p>
