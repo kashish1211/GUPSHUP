@@ -54,6 +54,14 @@ class PostListView(ListView):
 		pos = Post.objects.filter(date_posted__range=(start_date,datetime.datetime.now()))
 		top5 = pos.annotate(
 				q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
+		le = len(top5)
+		
+		if le < 5:
+			req = 5 - le
+			tops = Post.objects.filter(is_appropriate = True).order_by('-upvote')
+			top5 = top5 | tops.union(top5)
+			
+
 		context['top5'] = top5
 		
 
