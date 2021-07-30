@@ -62,7 +62,7 @@ class PostListView(ListView):
 			top5 = top5 | tops.union(top5)
 			
 
-		context['top5'] = top5
+		context['top5'] = top5[:5]
 		
 
 		return context
