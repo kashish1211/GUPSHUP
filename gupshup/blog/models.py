@@ -23,6 +23,16 @@ Category_choices = (
 
 )
 
+class Category(models.Model):
+    category = models.CharField(max_length=20) 
+    slug = AutoSlugField(populate_from='category')
+    num_of_posts = models.IntegerField(default = 1)
+
+    def number_of_posts(self):
+        return self.count()
+    
+    def __str__(self):
+        return self.category[:40]
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -32,11 +42,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     is_appropriate  = models.BooleanField(default = True)
     notice = models.CharField(max_length=100, default="This Post was DELETED",null=True, blank=True)
-    category = models.CharField(
-        max_length=20,
-        choices=Category_choices,
-        default='Miscellenous'
-    )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_name')
+       
 
     def __str__(self):
         return self.title
@@ -83,8 +90,6 @@ class PostComment(models.Model):
 
 
 
-
-
 class Report(models.Model):
     post_connected = models.ForeignKey(Post, related_name='report', on_delete=models.CASCADE)
     reporter = models.ManyToManyField(User, related_name='reporter',blank=True)
@@ -98,3 +103,5 @@ class Report(models.Model):
     
     def __str__(self):
         return self.post_connected.title[:40]
+
+

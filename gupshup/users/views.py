@@ -71,8 +71,6 @@ def handler404(request, *args, **argv):
 
 
 def profilereg(request):
-	
-	
 	if request.method == 'POST':
 		p_form = ProfileUpdateForm(request.POST,
 								   request.FILES,

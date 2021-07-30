@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from blog.models import Category
 
 
 class UserRegisterForm(UserCreationForm):
@@ -59,9 +60,15 @@ class UserUpdateForm(forms.ModelForm):
 		return user
 
 class ProfileUpdateForm(forms.ModelForm):
+	# followed_category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=False,
+    #                                     queryset=Category.objects.all())
 	class Meta:
 		model = Profile
-		fields = ['college','about']
+		fields = ['college','about','followed_category']
+		widgets = {
+            'followed_category' : forms.CheckboxSelectMultiple,
+        
+        }
 	
 	# def __init__(self, *args, **kwargs):
 	# 	super().__init__(*args, **kwargs)
@@ -86,7 +93,7 @@ class ProfileImageUpdateForm(forms.ModelForm):
 class ProfileRegisterForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['image','college', 'about']
+		fields = ['image','college', 'about', 'followed_category']
 	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)

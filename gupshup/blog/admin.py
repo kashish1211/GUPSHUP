@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import helpers
 # from django.contrib.admin.decorators import action
 from notifications.signals import notify
-from .models import Post, PostComment, Report
+from .models import Post, PostComment, Report,Category
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
@@ -50,5 +50,6 @@ class PostAdmin(admin.ModelAdmin):
 
 admin.site.register(Report,ReportAdmin)
 admin.site.register(Post,PostAdmin)
+admin.site.register(Category)
 
 

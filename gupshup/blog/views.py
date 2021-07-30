@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, request
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormView
-from .models import Post, PostComment, Report
+from .models import Post, PostComment, Report,Category
 from .forms import NewCommentForm, NewReportForm
 import operator
 from django.db.models import Count, F, Q
@@ -46,7 +46,8 @@ class PostListView(ListView):
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
 		context['posts'] = Post.objects.filter(is_appropriate = True)
-		context['announcments'] = Post.objects.filter(category='Announcments')
+		# context['announcments'] = Post.objects.filter(category =Category.objects.filter(category='Announcements')[0])
+		context['announcments'] = Post.objects.filter(category__category = 'Announcements')
 		p = Paginator(Post.objects.select_related().all().order_by(
 			'-date_posted'), self.paginate_by)
 		context['posts'] = p.page(context['page_obj'].number)
