@@ -42,17 +42,17 @@
               <div class="entry-meta">
                 <ul>
                   <li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a></li>
-                  <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <time datetime="2020-01-01">{{ post.date_posted|date }}</time></li>
+                  <li class="d-flex align-items-center" style="cursor:pointer;"><i class="icofont-wall-clock"></i> <time datetime="2020-01-01">{{ post.date_posted|date }}</time></li>
                   {% if post.author == user %}
                   <li class="d-flex align-items-center"><i class="fa fa-pencil-square-o"></i> <a href="{% url 'post-update' object.slug %}">Edit Post</a></li>
                   <li class="d-flex align-items-center"><i class="fas fa-trash"></i> <a href="{% url 'post-delete' object.slug %}">Delete Post</a></li>
                   {% else %}
 
                   {% if post_is_bookmarked%}
-                    <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none" ><i
+                    <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none" style="cursor:pointer;"><i
                         class="fas fa-bookmark fa-3x btn-bookmark"  aria-hidden="true"></i> Bookmark Post</a>
                     {% else %}
-                    <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none " ><i
+                    <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none " style="cursor:pointer;" ><i
                         class="far fa-bookmark fa-3x btn-bookmark"  aria-hidden="true"></i>Bookmark Post</a>
                   {% endif %}
 
@@ -61,7 +61,7 @@
 					<div class="modal-dialog" role="document">
 					  <div class="modal-content">
 						<div class="modal-header">
-						  <h5 class="modal-title" id="exampleModalLabel">Report Post</h5>
+						  <h5 class="modal-title" id="exampleModalLabel" style="cursor:pointer;">Report Post</h5>
 						  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						  </button>

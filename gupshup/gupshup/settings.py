@@ -87,6 +87,7 @@ TEMPLATES = [
                 'social_django.context_processors.login_redirect',
                 'blog.context_processors.Recent_Posts',
                 'blog.context_processors.Common_Tags',
+                'blog.context_processors.Common_Categories',
             ],
         },
     },
