@@ -25,7 +25,7 @@ class Profile(models.Model):
 	image = models.ImageField(default='default2.png',upload_to='profile_pics')
 	college = models.CharField(max_length = 20,choices=college_choices,default='KJSCE',blank=True, null=True)
 	about = RichTextField(blank=True, null=True)
-	followed_category = models.ManyToManyField(Category,related_name='followed_category')
+	followed_category = models.ManyToManyField(Category,related_name='followed_category',blank=True, null=True)
 	
 	image_url = models.URLField(default = "http://127.0.0.1:8000/media/default2.png")
 	def __str__(self):

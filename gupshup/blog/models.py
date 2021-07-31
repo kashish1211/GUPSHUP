@@ -5,38 +5,24 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 from taggit.managers import TaggableManager
 from autoslug import AutoSlugField
+from django.db.models import F
+from django.utils.text import slugify
 
-Category_choices = (
-    ("Technology", "Technology"),
-    ("Mechanical", "Mechanical"),
-    ("Electronic", "Electronic"),
-    ("Sports", "Sports"),
-    ("Business", "Business"),
-    ("Announcments", "Announcments"),
-    ("Cultural", "Cultural"),
-    ("Politics", "Politics"),
-    ("Health", "Health"),
-    ("Travel", "Travel"),
-    ("Fashion", "Fashion"),
-    ("Miscellenous", "Miscellenous"),
-
-
-)
 
 class Category(models.Model):
     category = models.CharField(max_length=20) 
     slug = AutoSlugField(populate_from='category')
-    num_of_posts = models.IntegerField(default = 1)
+    num_of_posts = models.IntegerField(default = 0)
 
     def number_of_posts(self):
-        return self.count()
+        return self.num_of_posts
     
     def __str__(self):
         return self.category[:40]
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    slug = AutoSlugField(populate_from='title')
+    slug = AutoSlugField(populate_from='title', unique=True)
     content = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,6 +30,7 @@ class Post(models.Model):
     notice = models.CharField(max_length=100, default="This Post was DELETED",null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_name')
        
+    __original_category = None
 
     def __str__(self):
         return self.title
@@ -56,6 +43,31 @@ class Post(models.Model):
     bookmark = models.ManyToManyField(User, related_name='bookmark',blank=True)
     tags = TaggableManager()
 
+    def __init__(self, *args, **kwargs):
+        super(Post, self).__init__(*args, **kwargs)
+        if self.slug:
+            self.__original_category = self.category
+        
+
+    def save(self, *args, **kwargs):
+        if self.__original_category == None:
+            self.category.num_of_posts +=1
+            self.category.save()
+            self.__original_category = self.category
+        elif self.category != self.__original_category:
+            self.__original_category.num_of_posts -= 1
+            self.category.num_of_posts +=1
+            self.__original_category.save()
+            self.category.save()
+
+        self.__original_category = self.category     
+        super(Post, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+            self.category.num_of_posts -=1
+            self.category.save()     
+            super(Post, self).save(*args, **kwargs)
+
     def number_of_downvotes(self):
         return self.downvote.count()
 
@@ -65,6 +77,7 @@ class Post(models.Model):
     @property
     def number_of_comments(self):
         return PostComment.objects.filter(post_connected=self).count()
+    
 
 
 class PostComment(models.Model):
@@ -75,6 +88,9 @@ class PostComment(models.Model):
 
     upvote_comment = models.ManyToManyField(User, related_name='upvote_comment',blank=True)
     downvote_comment = models.ManyToManyField(User, related_name='downvote_comment',blank=True)
+
+
+    
 
     def number_of_downvotes_comment(self):
         return self.downvote_comment.count()
@@ -87,6 +103,8 @@ class PostComment(models.Model):
 
     def __str__(self):
         return str(self.author) + ', ' + self.post_connected.title[:40]
+
+    
 
 
 
