@@ -324,6 +324,26 @@ img {
                         <label class="tx-11 font-weight-bold mb-0 text-uppercase">College:</label>
                         <p class="text-muted">{{ user_profile.profile.college }}</p>
                     </div>
+                    {% if user_profile.profile.followed_category.all %}
+                     <div class="mt-3">
+                        <label class="tx-11 font-weight-bold mb-0 text-uppercase">Categories Followed:</label>
+                        <div class="blog" style="padding:10px;">
+                        
+                            <div class="sidebar-item tags ">
+                                <ul>
+                                    {% for cat in user_profile.profile.followed_category.all %}
+                                        <li><a href="{% url 'category' cat %}">{{ cat }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                       
+                        </div>
+                        
+                    </div>
+                    {% else %}
+                   
+                    {% endif %}
+                    
                 </div>
             </div>
         </div>

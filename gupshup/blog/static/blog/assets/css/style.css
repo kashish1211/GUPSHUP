@@ -2094,3 +2094,40 @@ section {
   font-size: 14px;
 }
 
+
+
+
+.blog .tags {
+  margin-bottom: -10px;
+}
+
+.blog .tags ul {
+  list-style: none;
+  padding: 0;
+}
+
+.blog .tags ul li {
+  display: inline-block;
+}
+
+.blog .tags ul a {
+  color: #515151;
+  font-size: 14px;
+  padding: 6px 14px;
+  margin: 0 6px 8px 0;
+  border: 1px solid #c4c4c4;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+.blog .tags ul a:hover {
+  color: #fff;
+  border: 1px solid #e03a3c;
+  background: #e03a3c;
+}
+
+.blog .tags ul a span {
+  padding-left: 5px;
+  color: #aaaaaa;
+  font-size: 14px;
+}

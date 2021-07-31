@@ -337,19 +337,19 @@
               <div class="sidebar-item categories">
                 <ul>
                 {% for cat in categories_6 %}
-                  <li><a href="#">{{ cat }} <span>({{ cat.num_of_posts }})</span></a></li>
+                  <li><a href="{% url 'category' cat.category %}">{{ cat }} <span>({{ cat.num_of_posts }})</span></a></li>
                 {% endfor %}
                 </ul>
                 <span id="dots"></span>
                 <ul>
                 <span id="more">
                    {% for cat in categories_rest %}
-                  <li><a href="#">{{ cat }} <span>({{ cat.num_of_posts }})</span></a></li>
+                  <li><a href="{% url 'category' cat.category %}">{{ cat }} <span>({{ cat.num_of_posts }})</span></a></li>
                 {% endfor %}
                 
                 </span>
                 </ul>
-                <a style="color: #e03a3c; cursor:pointer;"onclick="readmore()" id="myBtn">Show More Categories</button>
+                <a style="color: #e03a3c; cursor:pointer;"onclick="readmore()" id="myBtn">Show More</a>
               </div>
 
               <h3 class="sidebar-title">Recent Posts</h3>

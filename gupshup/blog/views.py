@@ -45,10 +45,10 @@ class PostListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
-		context['posts'] = Post.objects.filter(is_appropriate = True)
-		# context['announcments'] = Post.objects.filter(category =Category.objects.filter(category='Announcements')[0])
+		user = self.request.user
+		categories = user.profile.followed_category.all()
 		context['announcments'] = Post.objects.filter(category__category = 'Announcements')
-		p = Paginator(Post.objects.select_related().all().order_by(
+		p = Paginator(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
 			'-date_posted'), self.paginate_by)
 		context['posts'] = p.page(context['page_obj'].number)
 		start_date = datetime.datetime.now() - datetime.timedelta(30)
@@ -93,7 +93,7 @@ class CategoryPostListView(ListView):
 	def get_queryset(self):
 	
 		category = self.kwargs.get('category')
-		return Post.objects.filter(category=category, is_appropriate = True).order_by('-date_posted')
+		return Post.objects.filter(category__category=category, is_appropriate = True).order_by('-date_posted')
 
 
 
