@@ -45,11 +45,21 @@ class PostListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
+		
 		user = self.request.user
-		categories = user.profile.followed_category.all()
+		print(user)
 		context['announcments'] = Post.objects.filter(category__category = 'Announcements')
-		p = Paginator(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
-			'-date_posted'), self.paginate_by)
+		if user.is_authenticated:
+			categories = user.profile.followed_category.all()
+			if len(categories)==0:
+				p = Paginator(Post.objects.select_related().all().order_by(
+				'-date_posted'), self.paginate_by)	
+			else:
+				p = Paginator(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
+				'-date_posted'), self.paginate_by)
+		else:
+			p = Paginator(Post.objects.select_related().all().order_by(
+				'-date_posted'), self.paginate_by)
 		context['posts'] = p.page(context['page_obj'].number)
 		start_date = datetime.datetime.now() - datetime.timedelta(30)
 		pos = Post.objects.filter(date_posted__range=(start_date,datetime.datetime.now()))
@@ -87,13 +97,32 @@ class CategoryPostListView(ListView):
 	model = Post
 	template_name = 'blog/category.html'
 	context_object_name = 'posts'
-
 	paginate_by = 5
-
-	def get_queryset(self):
 	
+
+	def get_context_data(self, **kwargs):
+		context = super(CategoryPostListView, self).get_context_data(**kwargs)
 		category = self.kwargs.get('category')
-		return Post.objects.filter(category__category=category, is_appropriate = True).order_by('-date_posted')
+		cat = Category.objects.filter(category = category)[0]
+		user = self.request.user.profile
+		
+		context['num_of_post'] = cat.num_of_posts
+		if user.followed_category.filter(category = category).exists():
+			context['follow_status'] = True
+		else:
+			context['follow_status'] = False
+
+		posts = Post.objects.filter(category__category = category, is_appropriate = True).order_by('-date_posted')
+		paginator = Paginator(posts, 5) # Show 25 contacts per page.
+
+		page_number = self.request.GET.get('page')
+		page_obj = paginator.get_page(page_number)
+
+	
+
+		context['page_obj'] = page_obj
+		
+		return context
 
 
 
@@ -186,6 +215,21 @@ def Bookmark_ajax(request):
 	else:
 		post.bookmark.add(request.user)
 		status = True
+	ctx = {'status':status}
+	return HttpResponse(json.dumps(ctx), content_type='application/json')
+
+def Category_Ajax(request):
+	print(request.POST.get('category'))
+	category = get_object_or_404(Category, category=request.POST.get('category'))
+	user = request.user.profile
+	status = ''
+	if user.followed_category.filter(category = category).exists():
+		user.followed_category.remove(category)
+		status = False
+	else:
+		user.followed_category.add(category)
+		status = True
+	user.save()
 	ctx = {'status':status}
 	return HttpResponse(json.dumps(ctx), content_type='application/json')
 

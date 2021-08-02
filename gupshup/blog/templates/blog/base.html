@@ -256,6 +256,7 @@
 				<li class="drop-down mx-5" ><a href="{% url 'user-posts' user.username %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
                			 <ul>
 						<li class="  nav-link {% if request.path == profile_url %} active {%endif%}"><a  href="{% url 'user-posts' user.username %}">Profile</a></li>
+            <li class=" nav-link{% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'profile'%}" >Edit Profile</a></li>
             <li class=" nav-link{% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'bookmark-post'%}" >Bookmark</a></li>
 						
 						<li class="nav-link {% if request.path == logout_url %} active {%endif%}"><a  href="{% url 'logout' %}">Logout</a></li>

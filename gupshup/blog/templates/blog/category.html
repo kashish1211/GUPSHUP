@@ -1,63 +1,158 @@
 {% extends "blog/base.html" %}
+{% block style %}
+
+#follow-button {
+  color: #e03a3c;
+  font-family: "Helvetica";
+  
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e03a3c;
+  border-radius: 3px;
+  width: 85px;
+  height: 30px; 	
+  cursor: hand;
+  float: right; 	   
+}
+
+{% endblock style %}
 {% block content %}
 
 
 <br>
-<div class="jumbotron py-2 pt-2">
-<h1 class="display-5">{{ view.kwargs.category }} </h1>
+<div class="jumbotron " style="background-color:white; box-shadow: 0 4px 16px rgb(224 58 60 / 13%);" >
+<div class="row" style="display:initial;">
+<h1 class="display-5" style="float:left;">{{ view.kwargs.category }} </h1>
 {% if user.is_authenticated %}
-  {% comment %} <h1 class="display-5">{{ view.kwargs.category }} </h1> {% endcomment %}
- 
-  <hr class="my-2">
-  
-  <p class="lead">
-    <a class="btn btn-success btn-lg" href="{% url 'room' view.kwargs.category  %}" role="button">Chat  <i class="fas fa-comments"></i></a>
-  </p>
 
+
+	{% if follow_status %}
+		<button type = "submit" class = "btn btn-danger follow-btn"  style="float:right; " id="follow-btn" onclick="category_ajax()"> Following</button>
+	{% else %}
+		<button  type = "submit" class = "btn btn-outline-danger follow-btn" style="float:right; " id="follow-btn" onclick="category_ajax()" >+ Follow</button>
+	{% endif %}
+    <a class="btn btn-outline-danger mx-2 " href="{% url 'room' view.kwargs.category  %}" role="button" style="float:right; " ><i class="fas fa-comments"></i> Chat</a>
+    {% comment %} <a class=" " href="{% url 'room' view.kwargs.category  %}" role="button" style="float:right;" ><i class="fas fa-comments"></i></a> {% endcomment %}
+	
+	
+		
+	
   {% endif %}
+  </div>
 </div>
 
 
 
 
+{% if num_of_post > 1 %}
+<h2 class="comments-count">{{ num_of_post }} Posts</h2>
+{% elif num_of_post == 0 %}
+{% else %}
+<h2 class="comments-count">{{ num_of_post }} Post</h2>
+{% endif %} 
 
+ {% for post in page_obj %}
+    {% if post.is_appropriate %}
+    <article class="entry">
 
-<h3 class="mb-3">Posts: ({{ page_obj.paginator.count }})</h3>
-{% for post in posts %}
-<article class="media content-section">
-	<img class="rounded-circle article-img " src={{post.author.profile.image.url}}>
-	<div class="media-body">
-		<div class="article-metadata">
-			<a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-			<small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-		</div>
-		<h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-		<p class="article-content">{{ post.content| safe }}</p>
-	</div>
-</article>
-{%endfor%}
+			<div class="entry-img">
+			<img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+			</div>
 
-{% if is_paginated%}
-{% if page_obj.has_previous %}
-<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-{% endif %}
+			<h2 class="entry-title">
+			<a href="{% url 'post-detail' post.slug %}">{{ post.title }}</a>
+			</h2>
 
-{% for num in page_obj.paginator.page_range %}
+			<div class="entry-meta">
+			<ul>
+				<li class="d-flex align-items-center"><i class="icofont-user"></i> <a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a></li>
+				<li class="d-flex align-items-center"><i class="icofont-wall-clock"></i> <a href="blog-single.html"><time datetime="">{{ post.date_posted|date:"F d, Y" }}</time></a></li>
+				{% comment %} <li class="d-flex align-items-center"><i class="icofont-comment"></i> <a href="blog-single.html">12 Comments</a></li> {% endcomment %}
+			</ul>
+			</div>
 
-{% if page_obj.number == num %}
+			<div class="entry-content">
+			<p>
+            {% if post.content|length > 170%}
+				{{ post.content|slice:":170"| safe }}...
+            {% else %}
+                {{ post.content|slice:":170"| safe }}
+            {% endif %}
+			</p>
+			<p class="d-flex align-items-center">
+			{{ post.number_of_upvotes }}
+			&nbsp;
+			<i class="icofont-thumbs-up"></i>
+			 &nbsp; &nbsp;
+			{% comment %} {{ post.number_of_downvotes }}
+			&nbsp;
+			<i class="icofont-thumbs-down"></i>
+	
+			</p> {% endcomment %}
+			<div class="read-more">
+				<a href="{% url 'post-detail' post.slug %}">Read More</a>
+			</div>
+			</div>
 
-<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%} <a class="btn btn-outline-info mb-4"
-	href="?page={{ num }}">{{ num }}</a>
-	{% endif %}
-
+		</article><!-- End blog entry -->
+        {% endif %}
 	{% endfor %}
 
-	{% if page_obj.has_next %}
-	<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-	<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-	{% endif %}
+		{% if num_of_post > 5 %}
+		<div  >
+		<div class="mr-auto">
+		{% if is_paginated%}
+		{% if page_obj.has_previous %}
+			<a class="btn btn-outline-danger mb-4" href="?page=1">First</a>
+			<a class="btn btn-outline-danger mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+		{% endif %}
+
+		{% for num in page_obj.paginator.page_range %}
+
+			{% if page_obj.number == num %}
+
+				<a class="btn btn-danger mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
+				<a class="btn btn-outline-danger mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% endif %}
+
+		{% endfor %}
+
+		{% if page_obj.has_next %}
+			<a class="btn btn-outline-danger mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+			<a class="btn btn-outline-danger mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+		{% endif %}
 
 	{% endif %}
+	</div>
+	</div>
+	{% endif %}
 	{% endblock content %}
+
+	{% block script %}
+	
+
+	category_ajax = function(){
+		console.log("hehehe");
+		 $.ajax({
+             type: "POST",
+             url: "{% url 'category-ajax' %}",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}','category': '{{ view.kwargs.category }}' },
+             dataType: "json",
+             success: function(response) {
+				console.log(response['status']);
+			  if (response.status){
+				   $('#follow-btn').replaceWith('<button type = "submit" class = "btn btn-danger "  style="float:right;" id="follow-btn" onclick="category_ajax()" >Following</button>');
+			  }
+			  else{
+				   $('#follow-btn').replaceWith('<button type = "submit" class = "btn btn-outline-danger"  style="float:right; " id="follow-btn" onclick="category_ajax()">+ Follow</button>');
+			  }
+              }
+
+        });
+
+	 }
+
+	 
+	
+	{% endblock script %}

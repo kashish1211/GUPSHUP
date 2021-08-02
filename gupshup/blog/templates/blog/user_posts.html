@@ -420,13 +420,20 @@ img {
               <h3 class="sidebar-title">Categories</h3>
               <div class="sidebar-item categories">
                 <ul>
-                  <li><a href="#">General <span>(25)</span></a></li>
-                  <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                  <li><a href="#">Travel <span>(5)</span></a></li>
-                  <li><a href="#">Design <span>(22)</span></a></li>
-                  <li><a href="#">Creative <span>(8)</span></a></li>
-                  <li><a href="#">Educaion <span>(14)</span></a></li>
+                {% for cat in categories_6 %}
+                  <li><a href="{% url 'category' cat.category %}">{{ cat }} <span>({{ cat.num_of_posts }})</span></a></li>
+                {% endfor %}
                 </ul>
+                <span id="dots"></span>
+                <ul>
+                <span id="more">
+                   {% for cat in categories_rest %}
+                  <li><a href="{% url 'category' cat.category %}">{{ cat }} <span>({{ cat.num_of_posts }})</span></a></li>
+                {% endfor %}
+                
+                </span>
+                </ul>
+                <a style="color: #e03a3c; cursor:pointer;"onclick="readmore()" id="myBtn">Show More</a>
               </div>
 
               <h3 class="sidebar-title">Recent Posts</h3>

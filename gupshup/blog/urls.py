@@ -11,6 +11,7 @@ urlpatterns = [
     path('post-upvote-ajax/', views.Upvote_ajax, name='post-upvote-ajax'),
     path('post-downvote-ajax/', views.Downvote_ajax, name='post-downvote-ajax'),
     path('post-bookmark-ajax/', views.Bookmark_ajax, name='post-bookmark-ajax'),
+    path('category-ajax/', views.Category_Ajax, name='category-ajax'),
     path('comment-upvote-ajax/', views.Upvote_Comment_Ajax, name='comment-upvote-ajax'),
     path('comment-downvote-ajax/', views.Downvote_Comment_Ajax, name='comment-downvote-ajax'),
     path('comment-ajax/', views.Comment_Ajax, name='comment-ajax'),
