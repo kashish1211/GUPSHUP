@@ -1,10 +1,11 @@
 from django.urls import path
 from django.http import HttpResponseRedirect, request
-from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView, SearchResultView, CategoryPostListView, PostListView, TagsPostListView
+from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView, SearchResultView, CategoryPostListView, PostListView, TagsPostListView,ExploreListView
 from . import views
 
 urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
+    path('explore/', ExploreListView.as_view(), name='explore'),
     path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
     path('post/tags/<str:post_tags>', TagsPostListView.as_view(), name='post-tags'),
     path('post/category/<str:category>', CategoryPostListView.as_view(), name='category'),
@@ -24,5 +25,6 @@ urlpatterns = [
     path('post/search/', SearchResultView.as_view(), name='search-result'),
     path('about/', views.about, name='about'),
     path('autocomplete/', views.autocompleteModel, name='tags-auto'),
+    path('search/', views.search_autocompleteModel, name='search'),
 
 ]

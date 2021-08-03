@@ -76,6 +76,34 @@
 
 <style>
 
+.ui-autocomplete {
+  background: #e03a3c;
+  
+  border: none;
+}
+.ui-menu .ui-menu-item a {
+  color: #000000;
+  
+  border: none;
+}
+.ui-menu .ui-menu-item a:hover {
+  background: #e03a3c;
+  color: #fff;
+  border: none;
+}
+.ui-menu .ui-menu-item a:active {
+  
+  box-shadow: 0 0 30px #e03a3c;
+  border: none;
+}
+
+ .ui-autocomplete , .ui-front , .ui-menu, .ui-widget, .ui-widget-content, .ui-corner-all{
+  border: none;
+}
+
+
+
+
 
 /* CSS used here will be applied after bootstrap.css */
 
@@ -326,14 +354,19 @@
 	  <br><br><br>
     
             <div class="sidebar">
-              <h3 class="sidebar-title">Search</h3>
+              
               <div class="sidebar-item search-form">
-                <form action="">
-                  <input type="text">
-                  <button type="submit"><i class="icofont-search"></i></button>
+                <form id="search" method="POST"  action="{% url 'search' %}">
+                {% csrf_token %}
+                  <input type="text" placeholder="&#xF002;&nbsp;Search" id="txtSearch"  style="font-family:Arial, FontAwesome; outline: none; " >
+                  
                 </form>
               </div>
 
+            <div class="sidebar-item">
+            <a class="btn btn-danger justify-content-center" style="display:flex; text-align:center;" href="{% url 'explore'  %}"><i class="fas fa-compass py-1"></i> &nbsp;  Explore</a>
+            
+            </div>
               <h3 class="sidebar-title">Categories</h3>
               <div class="sidebar-item categories">
                 <ul>
@@ -352,7 +385,7 @@
                 </ul>
                 <a style="color: #e03a3c; cursor:pointer;"onclick="readmore()" id="myBtn">Show More</a>
               </div>
-
+            
               <h3 class="sidebar-title">Recent Posts</h3>
               <div class="sidebar-item recent-posts">
               {% for post in recent %}
@@ -436,6 +469,41 @@
   <!-- Template Main JS File -->
   <script src="{% static 'blog/assets/js/main.js' %}"></script>
 	<script>
+
+  $(document).ready(function(){ 
+
+    $(document).keypress(
+  function(event){
+    if (event.which == '13') {
+      event.preventDefault();
+    }
+  });
+
+  $("#txtSearch").autocomplete({
+        
+        source: "{% url 'search' %}",
+        minLength: 1,
+        autoFocus: true,
+        open: function(){
+                    setTimeout(function () {
+                        $('.ui-autocomplete').css({'z-index':'1000000', 'max-width':'70%', 'border':'none', 'box-shadow':'0px 0 30px rgba(1, 41, 112, 0.08)'});
+                    }, 0);
+                },
+        select: function(event,ui){
+                   GetRedirectPage(ui.item.url);
+            }
+        });
+  });
+
+function GetRedirectPage(url) {
+          window.location.replace('http://127.0.0.1:8000/' + url );
+    }
+     
+     $('#form').on('submit', function(event){
+    event.preventDefault();
+    
+});
+
   $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 });

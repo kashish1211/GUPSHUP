@@ -17,6 +17,7 @@ from django.http import HttpResponse
 from notifications.signals import notify
 from taggit.models import Tag
 import datetime
+from users.models import Profile
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
@@ -55,7 +56,11 @@ class PostListView(ListView):
 				p = Paginator(Post.objects.select_related().all().order_by(
 				'-date_posted'), self.paginate_by)	
 			else:
-				p = Paginator(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
+				if len(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by('-date_posted')) ==  0:
+					p = Paginator(Post.objects.select_related().filter(is_appropriate = True).order_by(
+						'-date_posted'), self.paginate_by)
+				else:
+					p = Paginator(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
 				'-date_posted'), self.paginate_by)
 		else:
 			p = Paginator(Post.objects.select_related().all().order_by(
@@ -65,6 +70,7 @@ class PostListView(ListView):
 		pos = Post.objects.filter(date_posted__range=(start_date,datetime.datetime.now()))
 		top5 = pos.annotate(
 				q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
+		
 		le = len(top5)
 		
 		if le < 5:
@@ -76,6 +82,37 @@ class PostListView(ListView):
 		context['top5'] = top5[:5]
 		
 
+		return context
+
+class ExploreListView(ListView):
+	model = Post
+	template_name = 'blog/explore.html'
+	context_object_name = 'posts'
+	ordering = ['-date_posted']
+	paginate_by = 5
+
+	def get_context_data(self, **kwargs):
+		context = super(ExploreListView, self).get_context_data(**kwargs)
+		context['posts'] = Post.objects.filter(is_appropriate = True)
+		return context
+	
+	
+
+	def get_context_data(self, **kwargs):
+		context = super(ExploreListView, self).get_context_data(**kwargs)
+		
+		user = self.request.user
+		print(user)
+		context['announcments'] = Post.objects.filter(category__category = 'Announcements')
+		if user.is_authenticated:
+				p = Paginator(Post.objects.select_related().all().order_by(
+				'-date_posted'), self.paginate_by)	
+		
+		else:
+			p = Paginator(Post.objects.select_related().all().order_by(
+				'-date_posted'), self.paginate_by)
+		context['posts'] = p.page(context['page_obj'].number)
+		
 		return context
 
 
@@ -135,9 +172,21 @@ class TagsPostListView(ListView):
 
 	
 
-	def get_queryset(self):
+	def get_context_data(self, **kwargs):
+		context = super(TagsPostListView, self).get_context_data(**kwargs)
 		post_tag = self.kwargs.get('post_tags')
-		return  Post.objects.filter(tags__name=post_tag,is_appropriate = True).order_by('-date_posted')
+		context['post_tags']  =  post_tag
+		posts= Post.objects.filter(tags__name=post_tag,is_appropriate = True).order_by('-date_posted')
+		context['num_of_post'] = len(posts)
+		paginator = Paginator(posts, 5) # Show 25 contacts per page.
+
+		page_number = self.request.GET.get('page')
+		page_obj = paginator.get_page(page_number)
+
+	
+
+		context['page_obj'] = page_obj
+		return context
 
 
 
@@ -462,6 +511,52 @@ def autocompleteModel(request):
 			data['label']= r.name
 			results.append(data)
 
+
+		data = json.dumps(results)
+	else:
+		data = 'fail'
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)
+
+def search_autocompleteModel(request):
+	if request.is_ajax():
+		q = request.GET.get('term', '').capitalize()
+		search_tags  = Tag.objects.filter(name__contains = q)
+		search_user  = User.objects.filter(username__contains = q)
+		search_post  = Post.objects.filter(title__contains = q) | Post.objects.filter(category__category__contains = q) | Post.objects.filter(content__contains = q)
+		search_category  = Category.objects.filter(category__contains = q)
+		results = []
+		
+
+		for r in search_tags:
+			data = {}
+			data['label']= r.name
+			data['url']= "post/tags/"+r.name
+			results.append(data)
+
+		for r in search_user:
+			data = {}
+			data['label']= r.username
+			data['url']= "user/"+r.username
+			results.append(data)
+
+		for r in search_post:
+			data = {}
+			data['label']= r.title
+			data['url']= "post/detail/"+r.slug
+			results.append(data)
+
+		for r in search_category:
+			data = {}
+			data['label']= r.category
+			data['url']= "post/category/"+r.category
+			results.append(data)
+
+		if len(search_tags)==0 and len(search_user)==0 and len(search_category)==0 and len(search_post)==0:
+			data = {}
+			data['label']= "No search available"
+			data['url']= ''
+			results.append(data)
 
 		data = json.dumps(results)
 	else:

@@ -1,54 +1,13 @@
 {% extends "blog/base.html" %}
+{% load static %}
+
+
+  
+
 {% block content %}
 
 
-<br>
-{% comment %} <div class="jumbotron py-2 pt-2">
-<h1 class="display-5">{{ view.kwargs.post_tags }} </h1>
-{% if user.is_authenticated %}
-  {% comment %} <h1 class="display-5">{{ view.kwargs.post_tags }} </h1> {% endcomment %}
- 
- {% comment %} <hr class="my-2">
-  
-  <p class="lead">
-    <a class="btn btn-success btn-lg" href="{% url 'room' view.kwargs.post_tags  %}" role="button">Chat  <i class="fas fa-comments"></i></a>
-  </p>
-
-  {% endif %}
-</div>
-
-<br> {% endcomment %}
-
-<div class="jumbotron " style="background-color:white; box-shadow: 0 4px 16px rgb(224 58 60 / 13%);" >
-<div class="row" style="display:initial;">
-<h1 class="display-5" style="float:left;">{{ view.kwargs.post_tags }} </h1>
-{% if user.is_authenticated %}
-
-
-	
-    <a class="btn btn-outline-danger mx-2 " href="{% url 'room' view.kwargs.post_tags  %}" role="button" style="float:right; " ><i class="fas fa-comments"></i> Chat</a>
-    {% comment %} <a class=" " href="{% url 'room' view.kwargs.category  %}" role="button" style="float:right;" ><i class="fas fa-comments"></i></a> {% endcomment %}
-	
-	
-		
-	
-  {% endif %}
-  </div>
-</div>
-
-
-
-
-
-
-{% if num_of_post > 1 %}
-<h2 class="comments-count">{{ num_of_post }} Posts</h2>
-{% elif num_of_post == 0 %}
-{% else %}
-<h2 class="comments-count">{{ num_of_post }} Post</h2>
-{% endif %} 
-
- {% for post in page_obj %}
+    {% for post in posts|slice:"{{ page_obj.paginator.count }}-1::-1"%}
     {% if post.is_appropriate %}
     <article class="entry">
 
@@ -95,7 +54,7 @@
         {% endif %}
 	{% endfor %}
 
-		{% if num_of_post > 5 %}
+
 		<div  >
 		<div class="mr-auto">
 		{% if is_paginated%}
@@ -123,5 +82,17 @@
 	{% endif %}
 	</div>
 	</div>
-	{% endif %}
-	{% endblock content %}
+
+          
+
+        
+ 
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  
+
+
+
+
+{% endblock content %}
+
