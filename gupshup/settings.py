@@ -203,16 +203,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('gupshup_pass')
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 
 
-ASGI_APPLICATION = 'gupshup.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-        },
-    },
-}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -263,3 +254,14 @@ CKEDITOR_CONFIGS = {
 }
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+
+ASGI_APPLICATION = 'gupshup.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+    },
+}
