@@ -45,7 +45,6 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
     path('profile-registration/',user_views.profilereg,  name='profile-registration'),
     path('verification/', include('verify_email.urls')),
-    # path('accounts/', include('allauth.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     path('verify/', user_views.verify,name='verify'),	
     path('', include('blog.urls')),

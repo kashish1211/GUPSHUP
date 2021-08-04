@@ -36,10 +36,6 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1', '.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
     'social_django',
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
