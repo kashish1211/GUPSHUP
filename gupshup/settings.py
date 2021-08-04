@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import django
+SECRET_KEY = 'hz6-qf&1$85*b7b5m2^4m(av*%_#5!6$i4ba5+ga+@c7%tmrsc'
 django.setup()
 
 from pathlib import Path
@@ -24,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hz6-qf&1$85*b7b5m2^4m(av*%_#5!6$i4ba5+ga+@c7%tmrsc'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
