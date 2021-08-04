@@ -255,7 +255,7 @@ CKEDITOR_CONFIGS = {
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
-ASGI_APPLICATION = 'gupshup.asgi.application'
+ASGI_APPLICATION = 'gupshup.routing.application'
 
 CHANNEL_LAYERS = {
     'default': {
