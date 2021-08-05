@@ -1,7 +1,7 @@
 from .models import Post, Category
 
 def Recent_Posts(request):
-    recent = Post.objects.filter(is_appropriate = True).order_by('-date_posted')[:5]
+    recent = Post.objects.filter(is_appropriate = True).order_by('-date_posted')[:3]
     return {'recent':recent}
 
 def Common_Tags(request):

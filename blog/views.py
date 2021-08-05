@@ -19,6 +19,7 @@ from taggit.models import Tag
 import datetime
 from users.models import Profile
 
+
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
 	fields = ['title', 'content', 'tags','category']
@@ -27,10 +28,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 		form.instance.author = self.request.user
 		return super().form_valid(form)
 
-# @login_required
-# def Create_Post(request):
-# 	if request.method == 'POST':
-		
+
 
 
 
@@ -46,39 +44,45 @@ class PostListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(PostListView, self).get_context_data(**kwargs)
-		
+		posts =  []
 		user = self.request.user
-		print(user)
-		context['announcments'] = Post.objects.filter(category__category = 'Announcements')
+		
 		if user.is_authenticated:
 			categories = user.profile.followed_category.all()
 			if len(categories)==0:
-				p = Paginator(Post.objects.select_related().all().order_by(
-				'-date_posted'), self.paginate_by)	
+				posts = Post.objects.select_related().filter(is_appropriate = True).order_by(
+				'-date_posted')	
 			else:
 				if len(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by('-date_posted')) ==  0:
-					p = Paginator(Post.objects.select_related().filter(is_appropriate = True).order_by(
-						'-date_posted'), self.paginate_by)
+					posts = Post.objects.select_related().filter(is_appropriate = True).order_by(
+						'-date_posted')
 				else:
-					p = Paginator(Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
-				'-date_posted'), self.paginate_by)
+					posts = Post.objects.select_related().filter(category__in = categories, is_appropriate = True).order_by(
+				'-date_posted')
 		else:
-			p = Paginator(Post.objects.select_related().all().order_by(
-				'-date_posted'), self.paginate_by)
-		context['posts'] = p.page(context['page_obj'].number)
+			posts = Post.objects.select_related().filter(is_appropriate = True).order_by(
+				'-date_posted')
+
+		paginator = Paginator(posts, 5)
+		page_number = self.request.GET.get('page')
+		page_obj = paginator.get_page(page_number)
+		context['page_obj'] = page_obj
+		context['num_of_posts'] = len(posts)
+		
+		
+		start_announcement_date = datetime.datetime.now() - datetime.timedelta(7)
+		ann = Post.objects.filter(category__category = 'Announcements',date_posted__range=(start_announcement_date,datetime.datetime.now()))
+		context['announcments'] = ann
+		
 		start_date = datetime.datetime.now() - datetime.timedelta(30)
 		pos = Post.objects.filter(date_posted__range=(start_date,datetime.datetime.now()))
 		top5 = pos.annotate(
 				q_count=Count('upvote')).filter(is_appropriate = True).order_by('-q_count')[:5]
-		
 		le = len(top5)
-		
 		if le < 5:
 			req = 5 - le
 			tops = Post.objects.filter(is_appropriate = True).order_by('-upvote')
 			top5 = top5 | tops.union(top5)
-			
-
 		context['top5'] = top5[:5]
 		
 
@@ -100,17 +104,8 @@ class ExploreListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ExploreListView, self).get_context_data(**kwargs)
-		
-		user = self.request.user
-		print(user)
-		context['announcments'] = Post.objects.filter(category__category = 'Announcements')
-		if user.is_authenticated:
-				p = Paginator(Post.objects.select_related().all().order_by(
+		p = Paginator(Post.objects.select_related().all().order_by(
 				'-date_posted'), self.paginate_by)	
-		
-		else:
-			p = Paginator(Post.objects.select_related().all().order_by(
-				'-date_posted'), self.paginate_by)
 		context['posts'] = p.page(context['page_obj'].number)
 		
 		return context
@@ -125,9 +120,12 @@ class UserPostListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		user_profile = get_object_or_404(User, username=self.kwargs.get('username'))
-		posts =Post.objects.filter(author=user_profile, is_appropriate = True).order_by('-date_posted')
-		
-		return {'user_profile':user_profile,'posts':posts}
+		posts = Post.objects.filter(author=user_profile, is_appropriate = True).order_by('-date_posted')
+		s = 0
+		for p in posts:
+			s += p.number_of_upvotes()
+
+		return {'user_profile':user_profile,'posts':posts,'upvotes_count':s}
 
 
 class CategoryPostListView(ListView):
@@ -141,16 +139,17 @@ class CategoryPostListView(ListView):
 		context = super(CategoryPostListView, self).get_context_data(**kwargs)
 		category = self.kwargs.get('category')
 		cat = Category.objects.filter(category = category)[0]
-		user = self.request.user.profile
-		
 		context['num_of_post'] = cat.num_of_posts
-		if user.followed_category.filter(category = category).exists():
-			context['follow_status'] = True
-		else:
-			context['follow_status'] = False
+		user = self.request.user
+		if user.is_authenticated:	
+			profile =  user.profile
+			if profile.followed_category.filter(category = category).exists():
+				context['follow_status'] = True
+			else:
+				context['follow_status'] = False
 
 		posts = Post.objects.filter(category__category = category, is_appropriate = True).order_by('-date_posted')
-		paginator = Paginator(posts, 5) # Show 25 contacts per page.
+		paginator = Paginator(posts, 5) # Show 5 contacts per page.
 
 		page_number = self.request.GET.get('page')
 		page_obj = paginator.get_page(page_number)
@@ -178,7 +177,7 @@ class TagsPostListView(ListView):
 		context['post_tags']  =  post_tag
 		posts= Post.objects.filter(tags__name=post_tag,is_appropriate = True).order_by('-date_posted')
 		context['num_of_post'] = len(posts)
-		paginator = Paginator(posts, 5) # Show 25 contacts per page.
+		paginator = Paginator(posts, 5) 
 
 		page_number = self.request.GET.get('page')
 		page_obj = paginator.get_page(page_number)
@@ -497,7 +496,7 @@ def Report_Form(request, slug):
 		
 		report.save()
 		report.reporter.add(request.user)
-	# return render(request ,'')
+	
 	return redirect('post-detail',slug)
 
 def autocompleteModel(request):

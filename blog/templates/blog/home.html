@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block carousel %}
+<br><br><br>
 {% include 'blog/carousel.html' %}
 
 <div class="container-fluid px-0 mx-0 my-0 py-0 mb-3">
@@ -29,7 +30,7 @@
 {% block content %}
 
 
-    {% for post in posts|slice:"{{ page_obj.paginator.count }}-1::-1"%}
+    {% for post in page_obj %}
     {% if post.is_appropriate %}
     <article class="entry">
 
@@ -77,6 +78,7 @@
 	{% endfor %}
 
 
+		{% if num_of_posts  > 5 %}
 		<div  >
 		<div class="mr-auto">
 		{% if is_paginated%}
@@ -102,10 +104,11 @@
 		{% endif %}
 
 	{% endif %}
+
 	</div>
 	</div>
 
-          
+    {% endif %} 
 
         
  

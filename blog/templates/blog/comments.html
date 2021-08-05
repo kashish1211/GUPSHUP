@@ -37,20 +37,25 @@
 			
 				{% if com.0 == comment.id %}
 					{% if com.1  %}
+					{% if user.is_authenticated %}
 						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none" ><i
 						class="fas fa-thumbs-up c-btn-upvote" id="up{{comment.id}}" aria-hidden="true"></i></button>
-					
+					{% endif %}
 					{% else %}
+					{% if user.is_authenticated %}
 						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-upvote-btn shadow-none "><i
 						class="far fa-thumbs-up c-btn-upvote"  id="up{{comment.id}}" aria-hidden="true"></i></button>
+					{% endif %}
 					{% endif %}
 			{% endif %}
 			{% endfor %}
 				
 	</div>
+	{% if user.is_authenticated %}
 	<div class="my-2" >
 		<strong class="text-xl-center" id="com-upvote-count{{comment.id}}">{{ comment.number_of_upvotes_comment }}</strong>
 	</div>
+		{% endif %}
 							<!-- comment-downvotes -->
 	<div>
 				
@@ -59,11 +64,15 @@
 			
 				{% if com.0 == comment.id %}
 					{% if com.2  %}
+					{% if user.is_authenticated %}
 						<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
 					class="fas fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true" ></i></button>
+					{% endif %}
 				{% else %}
+				{% if user.is_authenticated %}
 				<button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-lg c-downvote-btn shadow-none"><i
 					class="far fa-thumbs-down c-btn-downvote" id="down{{comment.id}}" aria-hidden="true"></i></button>
+				{% endif %}
 				{% endif %}
 			{% endif %}
 			{% endfor %}
@@ -71,10 +80,11 @@
 					
 				
 	</div>
+	{% if user.is_authenticated %}
 		<div class="my-2" >
 			<strong class="text-xl-center" id="com-downvote-count{{comment.id}}">{{ comment.number_of_downvotes_comment  }}</strong>
 		</div>
-										
+		{% endif %}								
 	</div>
 
 	</div>	

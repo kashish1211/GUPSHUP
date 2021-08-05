@@ -208,11 +208,11 @@
           <!-- Uncomment below if you prefer to use an image logo -->
           <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
 
-          <nav class="nav-menu d-none d-lg-block" style="margin-left: 37%;">
+          <nav class="nav-menu d-none d-lg-block" >
             <ul style="margin-top:1%;">
-              <li class="{% if request.path == home_url %} active {%endif%}" > <a class="nav-link" href="{% url 'blog-home' %}" ><i class="fas fa-home" style="font-size:24px;" data-toggle="tooltip" data-placement="bottom" title="Home"></i></a></li>
+              <li class="{% if request.path == home_url %} active {%endif%}" > <a class="nav-link" href="{% url 'blog-home' %}" ><i class="fas fa-home" style="font-size:24px;" data-toggle="tooltip" data-placement="bottom" title="Home"></i> <span id="Home"> home</spanp></a></li>
               
-              <li class="{% if request.path == about_url %} active {%endif%}"><a  class="nav-link" href="{{about_url}}" > <i class="fas fa-users-cog" style="font-size:24px;"  data-toggle="tooltip" data-placement="bottom" title="About"></i></a></li>
+              <li class="{% if request.path == about_url %} active {%endif%}"><a  class="nav-link" href="{{about_url}}" > <i class="fas fa-users-cog" style="font-size:24px;"  data-toggle="tooltip" data-placement="bottom" title="About"></i><span id="About"> About</spanp></a></a></li>
              
 			  {% if user.is_authenticated %}
 
@@ -225,7 +225,7 @@
                 {% comment %} <div class="dropdown"> {% endcomment %}
                 
   <a class="nav-link " id="dLabel" role="button"  href="#">
-    <i class="fas fa-bell fa-lg" style="font-size:24px; "></i>
+    <i class="fas fa-bell fa-lg" style="font-size:24px; "></i><span id="Notifications"> Notifications</spanp>
   </a>  
   
   <ul class=" notifications" role="menu" aria-labelledby="dLabel" id="notification_id">
@@ -276,18 +276,18 @@
                 
                 
                 </li>
-                 <li class="{% if request.path == post_new_url %} active {%endif%}"><a  class="nav-link" href="{% url 'post-create' %}" > <i class="fas fa-plus-circle" style="font-size:24px;"  data-toggle="tooltip" data-placement="bottom" title="New Post"></i></a></li>
+                 <li class="{% if request.path == post_new_url %} active {%endif%}"><a  class="nav-link" href="{% url 'post-create' %}" > <i class="fas fa-plus-circle" style="font-size:24px;"  data-toggle="tooltip" data-placement="bottom" title="New Post"></i><span id="New post"> New Post</spanp></a></li>
 	        		 
 					
 					 
 					 
-				<li class="drop-down mx-5" ><a href="{% url 'user-posts' user.username %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
+				<li class="drop-down profileImg" ><a href="{% url 'user-posts' user.username %}"><img class="rounded-circle article-img " style="max-height:50px; max-width:50px; " src = {{ user.profile.image.url }}></a>
                			 <ul>
-						<li class="  nav-link {% if request.path == profile_url %} active {%endif%}"><a  href="{% url 'user-posts' user.username %}">Profile</a></li>
-            <li class=" nav-link{% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'profile'%}" >Edit Profile</a></li>
-            <li class=" nav-link{% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'bookmark-post'%}" >Bookmark</a></li>
+						<li class="  nav-link  {% if request.path == profile_url %} active {%endif%}"><a  href="{% url 'user-posts' user.username %}">Profile</a></li>
+            <li class=" nav-link {% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'profile'%}" >Edit Profile</a></li>
+            <li class=" nav-link {% if request.path == bookmark_url %} active {%endif%}"><a  href="{% url 'bookmark-post'%}" >Bookmark</a></li>
 						
-						<li class="nav-link {% if request.path == logout_url %} active {%endif%}"><a  href="{% url 'logout' %}">Logout</a></li>
+						<li class="nav-link  {% if request.path == logout_url %} active {%endif%}"><a  href="{% url 'logout' %}">Logout</a></li>
 						
 						</ul>
               		</li>
@@ -496,7 +496,7 @@
   });
 
 function GetRedirectPage(url) {
-          window.location.replace('http://127.0.0.1:8000/' + url );
+          window.location.replace(window.location.origin + '/' + url );
     }
      
      $('#form').on('submit', function(event){

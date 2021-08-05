@@ -60,8 +60,6 @@ class UserUpdateForm(forms.ModelForm):
 		return user
 
 class ProfileUpdateForm(forms.ModelForm):
-	# followed_category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=False,
-    #                                     queryset=Category.objects.all())
 	class Meta:
 		model = Profile
 		fields = ['college','about','followed_category']
@@ -70,10 +68,7 @@ class ProfileUpdateForm(forms.ModelForm):
         
         }
 	
-	# def __init__(self, *args, **kwargs):
-	# 	super().__init__(*args, **kwargs)
-	# 	self.fields['image'].widget.input_text = "Update image"
-	# 	self.fields['image'].widget.initial_text = "Current image"
+
 
 
 class ProfileImageUpdateForm(forms.ModelForm):
@@ -94,6 +89,9 @@ class ProfileRegisterForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = ['image','college', 'about', 'followed_category']
+		widgets = {
+            'followed_category' : forms.CheckboxSelectMultiple,
+        }
 	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)

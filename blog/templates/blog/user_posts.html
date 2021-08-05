@@ -2,7 +2,7 @@
 {% load static %}
 {% block head %}
 <link href="{% static 'blog/assets/css/style.css' %}" rel="stylesheet">
-
+<link href="assets/css/feather.css" rel="stylesheet" type="text/css">
 {% endblock head %}
 {% block style %}
 body{
@@ -261,7 +261,7 @@ img {
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-columns mr-1 icon-md">
                                 <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"></path>
                             </svg>
-                            <a class="pt-1px d-none d-md-block" href="#">Timeline</a>
+                            <a class="pt-1px d-none d-md-block">Timeline</a>
                         </li>
                         <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users mr-1 icon-md">
@@ -270,16 +270,12 @@ img {
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                             </svg>
-                            <a class="pt-1px d-none d-md-block" href="#">Posts <span class="text-muted tx-12">{{ posts.count }}</span></a>
+                            <a class="pt-1px d-none d-md-block" >Posts <span class="text-muted tx-12">{{ posts.count }}</span></a>
                         </li>
-                        <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users mr-1 icon-md">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            <a class="pt-1px d-none d-md-block" href="#">Posts <span class="text-muted tx-12">{{ posts.count }}</span></a>
+                        <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">                       
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                            <a class="pt-1px d-none d-md-block">Upvotes <span class="text-muted tx-12">{{ upvotes_count }}</span></a>
                         </li>
                         
                     </ul>

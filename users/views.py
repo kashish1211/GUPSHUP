@@ -81,7 +81,6 @@ def profilereg(request):
 			return redirect('profile')
 
 	else:
-		
 		p_form = ProfileRegisterForm()
 	context = {
 		   'p_form': p_form

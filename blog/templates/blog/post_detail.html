@@ -47,7 +47,7 @@
                   <li class="d-flex align-items-center"><i class="fa fa-pencil-square-o"></i> <a href="{% url 'post-update' object.slug %}">Edit Post</a></li>
                   <li class="d-flex align-items-center"><i class="fas fa-trash"></i> <a href="{% url 'post-delete' object.slug %}">Delete Post</a></li>
                   {% else %}
-
+				{% if user.is_authenticated %}
                   {% if post_is_bookmarked%}
                     <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none" style="cursor:pointer;"><i
                         class="fas fa-bookmark fa-3x btn-bookmark"  aria-hidden="true"></i> Bookmark Post</a>
@@ -55,13 +55,15 @@
                     <a type="submit" name="post_id" value="{{object.id}}" class="btn btn-lg bookmark-btn shadow-none " style="cursor:pointer;" ><i
                         class="far fa-bookmark fa-3x btn-bookmark"  aria-hidden="true"></i>Bookmark Post</a>
                   {% endif %}
-
+				
                   <li class="d-flex align-items-center" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-exclamation-triangle"></i>Report Post</li>
+				  {% endif %}
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 					  <div class="modal-content">
 						<div class="modal-header">
 						  <h5 class="modal-title" id="exampleModalLabel" style="cursor:pointer;">Report Post</h5>
+
 						  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						  </button>
@@ -84,12 +86,15 @@
 							
 						
 						</div>
+
 						<div class="modal-footer">
 						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 						  <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-report' object.slug %}" value='{{ object.slug }}'><i
 							class="fas fa-exclamation-triangle"></i>&nbsp;</i>Report</a>
 						</div>
+						
 					  </div>
+
 					</div>
 				  </div>
                   
@@ -109,7 +114,7 @@
               </div>
 
 			  <div class='row'>
-			
+			{% if user.is_authenticated %}
 			<div>
 					
 					{% if post_is_upvoted %}
@@ -140,6 +145,27 @@
 			<div class="my-2" >
 				<strong class="text-xl-center" id='downvote_count'>{{ number_of_downvotes }}</strong>
 			</div>
+			{% else %}
+			<div>
+
+					<button type="submit" name="post_id" disabled value="{{object.id}}" class="btn btn-lg upvote_btn shadow-none"><i
+							class="far fa-thumbs-up btn_upvote" aria-hidden="true"></i></button>
+
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id='upvote_count'>{{ number_of_upvotes }}</strong>
+			</div>
+<!-- downvotes -->
+			<div>
+					<button type="submit" name="post_id" disabled value="{{object.id}}" class="btn btn-lg downvote_btn shadow-none"><i
+							class="far fa-thumbs-down btn_downvote " aria-hidden="true"></i></button>
+			
+			</div>
+			<div class="my-2" >
+				<strong class="text-xl-center" id='downvote_count'>{{ number_of_downvotes }}</strong>
+				
+			</div> 
+			{% endif %}
 			</div>
 
               <div class="entry-footer clearfix">
@@ -261,7 +287,8 @@
 
 				<div class="reply-form">
 					<h4>Leave a Reply</h4>
-					<p>Your email address will not be published. Required fields are marked * </p>
+					<p>Required fields are marked * </p>
+					{% if user.is_authenticated %}
 					<form action="{% url 'comment-ajax' %}" method="POST" id="comment-form">{% csrf_token %}
 					  
 					  <div class="row">
@@ -272,7 +299,9 @@
 					  <button type="submit" class="btn btn-primary comment-form">Post Comment</button>
 	
 					</form>
-	
+					{% else %}
+		           <a class="btn btn-danger" style="color:white; " href="{% url 'login' %}">Login to comment</a>
+					{% endif %}
 				  </div>
 
         <div id='comment-loop' class='mt-4'>

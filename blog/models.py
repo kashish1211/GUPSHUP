@@ -28,7 +28,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     is_appropriate  = models.BooleanField(default = True)
     notice = models.CharField(max_length=100, default="This Post was DELETED",null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_name')
+    category = models.ForeignKey(Category,on_delete=models.DO_NOTHING, related_name='category_name')
        
     __original_category = None
 
@@ -43,30 +43,31 @@ class Post(models.Model):
     bookmark = models.ManyToManyField(User, related_name='bookmark',blank=True)
     tags = TaggableManager()
 
-    def __init__(self, *args, **kwargs):
-        super(Post, self).__init__(*args, **kwargs)
-        if self.slug:
-            self.__original_category = self.category
+    # def __init__(self, *args, **kwargs):
+    #     super(Post, self).__init__(*args, **kwargs)
+    #     if self.title:
+    #         self.__original_category = self.category
         
 
-    def save(self, *args, **kwargs):
-        if self.__original_category == None:
-            self.category.num_of_posts +=1
-            self.category.save()
-            self.__original_category = self.category
-        elif self.category != self.__original_category:
-            self.__original_category.num_of_posts -= 1
-            self.category.num_of_posts +=1
-            self.__original_category.save()
-            self.category.save()
+    # def save(self, *args, **kwargs):
+    #     if self.__original_category == None:
+    #         self.category.num_of_posts +=1
+    #         self.category.save()
+    #         self.__original_category = self.category
+    #     elif self.category != self.__original_category:
+    #         self.__original_category.num_of_posts -= 1
+    #         self.category.num_of_posts +=1
+    #         self.__original_category.save()
+    #         self.category.save()
 
-        self.__original_category = self.category     
-        super(Post, self).save(*args, **kwargs)
+    #     self.__original_category = self.category     
+    #     super(Post, self).save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-            self.category.num_of_posts -=1
-            self.category.save()     
-            super(Post, self).save(*args, **kwargs)
+    # def delete(self, *args, **kwargs):
+    #     super(Post, self).delete(*args, **kwargs)
+    #     self.category.num_of_posts -=1
+    #     self.category.save()    
+        
 
     def number_of_downvotes(self):
         return self.downvote.count()
