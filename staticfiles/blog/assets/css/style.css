@@ -110,6 +110,9 @@ h1, h2, h3, h4, h5, h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /* Desktop Navigation */
+.nav-menu {
+  margin-left: 37%;
+}
 .nav-menu ul {
   margin: 0;
   padding: 0;
@@ -136,6 +139,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   font-family: "Raleway", sans-serif;
   /* padding: 0px 0px 0px 0px; */
+}
+.nav-menu a span{
+  display: none;
 }
 
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
@@ -340,6 +346,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: right;
 }
 
+
 .mobile-nav-toggle i {
   color: #111111;
 }
@@ -350,6 +357,7 @@ h1, h2, h3, h4, h5, h6 {
   right: 15px;
   bottom: 15px;
   left: 15px;
+  margin-left:20%;
   z-index: 9999;
   overflow-y: auto;
   background: #fff;
@@ -362,6 +370,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .mobile-nav * {
   margin: 0;
+  
   padding: 0;
   list-style: none;
 }
@@ -370,10 +379,12 @@ h1, h2, h3, h4, h5, h6 {
   
   position: relative;
   color: #111111;
-  padding: 10px 20px;
+  padding: 18px 20px;
   font-weight: 500;
   outline: none;
 }
+
+
 
 .mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
   color: #e03a3c;
@@ -386,6 +397,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-left: 10px;
   position: absolute;
   right: 15px;
+  display: none;
 }
 
 .mobile-nav .active.drop-down > a:after {
@@ -431,6 +443,17 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
+
+
+@media (max-width: 992px)
+{
+  .profileImg
+  {
+    padding-top : 18px;
+  }
+
+ 
+}
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
@@ -1957,6 +1980,14 @@ section {
   background-color: white;
 }
 
+@media (max-width: 900px)
+{
+  .blog .sidebar
+  {
+    margin: 0px;
+  }
+}
+
 .blog .sidebar .sidebar-title {
   font-size: 20px;
   font-weight: 700;
@@ -2070,14 +2101,15 @@ section {
 
 .blog .sidebar .tags ul li {
   display: inline-block;
+ 
 }
 
 .blog .sidebar .tags ul a {
-  color: #515151;
+  color: #e03a3c;
   font-size: 14px;
   padding: 6px 14px;
   margin: 0 6px 8px 0;
-  border: 1px solid #c4c4c4;
+  border: 1px solid #e03a3c;
   display: inline-block;
   transition: 0.3s;
 }
