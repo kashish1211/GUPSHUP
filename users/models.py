@@ -33,7 +33,7 @@ class Profile(models.Model):
 
 
 	def get_remote_image(self):
-		if self.image_url and self.image == 'default2.png':
+		if self.image_url and self.image == 'default2_rl6g0r.png':
 			result = urllib.request.urlretrieve(self.image_url)
 			self.image.save(
 					os.path.basename(self.image_url),
@@ -42,7 +42,4 @@ class Profile(models.Model):
 			self.save()
 
 
-
-
-
-
+ 
