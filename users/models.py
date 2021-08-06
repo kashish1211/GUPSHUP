@@ -22,12 +22,12 @@ college_choices = (
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	image = models.ImageField(default='default2.png',upload_to='profile_pics')
+	image = models.ImageField(default='default2_rl6g0r.png',upload_to='profile_pics')
 	college = models.CharField(max_length = 20,choices=college_choices,default='KJSCE',blank=True, null=True)
 	about = RichTextField(blank=True, null=True)
 	followed_category = models.ManyToManyField(Category,related_name='followed_category',blank=True, null=True)
-	
-	image_url = models.URLField(default = "http://127.0.0.1:8000/media/default2.png")
+
+	image_url = models.URLField(default = "https://res.cloudinary.com/hqdqbozua/image/upload/v1628252659/media/default2_rl6g0r.png")
 	def __str__(self):
 		return f'{self.user.username} Profile '
 
@@ -41,15 +41,6 @@ class Profile(models.Model):
 					)
 			self.save()
 
-	def save(self,*args,**kwargs):
-		super(Profile, self).save(*args, **kwargs)
-		
-		img = Image.open(self.image.path)
-
-		if img.height > 300 or img.width > 300:
-			output_size = (300, 300)
-			img.thumbnail(output_size)
-			img.save(self.image.path)
 
 
 
