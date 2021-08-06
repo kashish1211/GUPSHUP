@@ -41,5 +41,3 @@ class Profile(models.Model):
 					)
 			self.save()
 
-
- 
