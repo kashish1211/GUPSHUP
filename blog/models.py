@@ -7,6 +7,8 @@ from taggit.managers import TaggableManager
 from autoslug import AutoSlugField
 from django.db.models import F
 from django.utils.text import slugify
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 
 class Category(models.Model):
@@ -29,8 +31,7 @@ class Post(models.Model):
     is_appropriate  = models.BooleanField(default = True)
     notice = models.CharField(max_length=100, default="This Post was DELETED",null=True, blank=True)
     category = models.ForeignKey(Category,on_delete=models.DO_NOTHING, related_name='category_name')
-       
-    __original_category = None
+    
 
     def __str__(self):
         return self.title
@@ -43,30 +44,11 @@ class Post(models.Model):
     bookmark = models.ManyToManyField(User, related_name='bookmark',blank=True)
     tags = TaggableManager()
 
-    # def __init__(self, *args, **kwargs):
-    #     super(Post, self).__init__(*args, **kwargs)
-    #     if self.title:
-    #         self.__original_category = self.category
-        
-
-    # def save(self, *args, **kwargs):
-    #     if self.__original_category == None:
-    #         self.category.num_of_posts +=1
-    #         self.category.save()
-    #         self.__original_category = self.category
-    #     elif self.category != self.__original_category:
-    #         self.__original_category.num_of_posts -= 1
-    #         self.category.num_of_posts +=1
-    #         self.__original_category.save()
-    #         self.category.save()
-
-    #     self.__original_category = self.category     
-    #     super(Post, self).save(*args, **kwargs)
-
-    # def delete(self, *args, **kwargs):
-    #     super(Post, self).delete(*args, **kwargs)
-    #     self.category.num_of_posts -=1
-    #     self.category.save()    
+    
+    def delete(self, *args, **kwargs): 
+        self.category.num_of_posts -=1
+        self.category.save()    
+        super(Post, self).delete(*args, **kwargs)
         
 
     def number_of_downvotes(self):
@@ -78,6 +60,21 @@ class Post(models.Model):
     @property
     def number_of_comments(self):
         return PostComment.objects.filter(post_connected=self).count()
+
+@receiver(pre_save, sender=Post)
+def my_callback(sender, instance, *args, **kwargs):
+    try:
+        old_instance = Post.objects.get(slug=instance.slug)
+        old_instance.category.num_of_posts -= 1
+        instance.category.num_of_posts +=1
+        old_instance.category.save()
+        instance.category.save()
+    except Post.DoesNotExist:
+        instance.category.num_of_posts +=1
+        instance.category.save()
+        return None
+   
+    
     
 
 
@@ -90,8 +87,6 @@ class PostComment(models.Model):
     upvote_comment = models.ManyToManyField(User, related_name='upvote_comment',blank=True)
     downvote_comment = models.ManyToManyField(User, related_name='downvote_comment',blank=True)
 
-
-    
 
     def number_of_downvotes_comment(self):
         return self.downvote_comment.count()

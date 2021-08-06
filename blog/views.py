@@ -20,6 +20,7 @@ import datetime
 from users.models import Profile
 
 
+
 class PostCreateView(LoginRequiredMixin, CreateView):
 	model = Post
 	fields = ['title', 'content', 'tags','category']
