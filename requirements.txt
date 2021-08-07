@@ -10,6 +10,7 @@ channels==3.0.3
 channels-redis==3.2.0
 charset-normalizer==2.0.3
 constantly==15.1.0
+cloudinary==1.26.0
 cryptography==3.4.7
 daphne==3.0.1
 defusedxml==0.7.1
