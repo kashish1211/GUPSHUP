@@ -9,7 +9,6 @@ cffi==1.14.5
 channels==3.0.3
 channels-redis==3.2.0
 charset-normalizer==2.0.3
-cloudinary==1.26.0
 constantly==15.1.0
 cryptography==3.4.7
 daphne==3.0.1

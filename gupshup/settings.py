@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
+    # 'cloudinary_storage',
     'django.contrib.staticfiles',
     'django_social_share',
     'django.contrib.sites',
@@ -57,7 +57,7 @@ INSTALLED_APPS = [
      'django_cleanup.apps.CleanupConfig',
      'notifications',
      'taggit',
-    'cloudinary',
+    # 'cloudinary',
 
      
     
@@ -273,10 +273,10 @@ CHANNEL_LAYERS = {
 }
 
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'hqdqbozua',
-    'API_KEY': '494313339769946',
-    'API_SECRET': '_Wzbs0CyzS1kFy5qkCW1xMc7NGA',
-}
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'hqdqbozua',
+#     'API_KEY': '494313339769946',
+#     'API_SECRET': '_Wzbs0CyzS1kFy5qkCW1xMc7NGA',
+# }
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediayStorage'
 django_heroku.settings(locals())
