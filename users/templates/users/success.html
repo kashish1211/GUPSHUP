@@ -17,7 +17,7 @@
         /* background-image: linear-gradient(rgb(117, 224, 67), rgb(15, 231, 247));  */
     }
 </style>
-  <body>
+  <body style="overflow-x: hidden;">
   
     
     
@@ -40,9 +40,15 @@
                 <h1 style="font-family: 'Mulish', sans-serif; text-align: center; color: white; font-size: calc(15px + 1.5vw);">
                     Fun Fact: This website was created as a miniproject
                 </h1>
+                
+            
             </div>
-            <a class="btn btn-primary" href="{% url 'login' %}?next={% url 'profile-registration' %}" value="">bbuttonnnn</a>
-            <div class="mt-5">
+            
+                <div class="wrapper mt-5" style="text-align:center">
+                <a class="btn btn-primary" style=" width: 20%; margin: 0 auto;" href="{% url 'login' %}?next={% url 'profile-registration' %}" value="">Verify</a>
+                </div>
+            
+            <div class="mt-5" >
                 <h1 style="font-family: 'Mulish', sans-serif; text-align: center; color: white; font-size: calc(15px + .5vw);">
                     Property Of Gupshup
                 </h1>
