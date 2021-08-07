@@ -200,8 +200,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('django_user')
-EMAIL_HOST_PASSWORD = os.environ.get('gupshup_pass')
+EMAIL_HOST_USER = "rushabhgandhi13@gmail.com"
+EMAIL_HOST_PASSWORD = "icjzmoosnydsnttl"
 
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 
@@ -257,6 +257,7 @@ CKEDITOR_CONFIGS = {
 }
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+
 
 ASGI_APPLICATION = 'gupshup.routing.application'
 
