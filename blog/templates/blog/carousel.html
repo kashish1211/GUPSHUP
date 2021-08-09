@@ -10,7 +10,7 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{% static 'blog/carousel/plugins/bootstrap/bootstrap.min.css'%}">
   <!-- FontAwesome -->
-  <script src="https://kit.fontawesome.com/0493cbe504.js" crossorigin="anonymous"></script>
+  <script src="http://kit.fontawesome.com/0493cbe504.js" crossorigin="anonymous"></script>
   <!-- slick Carousel -->
   <link rel="stylesheet" href="{% static 'blog/carousel/plugins/slick/slick.css' %}">
   <link rel="stylesheet" href="{% static 'blog/carousel/plugins/slick/slick-theme.css' %}">
@@ -24,10 +24,10 @@
 
 
 
-<div class="banner-carousel banner-carousel-2 mb-0">
+<div class="banner-carousel banner-carousel-2 mb-0 mt-3">
 
   {% for post in top5 %}
-  <div class="banner-carousel-item" style="background-image:url({%static 'blog/business_banner.jpg'%});">
+  <div class="banner-carousel-item " style="background-image:url({%static 'blog/assets/img/carousel-bg.jpg'%});">
     <div class="container" >
         <div class="box-slider-content">
           <div class="box-slider-text" >
@@ -37,14 +37,13 @@
               <a href="{% url 'user-posts' post.author.username %}" style="text-decoration:none;"><h2 class="box-slide-title my-3">{{ post.author }}</h2></a>
               </div>
               <h3 class="box-slide-sub-title">{{ post.title }}</h3>
-              {% if post.content|length > 170%}
-                  <p class="box-slide-description">{{ post.content|slice:":170"|safe }}...</p>
+              {% if post.content|length > 140%}
+                  <p class="box-slide-description">{{ post.content|slice:":140"|safe }}...</p>
               {% else %}
-                  <p class="box-slide-description">{{ post.content|slice:":170"|safe }}</p>
+                  <p class="box-slide-description">{{ post.content|slice:":140"|safe }}</p>
               {% endif %}
               
               <hr style="color: white;">
-              {% comment %} <img class="rounded-circle article-img " src = {{post.author.profile.image.url}}> {% endcomment %}
               <p>
                 <a href="{% url 'post-detail' post.slug %}" class="slider btn btn-danger">View Post</a>
               </p>
